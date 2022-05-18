@@ -1,33 +1,85 @@
 package be.intecbrussel.bbjja.views.users;
 
+
+import be.intecbrussel.bbjja.data.entity.User;
+import be.intecbrussel.bbjja.data.service.UserService;
+import be.intecbrussel.bbjja.security.AuthenticatedUser;
 import be.intecbrussel.bbjja.views.MainLayout;
+import com.vaadin.flow.component.button.Button;
+import com.vaadin.flow.component.formlayout.FormLayout;
 import com.vaadin.flow.component.html.H2;
 import com.vaadin.flow.component.html.Image;
+import com.vaadin.flow.component.html.Label;
 import com.vaadin.flow.component.html.Paragraph;
+import com.vaadin.flow.component.notification.Notification;
+import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
+import com.vaadin.flow.component.page.Page;
+import com.vaadin.flow.component.textfield.PasswordField;
+import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
-import javax.annotation.security.RolesAllowed;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
 
-@PageTitle("Users")
-@Route(value = "users", layout = MainLayout.class)
-@RolesAllowed("ADMIN")
+import javax.annotation.security.RolesAllowed;
+import java.util.List;
+import java.util.Optional;
+
+@PageTitle ( "Users" )
+@Route ( value = "users", layout = MainLayout.class )
+@RolesAllowed ( "ADMIN" )
 public class UsersView extends VerticalLayout {
 
-    public UsersView() {
-        setSpacing(false);
+	@Autowired
+	public UsersView( final AuthenticatedUser user, final UserService service ) {
 
-        Image img = new Image("images/empty-plant.png", "placeholder plant");
-        img.setWidth("200px");
-        add(img);
+		// setSpacing( false );
 
-        add(new H2("This place intentionally left empty"));
-        add(new Paragraph("It’s a place where you can grow your own UI 🤗"));
+		final var usersCount = service.list( PageRequest.of( 1, 10 ) ).getTotalElements();
+		final Paragraph usersCountP = new Paragraph( "There are " + usersCount + " users registered." );
+		add( usersCountP );
 
-        setSizeFull();
-        setJustifyContentMode(JustifyContentMode.CENTER);
-        setDefaultHorizontalComponentAlignment(Alignment.CENTER);
-        getStyle().set("text-align", "center");
-    }
+		final List< User > users = service.list();
+		for ( final User u : users ) {
+
+			final var firstName = new TextField( "First name" );
+			final var lastName = new TextField( "Last name" );
+			final var username = new TextField( "Username" );
+			username.setValue( u.getUsername() );
+			final var oldPassword = new PasswordField( "Old Password" );
+			final var newPassword = new PasswordField( "New Password" );
+			final var confirmPassword = new PasswordField( "Confirm password" );
+
+			final var formLayout = new FormLayout();
+			formLayout.add( username, oldPassword, newPassword, confirmPassword );
+			formLayout.setResponsiveSteps(
+					// Use one column by default
+					new FormLayout.ResponsiveStep( "0", 1 ),
+					// Use two columns, if layout's width exceeds 500px
+					new FormLayout.ResponsiveStep( "500px", 2 ) );
+			// Stretch the username field over 2 columns
+			formLayout.setColspan( username, 2 );
+
+			final var updateButton = new Button( "Update password", onClick -> {
+				service.changePassword( username.getValue(), oldPassword.getValue(), confirmPassword.getValue() );
+			} );
+
+			add( formLayout );
+			add( updateButton );
+		}
+
+		final Optional< User > oUser = user.get();
+		oUser.ifPresent( u -> {
+
+			new Notification( u.getUsername() + " is logged in.." );
+		} );
+
+
+		setSizeFull();
+		setJustifyContentMode( JustifyContentMode.CENTER );
+		setDefaultHorizontalComponentAlignment( Alignment.CENTER );
+		getStyle().set( "text-align", "center" );
+	}
 
 }

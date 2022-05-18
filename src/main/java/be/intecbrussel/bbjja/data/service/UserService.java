@@ -88,6 +88,12 @@ public class UserService {
 	}
 
 
+	public List< User > list() {
+
+		return repository.findAll();
+	}
+
+
 	public List< User > list( final Sort sort ) {
 
 		return repository.findAll( sort );
