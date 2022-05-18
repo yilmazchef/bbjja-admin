@@ -23,7 +23,7 @@ public class HomeView extends VerticalLayout {
         img.setWidth("200px");
         add(img);
 
-        add(new H2("This place intentionally left empty"));
+        add(new H2("Admin panel for BBJJA"));
         add(new Paragraph("It’s a place where you can grow your own UI 🤗"));
 
         setSizeFull();
