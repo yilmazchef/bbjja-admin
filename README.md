@@ -57,15 +57,30 @@ Once the JAR file is built, you can run it using
 To build the Dockerized version of the project, run
 
 ```
-docker build . -t bbjjaadmin:latest
+docker build . -t yilmazchef/bbjja-admin:latest
 ```
 
 Once the Docker image is correctly built, you can test it locally using
 
 ```
-docker run -p 8080:8080 bbjjaadmin:latest
+docker run -p 8080:8080 bbjja-admin:latest
 ```
 
+Push to Docker Hub:
+
+```console
+docker push yilmazchef/bbjja-admin:latest
+```
+
+The link on Docker Hub:
+
+https://hub.docker.com/r/yilmazchef/bbjja-admin
+
+To pull from the hub: 
+
+```console
+docker pull yilmazchef/bbjja-admin
+```
 
 ## Deploying using Kubernetes
 

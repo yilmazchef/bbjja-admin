@@ -1,0 +1,28 @@
+version: "3.1"
+services:
+  API:
+    image: yilmazchef/bbjja-admin:latest
+    ports:
+      - "8080:8080"
+      - "443:443"
+    depends_on:
+      - PostgresSQL
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://PostgresSQL:5432/bbjjadb
+      - SPRING_DATASOURCE_USERNAME=postgres
+      - SPRING_DATASOURCE_PASSWORD=postgres
+      - SPRING_JPA_HIBERNATE_DDL_AUTO=update
+
+  PostgresSQL:
+    image: postgres:latest
+    ports:
+      - "5432:5432"
+    environment:
+      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_USER=postgres
+      - POSTGRES_DB=bbjjadb
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
