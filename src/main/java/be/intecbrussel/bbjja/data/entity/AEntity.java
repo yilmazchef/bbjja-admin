@@ -16,7 +16,7 @@ import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 @MappedSuperclass
-@EntityListeners ( AuditingEntityListener.class)
+@EntityListeners ( AuditingEntityListener.class )
 public abstract class AEntity {
 
 	@Id
@@ -38,6 +38,7 @@ public abstract class AEntity {
 
 	private Boolean isActive;
 
+
 	public UUID getId() {
 
 		return id;
@@ -47,6 +48,13 @@ public abstract class AEntity {
 	public void setId( UUID id ) {
 
 		this.id = id;
+	}
+
+
+	public AEntity withId( final UUID id ) {
+
+		this.setId( id );
+		return this;
 	}
 
 

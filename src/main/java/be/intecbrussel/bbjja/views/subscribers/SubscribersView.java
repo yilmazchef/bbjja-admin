@@ -1,33 +1,132 @@
 package be.intecbrussel.bbjja.views.subscribers;
 
+
+import be.intecbrussel.bbjja.data.entity.Subscriber;
+import be.intecbrussel.bbjja.data.service.SubscriptionService;
+import be.intecbrussel.bbjja.security.AuthenticatedUser;
 import be.intecbrussel.bbjja.views.MainLayout;
-import com.vaadin.flow.component.html.H2;
-import com.vaadin.flow.component.html.Image;
-import com.vaadin.flow.component.html.Paragraph;
+import com.vaadin.flow.component.button.Button;
+import com.vaadin.flow.component.button.ButtonVariant;
+import com.vaadin.flow.component.combobox.ComboBox;
+import com.vaadin.flow.component.grid.Grid;
+import com.vaadin.flow.component.html.Div;
+import com.vaadin.flow.component.icon.Icon;
+import com.vaadin.flow.component.icon.VaadinIcon;
+import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
+import com.vaadin.flow.data.renderer.ComponentRenderer;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
-import javax.annotation.security.RolesAllowed;
 
-@PageTitle("Subscribers")
-@Route(value = "subscribers", layout = MainLayout.class)
-@RolesAllowed("ADMIN")
+import javax.annotation.security.RolesAllowed;
+import java.util.ArrayList;
+import java.util.List;
+
+@PageTitle ( "Subscribers" )
+@Route ( value = "subscribers", layout = MainLayout.class )
+@RolesAllowed ( "ADMIN" )
 public class SubscribersView extends VerticalLayout {
 
-    public SubscribersView() {
-        setSpacing(false);
+	private final AuthenticatedUser user;
+	private final SubscriptionService service;
 
-        Image img = new Image("images/empty-plant.png", "placeholder plant");
-        img.setWidth("200px");
-        add(img);
+	private Grid< Subscriber > grid;
+	private Div hint;
 
-        add(new H2("This place intentionally left empty"));
-        add(new Paragraph("It’s a place where you can grow your own UI 🤗"));
+	private final List< Subscriber > subscribersData = new ArrayList<>();
 
-        setSizeFull();
-        setJustifyContentMode(JustifyContentMode.CENTER);
-        setDefaultHorizontalComponentAlignment(Alignment.CENTER);
-        getStyle().set("text-align", "center");
-    }
+
+	public SubscribersView( final AuthenticatedUser user, final SubscriptionService service ) {
+
+		this.user = user;
+		this.service = service;
+
+		this.subscribersData.addAll( this.service.list() );
+
+		setupInvitationForm();
+		setupGrid();
+	}
+
+
+	private void setupInvitationForm() {
+
+		final var comboBox = new ComboBox< Subscriber >();
+		comboBox.setItems( this.subscribersData );
+		comboBox.setItemLabelGenerator( Subscriber :: getEmail );
+
+		final var button = new Button( "Send invite" );
+		button.addThemeVariants( ButtonVariant.LUMO_PRIMARY );
+		button.addClickListener( e -> {
+			sendInvitation( comboBox.getValue() );
+			comboBox.setValue( null );
+		} );
+
+		final var layout = new HorizontalLayout( comboBox, button );
+		layout.setFlexGrow( 1, comboBox );
+
+		add( layout );
+	}
+
+
+	private void setupGrid() {
+
+		grid = new Grid<>( Subscriber.class, false );
+		grid.setAllRowsVisible( true );
+		grid.addColumn( Subscriber :: getFirstName ).setHeader( "First Name" );
+		grid.addColumn( Subscriber :: getLastName ).setHeader( "Last Name" );
+		grid.addColumn( Subscriber :: getEmail ).setHeader( "Email" );
+
+		grid.addColumn(
+				new ComponentRenderer<>( Button :: new, ( button, person ) -> {
+					button.addThemeVariants( ButtonVariant.LUMO_ICON,
+							ButtonVariant.LUMO_ERROR,
+							ButtonVariant.LUMO_TERTIARY );
+					button.addClickListener( e -> this.removeInvitation( person ) );
+					button.setIcon( new Icon( VaadinIcon.TRASH ) );
+				} ) ).setHeader( "Manage" );
+
+		grid.setItems( this.subscribersData );
+
+		hint = new Div();
+		hint.setText( "No invitation has been sent" );
+		hint.getStyle().set( "padding", "var(--lumo-size-l)" )
+				.set( "text-align", "center" ).set( "font-style", "italic" )
+				.set( "color", "var(--lumo-contrast-70pct)" );
+
+		add( hint, grid );
+	}
+
+
+	private void refreshGrid() {
+
+		if ( this.subscribersData.size() > 0 ) {
+			grid.setVisible( true );
+			hint.setVisible( false );
+			grid.getDataProvider().refreshAll();
+		} else {
+			grid.setVisible( false );
+			hint.setVisible( true );
+		}
+	}
+
+
+	private void sendInvitation( Subscriber person ) {
+
+		if ( person == null || this.subscribersData.contains( person ) ) {
+			return;
+		}
+		this.subscribersData.add( person );
+		this.refreshGrid();
+	}
+
+
+	private void removeInvitation( Subscriber person ) {
+
+		if ( person == null ) {
+			return;
+		}
+		this.subscribersData.remove( person );
+		this.refreshGrid();
+	}
 
 }
