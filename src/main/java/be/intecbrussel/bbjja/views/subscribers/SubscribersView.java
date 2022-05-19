@@ -120,12 +120,13 @@ public class SubscribersView extends VerticalLayout {
 	}
 
 
-	private void removeInvitation( Subscriber person ) {
+	private void removeInvitation( Subscriber subscriber ) {
 
-		if ( person == null ) {
+		if ( subscriber == null ) {
 			return;
 		}
-		this.subscribersData.remove( person );
+		this.service.delete( subscriber.getId() );
+		this.subscribersData.remove( subscriber );
 		this.refreshGrid();
 	}
 
