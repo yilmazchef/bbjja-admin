@@ -36,15 +36,10 @@ public class UsersView extends VerticalLayout {
 
 		// setSpacing( false );
 
-		final var usersCount = service.list( PageRequest.of( 1, 10 ) ).getTotalElements();
-		final Paragraph usersCountP = new Paragraph( "There are " + usersCount + " users registered." );
-		add( usersCountP );
 
 		final List< User > users = service.list();
 		for ( final User u : users ) {
 
-			final var firstName = new TextField( "First name" );
-			final var lastName = new TextField( "Last name" );
 			final var username = new TextField( "Username" );
 			username.setValue( u.getUsername() );
 			final var oldPassword = new PasswordField( "Old Password" );
@@ -61,25 +56,32 @@ public class UsersView extends VerticalLayout {
 			// Stretch the username field over 2 columns
 			formLayout.setColspan( username, 2 );
 
-			final var updateButton = new Button( "Update password", onClick -> {
-				service.changePassword( username.getValue(), oldPassword.getValue(), confirmPassword.getValue() );
+			final var submit = new Button( "Submit", onClick -> {
+				final var savedUser = service.changePassword( username.getValue(), oldPassword.getValue(), confirmPassword.getValue() );
+				new Notification( savedUser.toString(), 3000 ).open();
 			} );
 
 			add( formLayout );
-			add( updateButton );
+			add( submit );
 		}
 
-		final Optional< User > oUser = user.get();
-		oUser.ifPresent( u -> {
-
-			new Notification( u.getUsername() + " is logged in.." );
-		} );
+		notifyAuthenticatedUser( user );
 
 
 		setSizeFull();
 		setJustifyContentMode( JustifyContentMode.CENTER );
 		setDefaultHorizontalComponentAlignment( Alignment.CENTER );
 		getStyle().set( "text-align", "center" );
+	}
+
+
+	private void notifyAuthenticatedUser( final AuthenticatedUser user ) {
+
+		final Optional< User > oUser = user.get();
+		oUser.ifPresent( u -> {
+
+			new Notification( u.getUsername() + " is logged in.." ).open();
+		} );
 	}
 
 }

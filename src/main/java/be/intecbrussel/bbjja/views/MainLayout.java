@@ -10,7 +10,7 @@ import be.intecbrussel.bbjja.views.offers.OffersView;
 import be.intecbrussel.bbjja.views.partners.PartnersView;
 import be.intecbrussel.bbjja.views.schoolgrappling.SchoolGrapplingView;
 import be.intecbrussel.bbjja.views.sitesettings.SiteSettingsView;
-import be.intecbrussel.bbjja.views.slides.SlidesView;
+import be.intecbrussel.bbjja.views.home.SlidesView;
 import be.intecbrussel.bbjja.views.streetgrappling.StreetGrapplingView;
 import be.intecbrussel.bbjja.views.subscribers.SubscribersView;
 import be.intecbrussel.bbjja.views.teams.TeamsView;
