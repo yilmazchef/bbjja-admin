@@ -31,7 +31,7 @@ public class MockDataGenerator {
 		return args -> {
 			final var logger = LoggerFactory.getLogger( getClass() );
 
-			final var photos = photoGenerator.fetch();
+			final var photos = photoGenerator.fetchLocal();
 
 			Thread.sleep( 5000 );
 
@@ -92,7 +92,7 @@ public class MockDataGenerator {
 
 			final var savedHomePage = pageRepository.save( homePage );
 
-			for ( int index = 0; index < 10; index++ ) {
+			for ( int index = 0; index < 5; index++ ) {
 
 				final var newSlide = new Slide()
 						.setImageUrl( photos[ index ].getUrl() )
