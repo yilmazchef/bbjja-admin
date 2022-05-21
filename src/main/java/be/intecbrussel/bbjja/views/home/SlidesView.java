@@ -1,12 +1,10 @@
 package be.intecbrussel.bbjja.views.home;
 
 
-import be.intecbrussel.bbjja.data.entity.Slide;
 import be.intecbrussel.bbjja.data.entity.User;
 import be.intecbrussel.bbjja.data.service.SlideService;
 import be.intecbrussel.bbjja.security.AuthenticatedUser;
 import be.intecbrussel.bbjja.views.MainLayout;
-import com.vaadin.flow.component.Unit;
 import com.vaadin.flow.component.html.H2;
 import com.vaadin.flow.component.html.Image;
 import com.vaadin.flow.component.html.Paragraph;
@@ -19,6 +17,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import javax.annotation.security.RolesAllowed;
 import java.util.Optional;
 
+import static java.lang.System.out;
+
 @PageTitle ( "Slides" )
 @Route ( value = "slides", layout = MainLayout.class )
 @RolesAllowed ( "ADMIN" )
@@ -30,14 +30,15 @@ public class SlidesView extends VerticalLayout {
 		final var slidesData = service.list();
 		final var slidesLayout = new VerticalLayout();
 
-		for ( final Slide s : slidesData ) {
+		for ( final var s : slidesData ) {
 			final var slideItemLayout = new VerticalLayout();
 			final var slideItemImg = new Image( s.getImageUrl(), "Example Slide Image" );
-			slideItemImg.setWidth( 400F, Unit.PIXELS );
+			out.println( s.getImageUrl() );
+			slideItemImg.setWidth( "80%" );
 			final var slideItemH = new H2( s.getTitle() );
 			final var slideItemP = new Paragraph( "Slide description, slogan, message, detailed content etc. is written here. 🤗" );
 			slideItemLayout.add( slideItemImg, slideItemH, slideItemP );
-			slidesLayout.add( slideItemLayout );
+			slidesLayout.addAndExpand( slideItemLayout );
 		}
 
 		add( slidesLayout );

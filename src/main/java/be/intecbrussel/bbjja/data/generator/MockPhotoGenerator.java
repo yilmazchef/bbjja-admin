@@ -10,7 +10,7 @@ import java.util.HashMap;
 @Component
 public class MockPhotoGenerator {
 
-	private RestTemplate client;
+	private final RestTemplate client;
 
 
 	@Autowired
@@ -23,8 +23,8 @@ public class MockPhotoGenerator {
 	public RandomPhoto[] fetch() {
 
 		final var params = new HashMap< String, Object >();
-		params.put( "page", 2 );
-		params.put( "limit", 100 );
+		params.put( "page", 1 );
+		params.put( "limit", 10 );
 		return client.getForObject( "https://picsum.photos/v2/list", RandomPhoto[].class, params );
 	}
 
