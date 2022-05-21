@@ -46,10 +46,7 @@ public class SlidesView extends VerticalLayout {
 		newImageURLField.setWidthFull();
 		final var newImageButton = new Button( "Add new slide", onClick -> {
 			if ( ! newImageURLField.getValue().isEmpty() ) {
-				final var newSlide = ( Slide ) new Slide()
-						.setImageUrl( newImageURLField.getValue() )
-						.setTitle( newImageTitle.getValue() )
-						.setIsActive( Boolean.TRUE );
+				final var newSlide = ( Slide ) new Slide().setImageUrl( newImageURLField.getValue() ).setTitle( newImageTitle.getValue() ).setIsActive( Boolean.TRUE );
 				final var createdSlide = service.create( newSlide );
 				notifySlideCreated( newSlide.getImageUrl() );
 			}
@@ -63,34 +60,39 @@ public class SlidesView extends VerticalLayout {
 		existingSlidesLayout.setSpacing( false );
 
 		for ( final var existingSlideItem : existingSlidesData ) {
-			final var slideItemLayout = new VerticalLayout();
-			final var slideItemImg = new Image( existingSlideItem.getImageUrl(), "BBJA Slide Image" );
+
+			final var existingSlideItemLayout = new VerticalLayout();
+			final var existingSlideItemImage = new Image( existingSlideItem.getImageUrl(), "BBJA Slide Image" );
 			out.println( existingSlideItem.getImageUrl() );
-			slideItemImg.setWidthFull();
-			final var slideItemH = new H2( existingSlideItem.getTitle() );
-			final var slideItemP = new Paragraph( "Slide description, slogan, message, detailed content etc. is written here. 🤗" );
-			slideItemLayout.add( slideItemImg, slideItemH, slideItemP );
+			existingSlideItemImage.setWidthFull();
+			final var existingSlideItemTitle = new H2( existingSlideItem.getTitle() );
+			final var existingSlideItemDetails = new Paragraph( "Slide description, slogan, message, detailed content etc. is written here. 🤗" );
+			existingSlideItemLayout.add( existingSlideItemImage, existingSlideItemTitle, existingSlideItemDetails );
 
 			final var updateSlideLayout = new VerticalLayout();
 			updateSlideLayout.setPadding( false );
 			updateSlideLayout.setSpacing( false );
-			final var editImageUrlField = new TextField( "New Image URL" );
-			editImageUrlField.setWidthFull();
+			final var updateSlideTitleField = new TextField( "Slide Title" );
+			updateSlideTitleField.setWidthFull();
+			final var updateSlideImageUrlField = new TextField( "Image URL" );
+			updateSlideImageUrlField.setWidthFull();
 
-			final var updateButton = new Button( "Update Image", onClick -> {
-				if ( ! editImageUrlField.getValue().isEmpty() ) {
+			final var updateButton = new Button( "Update Slide", onClick -> {
+				if ( ! updateSlideImageUrlField.getValue().isEmpty() ) {
 					final String oldURL = existingSlideItem.getImageUrl();
-					final String newURL = editImageUrlField.getValue();
+					final String newURL = updateSlideImageUrlField.getValue();
+					final String newTitle = updateSlideTitleField.getValue();
 					existingSlideItem.setImageUrl( newURL );
+					existingSlideItem.setTitle( newTitle );
 					final Slide updatedSlide = service.update( existingSlideItem );
 					notifySlideUpdated( oldURL, newURL );
 				}
 			} );
 			updateButton.setWidthFull();
-			updateSlideLayout.addAndExpand( editImageUrlField, updateButton );
+			updateSlideLayout.addAndExpand( updateSlideImageUrlField, updateButton );
 
 			// adding slideLayout and updateSlideLayout to parent layout.
-			existingSlidesLayout.addAndExpand( newSlideLayout, slideItemLayout, updateSlideLayout );
+			existingSlidesLayout.addAndExpand( newSlideLayout, existingSlideItemLayout, updateSlideLayout );
 		}
 
 		accordion.add( "Add New Slide", newSlideLayout );
