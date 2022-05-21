@@ -37,33 +37,47 @@ public class MockDataGenerator {
 
 			logger.info( "Generating mock data..." );
 
-			final var user = new User();
-			user.setFirstName( "John Normal" );
-			user.setUsername( "user" );
-			user.setHashedPassword( passwordEncoder.encode( "user" ) );
-			user.setProfilePictureUrl(
-					"https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=128&h=128&q=80" );
-			user.setRoles( Collections.singleton( Role.USER ) );
-			userRepository.save( user );
+			final var user = new User()
+					.setFirstName( "John" )
+					.setLastName( "Normal" )
+					.setEmail( "user@bbjja.be" )
+					.setUsername( "user" )
+					.setHashedPassword( passwordEncoder.encode( "user" ) )
+					.setProfilePictureUrl(
+							"https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=128&h=128&q=80" )
+					.setRoles( Collections.singleton( Role.USER ) );
 
-			final var editor = new User();
-			editor.setFirstName( "Eddy Teur" );
-			editor.setUsername( "editor" );
-			editor.setHashedPassword( passwordEncoder.encode( "editor" ) );
-			editor.setProfilePictureUrl(
-					"https://images.unsplash.com/photo-1607746882042-944635dfe10e?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=128&h=128&q=80" );
-			editor.setRoles( Set.of( Role.USER, Role.EDITOR ) );
-			userRepository.save( editor );
+			if ( ! userRepository.existsByUsernameOrEmail( "user", "user@bbjja.be" ) ) {
+				userRepository.save( user );
+			}
+
+			final var editor = new User()
+					.setFirstName( "Eddy" )
+					.setLastName( "Teour" )
+					.setEmail( "editor@bbjja.be" )
+					.setUsername( "editor" )
+					.setHashedPassword( passwordEncoder.encode( "editor" ) )
+					.setProfilePictureUrl(
+							"https://images.unsplash.com/photo-1607746882042-944635dfe10e?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=128&h=128&q=80" )
+					.setRoles( Set.of( Role.USER, Role.EDITOR ) );
+
+			if ( ! userRepository.existsByUsernameOrEmail( "editor", "editor@bbjja.be" ) ) {
+				userRepository.save( editor );
+			}
 
 			final var admin = new User()
 					.setFirstName( "Emma Powerful" )
+					.setLastName( "Powerful" )
+					.setEmail( "admin@bbjja.be" )
 					.setUsername( "admin" )
 					.setHashedPassword( passwordEncoder.encode( "admin" ) )
 					.setProfilePictureUrl(
 							"https://images.unsplash.com/photo-1607746882042-944635dfe10e?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=128&h=128&q=80" )
 					.setRoles( Set.of( Role.USER, Role.ADMIN ) );
 
-			userRepository.save( admin );
+			if ( ! userRepository.existsByUsernameOrEmail( "admin", "admin@bbjja.be" ) ) {
+				userRepository.save( admin );
+			}
 
 
 			final var homePage = new Page()

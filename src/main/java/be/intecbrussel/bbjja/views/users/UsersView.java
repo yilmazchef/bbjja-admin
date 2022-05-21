@@ -2,6 +2,7 @@ package be.intecbrussel.bbjja.views.users;
 
 
 import be.intecbrussel.bbjja.data.entity.User;
+import be.intecbrussel.bbjja.data.mappers.UserMapper;
 import be.intecbrussel.bbjja.data.service.UserService;
 import be.intecbrussel.bbjja.security.AuthenticatedUser;
 import be.intecbrussel.bbjja.views.MainLayout;
@@ -25,7 +26,7 @@ import java.util.Optional;
 public class UsersView extends VerticalLayout {
 
 	@Autowired
-	public UsersView( final AuthenticatedUser user, final UserService service ) {
+	public UsersView( final AuthenticatedUser user, final UserService service, final UserMapper mapper ) {
 
 		// setSpacing( false );
 
@@ -35,12 +36,11 @@ public class UsersView extends VerticalLayout {
 
 			final var username = new TextField( "Username" );
 			username.setValue( u.getUsername() );
-			final var oldPassword = new PasswordField( "Old Password" );
 			final var newPassword = new PasswordField( "New Password" );
 			final var confirmPassword = new PasswordField( "Confirm password" );
 
 			final var formLayout = new FormLayout();
-			formLayout.add( username, oldPassword, newPassword, confirmPassword );
+			formLayout.add( username, newPassword, confirmPassword );
 			formLayout.setResponsiveSteps(
 					// Use one column by default
 					new FormLayout.ResponsiveStep( "0", 1 ),
@@ -50,7 +50,7 @@ public class UsersView extends VerticalLayout {
 			formLayout.setColspan( username, 2 );
 
 			final var submit = new Button( "Submit", onClick -> {
-				final var savedUser = service.changePassword( username.getValue(), oldPassword.getValue(), confirmPassword.getValue() );
+				final var savedUser = service.changePassword( username.getValue(), confirmPassword.getValue() );
 				new Notification( savedUser.toString(), 3000 ).open();
 			} );
 

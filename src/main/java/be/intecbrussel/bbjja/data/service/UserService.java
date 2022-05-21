@@ -3,7 +3,6 @@ package be.intecbrussel.bbjja.data.service;
 
 import be.intecbrussel.bbjja.data.entity.User;
 import be.intecbrussel.bbjja.data.exceptions.UserServiceException;
-import be.intecbrussel.bbjja.data.mappers.UserMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -20,15 +19,13 @@ import java.util.UUID;
 public class UserService {
 
 	private final UserRepository repository;
-	private final UserMapper mapper;
 	private final PasswordEncoder encoder;
 
 
 	@Autowired
-	public UserService( final UserRepository repository, final UserMapper mapper, final PasswordEncoder encoder ) {
+	public UserService( final UserRepository repository, final PasswordEncoder encoder ) {
 
 		this.repository = repository;
-		this.mapper = mapper;
 		this.encoder = encoder;
 	}
 
@@ -45,7 +42,23 @@ public class UserService {
 	}
 
 
+	public User changePassword( final @NotEmpty String username, final @NotEmpty String newPassword ) throws UserServiceException {
+
+		final var foundUser = repository.findByUsername( username );
+		if ( foundUser == null ) {
+			throw UserServiceException.notFound();
+		}
+
+		foundUser.setHashedPassword( newPassword );
+		return repository.save( foundUser );
+	}
+
+
 	public User changePassword( final @NotEmpty String username, final @NotEmpty String oldPassword, final @NotEmpty String newPassword ) throws UserServiceException {
+
+		if ( oldPassword.equals( newPassword ) ) {
+			throw UserServiceException.newPasswordRequired();
+		}
 
 		final var foundUser = repository.findByUsername( username );
 		if ( foundUser == null ) {
