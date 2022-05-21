@@ -31,6 +31,8 @@ public class UpdatePageRequest implements Serializable {
 
 	private String description;
 
+	private Boolean isVisible;
+
 	private Boolean isActive;
 
 }

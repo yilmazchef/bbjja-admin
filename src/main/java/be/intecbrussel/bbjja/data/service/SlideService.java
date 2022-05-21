@@ -30,6 +30,10 @@ public class SlideService {
 		return repository.findById( id );
 	}
 
+	public Slide create( Slide entity ) {
+
+		return repository.save( entity );
+	}
 
 	public Slide update( Slide entity ) {
 

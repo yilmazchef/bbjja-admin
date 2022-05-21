@@ -3,6 +3,7 @@ package be.intecbrussel.bbjja.data.service;
 
 import be.intecbrussel.bbjja.data.entity.User;
 import be.intecbrussel.bbjja.data.exceptions.UserServiceException;
+import be.intecbrussel.bbjja.security.AuthenticatedUser;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -21,12 +22,15 @@ public class UserService {
 	private final UserRepository repository;
 	private final PasswordEncoder encoder;
 
+	private final AuthenticatedUser authenticatedUser;
+
 
 	@Autowired
-	public UserService( final UserRepository repository, final PasswordEncoder encoder ) {
+	public UserService( final UserRepository repository, final PasswordEncoder encoder, final AuthenticatedUser authenticatedUser ) {
 
 		this.repository = repository;
 		this.encoder = encoder;
+		this.authenticatedUser = authenticatedUser;
 	}
 
 
@@ -36,7 +40,24 @@ public class UserService {
 	}
 
 
+	public User create( User entity ) {
+
+		final Optional< User > oUser = authenticatedUser.get();
+		oUser.ifPresent( u -> {
+			entity.setCreatedBy( u.getUsername() );
+			entity.setModifiedBy( u.getUsername() );
+		} );
+
+		return repository.save( entity );
+	}
+
+
 	public User update( User entity ) {
+
+		final Optional< User > oUser = authenticatedUser.get();
+		oUser.ifPresent( u -> {
+			entity.setModifiedBy( u.getUsername() );
+		} );
 
 		return repository.save( entity );
 	}
@@ -50,7 +71,7 @@ public class UserService {
 		}
 
 		foundUser.setHashedPassword( newPassword );
-		return repository.save( foundUser );
+		return update( foundUser );
 	}
 
 
@@ -66,7 +87,7 @@ public class UserService {
 		}
 
 		foundUser.setHashedPassword( newPassword );
-		return repository.save( foundUser );
+		return update( foundUser );
 	}
 
 

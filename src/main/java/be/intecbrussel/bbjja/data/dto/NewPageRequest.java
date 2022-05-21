@@ -26,5 +26,6 @@ public class NewPageRequest implements Serializable {
 
 	private String description;
 
+	private Boolean isVisible;
 
 }

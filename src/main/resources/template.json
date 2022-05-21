@@ -1,0 +1,167 @@
+[
+  {
+    "dutch": {
+      "site_settings": {
+        "title": "Belgian Jujitsu",
+        "logo_url": "https://live.staticflickr.com/65535/50827517716_a56a5bd7ae_k.jpg",
+        "address": "BBJJA, Hovenierstraat 100 - 1081 Koekelberg",
+        "contacts": [
+          {
+            "full_name": "Luis Truyen",
+            "phone": "0471 126 892",
+            "email": "luis@schoolgrappling.be",
+            "is_default_contact": "True"
+          },
+          {
+            "full_name": "Dieter Truyen",
+            "phone": "0486 307 863",
+            "email": "dieter@schoolgrappling.be"
+          }
+        ],
+        "social_links": [
+          {
+            "title": "Facebook",
+            "forward_url": "https://www.facebook.com/schoolgrappling/"
+          },
+          {
+            "title": "Twitter",
+            "forward_url": "https://www.facebook.com/schoolgrappling/"
+          },
+          {
+            "title": "LinkedIn",
+            "forward_url": "https://www.facebook.com/schoolgrappling/"
+          },
+          {
+            "title": "Flickr",
+            "forward_url": "https://www.flickr.com/photos/bbjja/",
+            "default_album_url": "https://www.flickr.com/photos/bbjja/albums/72177720297652963"
+          },
+          {
+            "title": "YouTube",
+            "forward_url": "https://www.youtube.com/channel/UC3hKEUoMBcN6IflwIPHy3-A",
+            "default_album_url": "https://www.youtube.com/watch?v=vYvn5g5a7xA&ab_channel=BBJJA"
+          }
+        ]
+      },
+      "statistics": [
+        {
+          "quantity": "400+",
+          "description": "Facebook-volgers",
+          "forward_url": "https://www.facebook.com/schoolgrappling/"
+        },
+        {
+          "quantity": "2K+",
+          "description": "YouTube subscribers",
+          "forward_url": "https://www.youtube.com/user/dieterfiregym/featured"
+        },
+        {
+          "quantity": "37K+",
+          "description": "Photos op Flick-album",
+          "forward_url": "https://...."
+        }
+      ],
+      "home": {
+        "slides": [
+          {
+            "image_url": "https://live.staticflickr.com/65535/51205681807_947f5df550_5k.jpg",
+            "forward_url": "https://schoolgrappling.be/nl/school-grappling/",
+            "title": "Schoolgrappling"
+          },
+          {
+            "image_url": "https://live.staticflickr.com/65535/51206601013_141e49dec0_b.jpg",
+            "forward_url": "https://schoolgrappling.be/nl/school-grappling/",
+            "title": "Schoolgrappling"
+          },
+          {
+            "image_url": "https://live.staticflickr.com/65535/51207454255_29a8a80f47_b.jpg",
+            "forward_url": "https://schoolgrappling.be/nl/school-grappling/",
+            "title": "Schoolgrappling"
+          }
+        ],
+        "subscribers": [
+          "yilmaz_mustafa@outlook.be",
+          "b@c.com"
+        ]
+      },
+      "ninja_school": {
+        "offer": {
+          "title": "some title",
+          "description": "description",
+          "forward_url": "https://....",
+          "details": {
+            "schools": [
+              {
+                "title": "school title",
+                "location": {
+                  "lon": 213123,
+                  "lat": 123123
+                }
+              }
+            ]
+          }
+        }
+      },
+      "school_grappling": {
+        "about": "sadasdasd",
+        "for_who": "safsv",
+        "practice": "sdacada",
+        "video_url": "https://...."
+      },
+      "street_grappling": {
+        "about": "sadasdasd",
+        "for_who": "safsv",
+        "practice": "sdacada",
+        "video_url": "https://...."
+      },
+      "vision_and_mission": {
+        "vision": {
+          "title": "some title",
+          "description": "description",
+          "details": {
+            "schools": [
+              {
+                "title": "school title",
+                "location": {
+                  "lon": 213123,
+                  "lat": 123123
+                }
+              }
+            ]
+          }
+        }
+      },
+      "about_us": {
+        "teams": [
+          {
+            "profile_photo_url": "https://....",
+            "first_name": "first_name",
+            "last_name": "last_name",
+            "job_title": "some job"
+          }
+        ],
+        "partners": [
+          {
+            "company": "company",
+            "logo_url": "https://....",
+            "forward_url": "https://...."
+          }
+        ]
+      },
+      "users": [
+        {
+          "eid": "2001.03.11-611.15",
+          "first_name": "asd",
+          "last_name": "adsad",
+          "gender": "male",
+          "date_of_birth": "11/03/2001",
+          "class_group": "first year",
+          "weight": 50,
+          "registration_date": ""
+        }
+      ]
+    },
+    "french": {
+      // all the fields from dutch
+    }
+  }
+]

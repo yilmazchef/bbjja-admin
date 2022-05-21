@@ -35,6 +35,8 @@ public class Page extends AEntity {
 	@Type ( type = "org.hibernate.type.TextType" )
 	private String description;
 
+	private Boolean isVisible;
+
 	@ManyToMany
 	@JoinTable ( name = "followers" )
 	private Set< Subscriber > subscribers = new HashSet<>();
