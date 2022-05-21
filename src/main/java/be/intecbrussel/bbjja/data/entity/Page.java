@@ -7,6 +7,7 @@ import org.hibernate.annotations.Type;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotEmpty;
+import java.util.LinkedHashSet;
 import java.util.Set;
 
 // LOMBOK
@@ -15,7 +16,7 @@ import java.util.Set;
 @ToString ( onlyExplicitlyIncluded = true )
 @EqualsAndHashCode ( onlyExplicitlyIncluded = true, callSuper = true )
 @NoArgsConstructor
-@Accessors(chain = true )
+@Accessors ( chain = true )
 // JPA & HIBERNATE
 @Entity
 @Table ( name = "pages" )
@@ -36,6 +37,6 @@ public class Page extends AEntity {
 
 	@ManyToMany
 	@JoinTable ( name = "followers" )
-	private Set< Subscriber > subscribers;
+	private Set< Subscriber > subscribers = new LinkedHashSet<>();
 
 }

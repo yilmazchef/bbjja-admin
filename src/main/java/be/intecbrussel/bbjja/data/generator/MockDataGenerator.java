@@ -82,6 +82,7 @@ public class MockDataGenerator {
 
 			final var homePage = new Page()
 					.setTitle( "Home page title! " )
+					.setSlug( "home01" )
 					.setDescription( "Home page description here..." );
 
 			final var savedHomePage = pageRepository.save( homePage );
@@ -89,7 +90,7 @@ public class MockDataGenerator {
 			for ( int index = 0; index < 10; index++ ) {
 
 				final var newSlide = new Slide()
-						.setImageUrl( "https://localhost:8080/images/empty-plant.png" )
+						.setImageUrl( String.format( "https://localhost:8080/images/empty-plant-%d.png", index ) )
 						.setTitle( "Slide 01" );
 
 				newSlide.setPage( savedHomePage );
