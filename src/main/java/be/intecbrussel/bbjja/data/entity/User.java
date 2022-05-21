@@ -3,30 +3,48 @@ package be.intecbrussel.bbjja.data.entity;
 
 import be.intecbrussel.bbjja.data.Role;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import lombok.*;
+import lombok.experimental.Accessors;
 import org.hibernate.annotations.Type;
 import org.hibernate.validator.constraints.URL;
 
-import java.util.Random;
-import java.util.Set;
-import javax.persistence.ElementCollection;
-import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
-import javax.persistence.FetchType;
-import javax.persistence.Lob;
-import javax.persistence.Table;
+import javax.persistence.*;
+import javax.validation.constraints.Email;
 import javax.validation.constraints.NotEmpty;
+import java.util.Set;
 
+// LOMBOK
+@Getter
+@Setter
+@ToString ( onlyExplicitlyIncluded = true )
+@EqualsAndHashCode ( onlyExplicitlyIncluded = true, callSuper = true )
+@NoArgsConstructor
+@Accessors (chain = true )
+// JPA & HIBERNATE
 @Entity
 @Table ( name = "users" )
 public class User extends AEntity {
 
+
+	@EqualsAndHashCode.Include
+	@Column ( unique = true, nullable = false )
+	@Email
+	private String email;
+
+	@EqualsAndHashCode.Include
+	@Column ( unique = true, nullable = false )
 	@NotEmpty
 	private String username;
+
 	@NotEmpty
-	private String name;
+	private String firstName;
+
+	@NotEmpty
+	private String lastName;
+
 	@JsonIgnore
 	private String hashedPassword;
+
 	@Enumerated ( EnumType.STRING )
 	@ElementCollection ( fetch = FetchType.EAGER )
 	private Set< Role > roles;
@@ -35,113 +53,5 @@ public class User extends AEntity {
 	@URL
 	private String profilePictureUrl;
 
-
-	public String getUsername() {
-
-		return username;
-	}
-
-
-	public void setUsername( String username ) {
-
-		this.username = username;
-	}
-
-
-	public User withUsername( String username ) {
-
-		this.setUsername( username );
-		return this;
-	}
-
-
-	public String getName() {
-
-		return name;
-	}
-
-
-	public void setName( String name ) {
-
-		this.name = name;
-	}
-
-
-	public User withName( String name ) {
-
-		this.setName( name );
-		return this;
-	}
-
-
-	public String getHashedPassword() {
-
-		return hashedPassword;
-	}
-
-
-	public void setHashedPassword( String hashedPassword ) {
-
-		this.hashedPassword = hashedPassword;
-	}
-
-
-	public User withHashedPassword( String hashedPassword ) {
-
-		this.setHashedPassword( hashedPassword );
-		return this;
-	}
-
-
-	public User withHashedRandomPassword() {
-
-		this.setHashedPassword( String.valueOf( new Random().nextInt( 999999 ) + 100000 ) );
-		return this;
-	}
-
-
-	public Set< Role > getRoles() {
-
-		return roles;
-	}
-
-
-	public void setRoles( Set< Role > roles ) {
-
-		this.roles = roles;
-	}
-
-
-	public User withRole( Role role ) {
-
-		this.getRoles().add( role );
-		return this;
-	}
-
-
-	public User withoutRole( Role role ) {
-
-		this.getRoles().remove( role );
-		return this;
-	}
-
-
-	public String getProfilePictureUrl() {
-
-		return profilePictureUrl;
-	}
-
-
-	public void setProfilePictureUrl( String profilePictureUrl ) {
-
-		this.profilePictureUrl = profilePictureUrl;
-	}
-
-
-	public User withProfilePictureUrl( String profilePictureUrl ) {
-
-		this.setProfilePictureUrl( profilePictureUrl );
-		return this;
-	}
 
 }

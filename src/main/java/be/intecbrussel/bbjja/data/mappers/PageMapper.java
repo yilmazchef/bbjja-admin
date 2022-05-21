@@ -1,9 +1,9 @@
 package be.intecbrussel.bbjja.data.mappers;
 
 
-import be.intecbrussel.bbjja.data.dto.NewUserRequest;
-import be.intecbrussel.bbjja.data.dto.UpdateUserRequest;
-import be.intecbrussel.bbjja.data.entity.User;
+import be.intecbrussel.bbjja.data.dto.NewPageRequest;
+import be.intecbrussel.bbjja.data.dto.UpdatePageRequest;
+import be.intecbrussel.bbjja.data.entity.Page;
 import org.mapstruct.CollectionMappingStrategy;
 import org.mapstruct.Mapper;
 import org.mapstruct.NullValuePropertyMappingStrategy;
@@ -13,14 +13,14 @@ import org.mapstruct.NullValuePropertyMappingStrategy;
 		collectionMappingStrategy = CollectionMappingStrategy.ADDER_PREFERRED,
 		nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE
 )
-public interface UserMapper {
+public interface PageMapper {
 
-	User toEntity( NewUserRequest newRequest );
+	Page toEntity( NewPageRequest newRequest );
 
-	User toEntity( UpdateUserRequest updateRequest );
+	Page toEntity( UpdatePageRequest updateRequest );
 
-	NewUserRequest toNew( User entity );
+	NewPageRequest toNew( Page entity );
 
-	UpdateUserRequest toUpdate( User entity );
+	UpdatePageRequest toUpdate( Page entity );
 
 }

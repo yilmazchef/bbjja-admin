@@ -7,27 +7,20 @@ import be.intecbrussel.bbjja.security.AuthenticatedUser;
 import be.intecbrussel.bbjja.views.MainLayout;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.formlayout.FormLayout;
-import com.vaadin.flow.component.html.H2;
-import com.vaadin.flow.component.html.Image;
-import com.vaadin.flow.component.html.Label;
-import com.vaadin.flow.component.html.Paragraph;
 import com.vaadin.flow.component.notification.Notification;
-import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
-import com.vaadin.flow.component.page.Page;
 import com.vaadin.flow.component.textfield.PasswordField;
 import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.PageRequest;
 
 import javax.annotation.security.RolesAllowed;
 import java.util.List;
 import java.util.Optional;
 
 @PageTitle ( "Users" )
-@Route ( value = "users", layout = MainLayout.class )
+@Route ( value = "users/admin", layout = MainLayout.class )
 @RolesAllowed ( "ADMIN" )
 public class UsersView extends VerticalLayout {
 

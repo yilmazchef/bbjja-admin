@@ -11,14 +11,13 @@ import be.intecbrussel.bbjja.data.service.SlideRepository;
 import be.intecbrussel.bbjja.data.service.SubscriberRepository;
 import be.intecbrussel.bbjja.data.service.UserRepository;
 import com.vaadin.flow.spring.annotation.SpringComponent;
-
-import java.util.Collections;
-import java.util.Set;
-
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Bean;
 import org.springframework.security.crypto.password.PasswordEncoder;
+
+import java.util.Collections;
+import java.util.Set;
 
 @SpringComponent
 public class MockDataGenerator {
@@ -39,7 +38,7 @@ public class MockDataGenerator {
 			logger.info( "Generating mock data..." );
 
 			final var user = new User();
-			user.setName( "John Normal" );
+			user.setFirstName( "John Normal" );
 			user.setUsername( "user" );
 			user.setHashedPassword( passwordEncoder.encode( "user" ) );
 			user.setProfilePictureUrl(
@@ -48,7 +47,7 @@ public class MockDataGenerator {
 			userRepository.save( user );
 
 			final var editor = new User();
-			editor.setName( "Eddy Teur" );
+			editor.setFirstName( "Eddy Teur" );
 			editor.setUsername( "editor" );
 			editor.setHashedPassword( passwordEncoder.encode( "editor" ) );
 			editor.setProfilePictureUrl(
@@ -56,27 +55,28 @@ public class MockDataGenerator {
 			editor.setRoles( Set.of( Role.USER, Role.EDITOR ) );
 			userRepository.save( editor );
 
-			final var admin = new User();
-			admin.setName( "Emma Powerful" );
-			admin.setUsername( "admin" );
-			admin.setHashedPassword( passwordEncoder.encode( "admin" ) );
-			admin.setProfilePictureUrl(
-					"https://images.unsplash.com/photo-1607746882042-944635dfe10e?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=128&h=128&q=80" );
-			admin.setRoles( Set.of( Role.USER, Role.ADMIN ) );
+			final var admin = new User()
+					.setFirstName( "Emma Powerful" )
+					.setUsername( "admin" )
+					.setHashedPassword( passwordEncoder.encode( "admin" ) )
+					.setProfilePictureUrl(
+							"https://images.unsplash.com/photo-1607746882042-944635dfe10e?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=128&h=128&q=80" )
+					.setRoles( Set.of( Role.USER, Role.ADMIN ) );
+
 			userRepository.save( admin );
 
 
 			final var homePage = new Page()
-					.withTitle( "Home page title! " )
-					.withDescription( "Home page description here..." );
+					.setTitle( "Home page title! " )
+					.setDescription( "Home page description here..." );
 
 			final var savedHomePage = pageRepository.save( homePage );
 
 			for ( int index = 0; index < 10; index++ ) {
 
 				final var newSlide = new Slide()
-						.withImageUrl( "https://localhost:8080/images/empty-plant.png" )
-						.withTitle( "Slide 01" );
+						.setImageUrl( "https://localhost:8080/images/empty-plant.png" )
+						.setTitle( "Slide 01" );
 
 				newSlide.setPage( savedHomePage );
 
@@ -87,12 +87,12 @@ public class MockDataGenerator {
 
 			for ( int index = 0; index < 10; index++ ) {
 				final var subscriber = new Subscriber()
-						.withEmail( String.format( "subs%d@cribe.com", index ) )
-						.withFirstName( String.format( "SubFirst %s", index ) )
-						.withLastName( String.format( "SubLast %s", index ) );
+						.setEmail( String.format( "subs%d@cribe.com", index ) )
+						.setFirstName( String.format( "SubFirst %s", index ) )
+						.setLastName( String.format( "SubLast %s", index ) );
 
 				final Subscriber savedSubscriber = subscriberRepository.save( subscriber );
-				homePage.addSubscriber( savedSubscriber );
+				homePage.getSubscribers().add( savedSubscriber );
 				logger.info( String.format( "A user with an email address ' %s ' has subscribed to the website.", savedSubscriber ) );
 
 			}

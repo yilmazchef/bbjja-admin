@@ -2,21 +2,19 @@ package be.intecbrussel.bbjja.data.service;
 
 
 import be.intecbrussel.bbjja.data.entity.User;
-
-import java.util.List;
-import java.util.Optional;
-import java.util.UUID;
-
 import be.intecbrussel.bbjja.data.exceptions.UserServiceException;
 import be.intecbrussel.bbjja.data.mappers.UserMapper;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Bean;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+
+import javax.validation.constraints.NotEmpty;
+import java.util.List;
+import java.util.Optional;
+import java.util.UUID;
 
 @Service
 public class UserService {
@@ -47,29 +45,12 @@ public class UserService {
 	}
 
 
-	public User changePassword( final String username, final String oldPassword, final String newPassword ) throws UserServiceException {
-
-		if ( username == null ) {
-			throw UserServiceException.usernameRequired();
-		}
-
-		if ( oldPassword == null ) {
-			throw UserServiceException.oldPasswordRequired();
-		}
-
-		if ( newPassword == null ) {
-			throw UserServiceException.newPasswordRequired();
-		}
+	public User changePassword( final @NotEmpty String username, final @NotEmpty String oldPassword, final @NotEmpty String newPassword ) throws UserServiceException {
 
 		final var foundUser = repository.findByUsername( username );
-
 		if ( foundUser == null ) {
 			throw UserServiceException.notFound();
 		}
-
-//		if ( ! foundUser.getHashedPassword().equals( encoder.encode( oldPassword ) ) ) {
-//			throw UserServiceException.passwordIncorrect();
-//		}
 
 		foundUser.setHashedPassword( newPassword );
 		return repository.save( foundUser );

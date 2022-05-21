@@ -1,81 +1,30 @@
 package be.intecbrussel.bbjja.data.dto;
 
 
+import lombok.*;
+import lombok.experimental.Accessors;
+
 import javax.validation.constraints.NotEmpty;
 import java.io.Serializable;
-import java.util.Objects;
 
+// LOMBOK
+@Getter
+@Setter
+@ToString ( onlyExplicitlyIncluded = true )
+@EqualsAndHashCode ( onlyExplicitlyIncluded = true )
+@NoArgsConstructor
+@Accessors ( chain = true )
 public class NewPageRequest implements Serializable {
 
+	@ToString.Include
 	@NotEmpty
 	private String title;
+
+	@EqualsAndHashCode.Include
+	@NotEmpty
+	private String slug;
+
 	private String description;
 
-
-	public NewPageRequest() {
-
-	}
-
-
-	public NewPageRequest( String title, String description ) {
-
-		this.title = title;
-		this.description = description;
-	}
-
-
-	public String getTitle() {
-
-		return title;
-	}
-
-
-	public void setTitle( String title ) {
-
-		this.title = title;
-	}
-
-
-	public String getDescription() {
-
-		return description;
-	}
-
-
-	public void setDescription( String description ) {
-
-		this.description = description;
-	}
-
-
-	@Override
-	public boolean equals( Object o ) {
-
-		if ( this == o ) {
-			return true;
-		}
-		if ( o == null || getClass() != o.getClass() ) {
-			return false;
-		}
-		NewPageRequest entity = ( NewPageRequest ) o;
-		return Objects.equals( this.title, entity.title ) &&
-				Objects.equals( this.description, entity.description );
-	}
-
-
-	@Override
-	public int hashCode() {
-
-		return Objects.hash( title, description );
-	}
-
-
-	@Override
-	public String toString() {
-
-		return getClass().getSimpleName() + "(" +
-				"title = " + title + ", " +
-				"description = " + description + ")";
-	}
 
 }
