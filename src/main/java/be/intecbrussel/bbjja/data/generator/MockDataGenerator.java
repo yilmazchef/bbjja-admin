@@ -25,10 +25,15 @@ public class MockDataGenerator {
 	@Bean
 	public CommandLineRunner loadData( PasswordEncoder passwordEncoder,
 	                                   UserRepository userRepository, SlideRepository slideRepository,
-	                                   PageRepository pageRepository, SubscriberRepository subscriberRepository ) {
+	                                   PageRepository pageRepository, SubscriberRepository subscriberRepository,
+	                                   MockPhotoGenerator photoGenerator ) {
 
 		return args -> {
 			final var logger = LoggerFactory.getLogger( getClass() );
+
+			final var photos = photoGenerator.fetch();
+
+			Thread.sleep( 5000 );
 
 			if ( userRepository.count() != 0L ) {
 				logger.info( "Using existing database" );
@@ -90,8 +95,8 @@ public class MockDataGenerator {
 			for ( int index = 0; index < 10; index++ ) {
 
 				final var newSlide = new Slide()
-						.setImageUrl( String.format( "https://localhost:8080/images/empty-plant-%d.png", index ) )
-						.setTitle( "Slide 01" );
+						.setImageUrl( photos[ index ].getUrl() )
+						.setTitle( String.format( "Slide %d", index ) );
 
 				newSlide.setPage( savedHomePage );
 

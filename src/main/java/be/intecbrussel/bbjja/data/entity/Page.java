@@ -7,7 +7,7 @@ import org.hibernate.annotations.Type;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotEmpty;
-import java.util.LinkedHashSet;
+import java.util.HashSet;
 import java.util.Set;
 
 // LOMBOK
@@ -37,6 +37,6 @@ public class Page extends AEntity {
 
 	@ManyToMany
 	@JoinTable ( name = "followers" )
-	private Set< Subscriber > subscribers = new LinkedHashSet<>();
+	private Set< Subscriber > subscribers = new HashSet<>();
 
 }
