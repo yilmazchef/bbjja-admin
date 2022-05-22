@@ -1,4 +1,4 @@
-package be.intecbrussel.bbjja.views.partners;
+package be.intecbrussel.bbjja.views.about;
 
 import be.intecbrussel.bbjja.views.MainLayout;
 import com.vaadin.flow.component.html.H2;
@@ -9,12 +9,12 @@ import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
 import javax.annotation.security.RolesAllowed;
 
-@PageTitle("Partners")
-@Route(value = "partners", layout = MainLayout.class)
+@PageTitle("Teams")
+@Route(value = "teams", layout = MainLayout.class)
 @RolesAllowed("ADMIN")
-public class PartnersView extends VerticalLayout {
+public class TeamsView extends VerticalLayout {
 
-    public PartnersView() {
+    public TeamsView() {
         setSpacing(false);
 
         Image img = new Image("images/empty-plant.png", "placeholder plant");

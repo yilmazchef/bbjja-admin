@@ -1,4 +1,4 @@
-package be.intecbrussel.bbjja.views.sitesettings;
+package be.intecbrussel.bbjja.views.ninjaschool;
 
 import be.intecbrussel.bbjja.views.MainLayout;
 import com.vaadin.flow.component.html.H2;
@@ -9,12 +9,12 @@ import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
 import javax.annotation.security.RolesAllowed;
 
-@PageTitle("Site Settings")
-@Route(value = "settings", layout = MainLayout.class)
+@PageTitle("Offers")
+@Route(value = "offers", layout = MainLayout.class)
 @RolesAllowed("ADMIN")
-public class SiteSettingsView extends VerticalLayout {
+public class OffersView extends VerticalLayout {
 
-    public SiteSettingsView() {
+    public OffersView() {
         setSpacing(false);
 
         Image img = new Image("images/empty-plant.png", "placeholder plant");

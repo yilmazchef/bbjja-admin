@@ -92,10 +92,8 @@
             "schools": [
               {
                 "title": "school title",
-                "location": {
-                  "lon": 213123,
-                  "lat": 123123
-                }
+                "latitude": 22.12,
+                "longitude": 12.43
               }
             ]
           }

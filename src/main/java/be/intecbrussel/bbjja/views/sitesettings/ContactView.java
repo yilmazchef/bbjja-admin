@@ -1,4 +1,4 @@
-package be.intecbrussel.bbjja.views.teams;
+package be.intecbrussel.bbjja.views.sitesettings;
 
 import be.intecbrussel.bbjja.views.MainLayout;
 import com.vaadin.flow.component.html.H2;
@@ -9,12 +9,12 @@ import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
 import javax.annotation.security.RolesAllowed;
 
-@PageTitle("Teams")
-@Route(value = "teams", layout = MainLayout.class)
+@PageTitle("Contact")
+@Route(value = "contact", layout = MainLayout.class)
 @RolesAllowed("ADMIN")
-public class TeamsView extends VerticalLayout {
+public class ContactView extends VerticalLayout {
 
-    public TeamsView() {
+    public ContactView() {
         setSpacing(false);
 
         Image img = new Image("images/empty-plant.png", "placeholder plant");

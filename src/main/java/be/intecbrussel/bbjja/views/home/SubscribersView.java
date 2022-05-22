@@ -1,4 +1,4 @@
-package be.intecbrussel.bbjja.views.subscribers;
+package be.intecbrussel.bbjja.views.home;
 
 
 import be.intecbrussel.bbjja.data.entity.Subscriber;
@@ -12,6 +12,7 @@ import com.vaadin.flow.component.grid.Grid;
 import com.vaadin.flow.component.html.Div;
 import com.vaadin.flow.component.icon.Icon;
 import com.vaadin.flow.component.icon.VaadinIcon;
+import com.vaadin.flow.component.notification.Notification;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.data.renderer.ComponentRenderer;
@@ -83,6 +84,12 @@ public class SubscribersView extends VerticalLayout {
 							ButtonVariant.LUMO_TERTIARY );
 					button.addClickListener( e -> this.removeInvitation( person ) );
 					button.setIcon( new Icon( VaadinIcon.TRASH ) );
+					button.addClickListener( onClick -> {
+						this.subscribersData.remove( person );
+						this.service.delete( person.getId() );
+						this.grid.setItems( this.subscribersData );
+						notifySubscriberDeleted( person );
+					} );
 				} ) ).setHeader( "Manage" );
 
 		grid.setItems( this.subscribersData );
@@ -94,6 +101,16 @@ public class SubscribersView extends VerticalLayout {
 				.set( "color", "var(--lumo-contrast-70pct)" );
 
 		add( hint, grid );
+	}
+
+
+	private void notifySubscriberDeleted( final Subscriber person ) {
+
+		Notification.show(
+				String.format( "Subscriber with email %s has been removed from the list.", person.getEmail() ),
+				3000,
+				Notification.Position.TOP_CENTER
+		).open();
 	}
 
 

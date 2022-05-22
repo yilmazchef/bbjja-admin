@@ -2,7 +2,6 @@ package be.intecbrussel.bbjja.views.home;
 
 
 import be.intecbrussel.bbjja.data.entity.Slide;
-import be.intecbrussel.bbjja.data.entity.User;
 import be.intecbrussel.bbjja.data.service.SlideService;
 import be.intecbrussel.bbjja.security.AuthenticatedUser;
 import be.intecbrussel.bbjja.views.MainLayout;
@@ -20,7 +19,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
 
 import javax.annotation.security.RolesAllowed;
-import java.util.Optional;
 
 import static java.lang.System.out;
 
@@ -99,8 +97,6 @@ public class SlidesView extends VerticalLayout {
 		accordion.add( "View/Edit Slide", existingSlidesLayout );
 		add( accordion );
 
-		notifyAuthenticatedUser( user );
-
 	}
 
 
@@ -113,16 +109,6 @@ public class SlidesView extends VerticalLayout {
 	private void notifySlideUpdated( final String oldImageURL, final String newImageURL ) {
 
 		new Notification( String.format( "Slide image URL is updated from %s to %s", oldImageURL, newImageURL ) ).open();
-	}
-
-
-	private void notifyAuthenticatedUser( final AuthenticatedUser user ) {
-
-		final Optional< User > oUser = user.get();
-		oUser.ifPresent( u -> {
-
-			new Notification( u.getUsername() + " is logged in.." ).open();
-		} );
 	}
 
 }

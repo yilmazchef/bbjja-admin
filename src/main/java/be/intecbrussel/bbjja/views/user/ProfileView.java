@@ -1,4 +1,4 @@
-package be.intecbrussel.bbjja.views.users;
+package be.intecbrussel.bbjja.views.user;
 
 
 import be.intecbrussel.bbjja.data.service.UserService;
@@ -16,11 +16,11 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import javax.annotation.security.RolesAllowed;
 
 @PageTitle ( "Profile" )
-@Route ( value = "users/profile/update", layout = MainLayout.class )
+@Route ( value = "user/profile", layout = MainLayout.class )
 @RolesAllowed ( { "USER", "EDITOR", "ADMIN" } )
-public class UpdateProfileLayout extends VerticalLayout {
+public class ProfileView extends VerticalLayout {
 
-	public UpdateProfileLayout( final AuthenticatedUser user, final UserService service, final PasswordEncoder encoder ) {
+	public ProfileView( final AuthenticatedUser user, final UserService service, final PasswordEncoder encoder ) {
 
 		// tag::snippet[]
 

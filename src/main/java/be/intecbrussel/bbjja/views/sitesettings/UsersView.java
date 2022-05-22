@@ -1,4 +1,4 @@
-package be.intecbrussel.bbjja.views.users;
+package be.intecbrussel.bbjja.views.sitesettings;
 
 
 import be.intecbrussel.bbjja.data.entity.User;

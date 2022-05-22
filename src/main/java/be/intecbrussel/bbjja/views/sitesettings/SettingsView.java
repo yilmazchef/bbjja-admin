@@ -1,4 +1,4 @@
-package be.intecbrussel.bbjja.views.about;
+package be.intecbrussel.bbjja.views.sitesettings;
 
 
 import be.intecbrussel.bbjja.data.entity.User;
@@ -16,30 +16,28 @@ import org.springframework.beans.factory.annotation.Autowired;
 import javax.annotation.security.RolesAllowed;
 import java.util.Optional;
 
-@PageTitle ( "About" )
-@Route ( value = "about", layout = MainLayout.class )
+@PageTitle ( "Settings" )
+@Route ( value = "settings", layout = MainLayout.class )
 @RolesAllowed ( "ADMIN" )
-public class AboutView extends VerticalLayout {
+public class SettingsView extends VerticalLayout {
 
 	@Autowired
-	public AboutView( final AuthenticatedUser user ) {
-
-		setSpacing( false );
+	public SettingsView( final AuthenticatedUser user ) {
 
 		final var navLayout = new HorizontalLayout();
-		navLayout.setPadding( false );
 		navLayout.setSpacing( false );
 
-		final var teamsButton = new Button( "Manage Teams", onClick -> {
-			UI.getCurrent().navigate( TeamsView.class );
+		final var contactsButton = new Button( "Manage Contacts", onClick -> {
+			UI.getCurrent().navigate( ContactView.class );
 		} );
 
-		final var partnersButton = new Button( "Manage Partners", onClick -> {
-			UI.getCurrent().navigate( PartnersView.class );
+		final var usersButton = new Button( "Manage Users", onClick -> {
+			UI.getCurrent().navigate( UsersView.class );
 		} );
 
-		navLayout.add( teamsButton, partnersButton );
+		navLayout.add( contactsButton, usersButton );
 		navLayout.setSizeFull();
+		navLayout.setAlignItems( Alignment.STRETCH );
 		navLayout.getStyle().set( "text-align", "center" );
 
 		add( navLayout );

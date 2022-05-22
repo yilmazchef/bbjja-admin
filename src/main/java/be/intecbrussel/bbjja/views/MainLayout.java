@@ -3,18 +3,18 @@ package be.intecbrussel.bbjja.views;
 
 import be.intecbrussel.bbjja.security.AuthenticatedUser;
 import be.intecbrussel.bbjja.views.about.AboutView;
-import be.intecbrussel.bbjja.views.contact.ContactView;
+import be.intecbrussel.bbjja.views.about.PartnersView;
+import be.intecbrussel.bbjja.views.about.TeamsView;
 import be.intecbrussel.bbjja.views.home.HomeView;
 import be.intecbrussel.bbjja.views.home.SlidesView;
+import be.intecbrussel.bbjja.views.home.SubscribersView;
 import be.intecbrussel.bbjja.views.ninjaschool.NinjaSchoolView;
-import be.intecbrussel.bbjja.views.offers.OffersView;
-import be.intecbrussel.bbjja.views.partners.PartnersView;
+import be.intecbrussel.bbjja.views.ninjaschool.OffersView;
 import be.intecbrussel.bbjja.views.schoolgrappling.SchoolGrapplingView;
-import be.intecbrussel.bbjja.views.sitesettings.SiteSettingsView;
+import be.intecbrussel.bbjja.views.sitesettings.ContactView;
+import be.intecbrussel.bbjja.views.sitesettings.SettingsView;
+import be.intecbrussel.bbjja.views.sitesettings.UsersView;
 import be.intecbrussel.bbjja.views.streetgrappling.StreetGrapplingView;
-import be.intecbrussel.bbjja.views.subscribers.SubscribersView;
-import be.intecbrussel.bbjja.views.teams.TeamsView;
-import be.intecbrussel.bbjja.views.users.UsersView;
 import com.vaadin.flow.component.Component;
 import com.vaadin.flow.component.applayout.AppLayout;
 import com.vaadin.flow.component.applayout.DrawerToggle;
@@ -83,14 +83,14 @@ public class MainLayout extends AppLayout {
 
 	private H1 viewTitle;
 
-	private final AuthenticatedUser authenticatedUser;
-	private final AccessAnnotationChecker accessChecker;
+	private final AuthenticatedUser user;
+	private final AccessAnnotationChecker checker;
 
 
-	public MainLayout( final AuthenticatedUser authenticatedUser, final AccessAnnotationChecker accessChecker ) {
+	public MainLayout( final AuthenticatedUser user, final AccessAnnotationChecker checker ) {
 
-		this.authenticatedUser = authenticatedUser;
-		this.accessChecker = accessChecker;
+		this.user = user;
+		this.checker = checker;
 
 		setPrimarySection( Section.DRAWER );
 		addToNavbar( true, createHeaderContent() );
@@ -138,7 +138,7 @@ public class MainLayout extends AppLayout {
 		nav.add( list );
 
 		for ( final var menuItem : createMenuItems() ) {
-			if ( accessChecker.hasAccess( menuItem.getView() ) ) {
+			if ( checker.hasAccess( menuItem.getView() ) ) {
 				list.add( menuItem );
 			}
 
@@ -149,25 +149,34 @@ public class MainLayout extends AppLayout {
 
 	private MenuItemInfo[] createMenuItems() {
 
+		final var home = new MenuItemInfo( "Home", "la la-home", HomeView.class );
+		final var slides = new MenuItemInfo( "Slides", "lab la-slideshare", SlidesView.class );
+		final var schoolGrappling = new MenuItemInfo( "School Grappling", "la la-file", SchoolGrapplingView.class );
+		final var streetGrappling = new MenuItemInfo( "Street Grappling", "la la-street-view", StreetGrapplingView.class );
+		final var ninjaSchool = new MenuItemInfo( "Ninja School", "la la-user-ninja", NinjaSchoolView.class );
+		final var offers = new MenuItemInfo( "Offers", "lab la-wpforms", OffersView.class );
+		final var users = new MenuItemInfo( "Users", "la la-users", UsersView.class );
+		final var subscribers = new MenuItemInfo( "Subscribers", "la la-mail-bulk", SubscribersView.class );
+		final var about = new MenuItemInfo( "About", "la la-info-circle", AboutView.class );
+		final var teams = new MenuItemInfo( "Teams", "lab la-teamspeak", TeamsView.class );
+		final var partners = new MenuItemInfo( "Partners", "la la-user-friends", PartnersView.class );
+		final var contact = new MenuItemInfo( "Contact", "la la-phone", ContactView.class );
+		final var settings = new MenuItemInfo( "Settings", "lab la-readme", SettingsView.class );
+
 		return new MenuItemInfo[]{ //
-				new MenuItemInfo( "Home", "la la-home", HomeView.class ), //
-				new MenuItemInfo( "Slides", "lab la-slideshare", SlidesView.class ), //
-
-				new MenuItemInfo( "School Grappling", "la la-file", SchoolGrapplingView.class ), //
-				new MenuItemInfo( "Street Grappling", "la la-street-view", StreetGrapplingView.class ), //
-				new MenuItemInfo( "Ninja School", "la la-user-ninja", NinjaSchoolView.class ), //
-				new MenuItemInfo( "Offers", "lab la-wpforms", OffersView.class ), //
-
-				new MenuItemInfo( "Users", "la la-users", UsersView.class ), //
-				new MenuItemInfo( "Subscribers", "la la-mail-bulk", SubscribersView.class ), //
-
-				new MenuItemInfo( "About", "la la-info-circle", AboutView.class ), //
-				new MenuItemInfo( "Teams", "lab la-teamspeak", TeamsView.class ), //
-				new MenuItemInfo( "Partners", "la la-user-friends", PartnersView.class ), //
-
-				new MenuItemInfo( "Contact", "la la-phone", ContactView.class ), //
-
-				new MenuItemInfo( "Settings", "lab la-readme", SiteSettingsView.class ), //
+				home, //
+				// slides, //
+				// subscribers, //
+				schoolGrappling, //
+				streetGrappling, //
+				ninjaSchool, //
+				offers, //
+				// users, //
+				about, //
+				// teams, //
+				// partners, //
+				// contact, //
+				settings, //
 
 		};
 	}
@@ -178,7 +187,7 @@ public class MainLayout extends AppLayout {
 		final var layout = new Footer();
 		layout.addClassNames( "footer" );
 
-		final var oUser = authenticatedUser.get();
+		final var oUser = user.get();
 		if ( oUser.isPresent() ) {
 			final var u = oUser.get();
 
@@ -188,7 +197,7 @@ public class MainLayout extends AppLayout {
 			final var userMenu = new ContextMenu( avatar );
 			userMenu.setOpenOnClick( true );
 			userMenu.addItem( "Logout", e -> {
-				authenticatedUser.logout();
+				user.logout();
 			} );
 
 			final var name = new Span( u.getFirstName() );
