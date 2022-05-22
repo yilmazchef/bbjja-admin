@@ -12,27 +12,28 @@ import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
+import com.vaadin.flow.router.RouteAlias;
 
 import javax.annotation.security.RolesAllowed;
 import java.util.Optional;
 
 @PageTitle ( "Ninja School" )
-@Route ( value = "ninjasc", layout = MainLayout.class )
+@Route ( value = "ninja_school", layout = MainLayout.class )
+@RouteAlias ( value = "ninja", layout = MainLayout.class )
 @RolesAllowed ( "ADMIN" )
 public class NinjaSchoolView extends VerticalLayout {
 
 	public NinjaSchoolView( final AuthenticatedUser user ) {
 
-		setSpacing( false );
 
 		final var navLayout = new HorizontalLayout();
 		navLayout.setSpacing( false );
 
-		final var offers = new Button( "Manage Offers", onClick -> {
+		final var offersButton = new Button( "Manage Offers", onClick -> {
 			UI.getCurrent().navigate( SlidesView.class );
 		} );
 
-		navLayout.add( offers );
+		navLayout.add( offersButton );
 		navLayout.setSizeFull();
 		navLayout.setAlignItems( Alignment.STRETCH );
 		navLayout.getStyle().set( "text-align", "center" );

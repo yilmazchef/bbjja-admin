@@ -2,23 +2,26 @@ package be.intecbrussel.bbjja.data.dto;
 
 
 import lombok.*;
+import org.hibernate.validator.constraints.URL;
 
-import javax.validation.constraints.Email;
 import javax.validation.constraints.NotEmpty;
 import java.io.Serializable;
+import java.util.UUID;
 
 @Getter
 @Setter
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
 @ToString(onlyExplicitlyIncluded = true)
 @NoArgsConstructor
-public class NewSubscriberRequest implements Serializable {
+public class NewOfferRequest implements Serializable {
 
 	@NotEmpty
-	private String firstName;
+	private String title;
 	@NotEmpty
-	private String lastName;
-	@Email
-	private String email;
+	private String description;
+	@URL
+	private String forwardUrl;
+
+	private UUID pageId;
 
 }

@@ -4,23 +4,29 @@ package be.intecbrussel.bbjja.data.mappers;
 import be.intecbrussel.bbjja.data.dto.NewSlideRequest;
 import be.intecbrussel.bbjja.data.dto.UpdateSlideRequest;
 import be.intecbrussel.bbjja.data.entity.Slide;
-import org.mapstruct.CollectionMappingStrategy;
-import org.mapstruct.Mapper;
-import org.mapstruct.NullValuePropertyMappingStrategy;
+import org.mapstruct.*;
 
-@Mapper (
-		componentModel = "spring",
-		collectionMappingStrategy = CollectionMappingStrategy.ADDER_PREFERRED,
-		nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE
-)
+@Mapper ( unmappedTargetPolicy = ReportingPolicy.IGNORE, componentModel = "spring" )
 public interface SlideMapper {
 
-	Slide toEntity( NewSlideRequest newRequest );
+	@Mapping ( source = "pageId", target = "page.id" )
+	Slide newSlideRequestToSlide( NewSlideRequest newSlideRequest );
 
-	Slide toEntity( UpdateSlideRequest updateRequest );
+	@Mapping ( source = "page.id", target = "pageId" )
+	NewSlideRequest slideToNewSlideRequest( Slide slide );
 
-	NewSlideRequest toNew( Slide entity );
+	@Mapping ( source = "pageId", target = "page.id" )
+	@BeanMapping ( nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE )
+	void updateSlideFromNewSlideRequest( NewSlideRequest newSlideRequest, @MappingTarget Slide slide );
 
-	UpdateSlideRequest toUpdate( Slide entity );
+	@Mapping ( source = "pageId", target = "page.id" )
+	Slide updateSlideRequestToSlide( UpdateSlideRequest updateSlideRequest );
+
+	@Mapping ( source = "page.id", target = "pageId" )
+	UpdateSlideRequest slideToUpdateSlideRequest( Slide slide );
+
+	@Mapping ( source = "pageId", target = "page.id" )
+	@BeanMapping ( nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE )
+	void updateSlideFromUpdateSlideRequest( UpdateSlideRequest updateSlideRequest, @MappingTarget Slide slide );
 
 }

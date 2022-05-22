@@ -1,26 +1,34 @@
 package be.intecbrussel.bbjja.data.mappers;
 
 
+import be.intecbrussel.bbjja.data.dto.DisablePageRequest;
 import be.intecbrussel.bbjja.data.dto.NewPageRequest;
 import be.intecbrussel.bbjja.data.dto.UpdatePageRequest;
 import be.intecbrussel.bbjja.data.entity.Page;
-import org.mapstruct.CollectionMappingStrategy;
-import org.mapstruct.Mapper;
-import org.mapstruct.NullValuePropertyMappingStrategy;
+import org.mapstruct.*;
 
-@Mapper (
-		componentModel = "spring",
-		collectionMappingStrategy = CollectionMappingStrategy.ADDER_PREFERRED,
-		nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE
-)
+@Mapper ( unmappedTargetPolicy = ReportingPolicy.IGNORE, componentModel = "spring" )
 public interface PageMapper {
 
-	Page toEntity( NewPageRequest newRequest );
+	Page newPageRequestToPage( NewPageRequest newPageRequest );
 
-	Page toEntity( UpdatePageRequest updateRequest );
+	NewPageRequest pageToNewPageRequest( Page page );
 
-	NewPageRequest toNew( Page entity );
+	@BeanMapping ( nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE )
+	void updatePageFromNewPageRequest( NewPageRequest newPageRequest, @MappingTarget Page page );
 
-	UpdatePageRequest toUpdate( Page entity );
+	Page updatePageRequestToPage( UpdatePageRequest updatePageRequest );
+
+	UpdatePageRequest pageToUpdatePageRequest( Page page );
+
+	@BeanMapping ( nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE )
+	void updatePageFromUpdatePageRequest( UpdatePageRequest updatePageRequest, @MappingTarget Page page );
+
+	Page disablePageRequestToPage( DisablePageRequest disablePageRequest );
+
+	DisablePageRequest pageToDisablePageRequest( Page page );
+
+	@BeanMapping ( nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE )
+	void updatePageFromDisablePageRequest( DisablePageRequest disablePageRequest, @MappingTarget Page page );
 
 }
