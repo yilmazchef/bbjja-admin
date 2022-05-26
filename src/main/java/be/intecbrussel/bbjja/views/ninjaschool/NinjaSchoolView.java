@@ -4,9 +4,7 @@ package be.intecbrussel.bbjja.views.ninjaschool;
 import be.intecbrussel.bbjja.data.entity.User;
 import be.intecbrussel.bbjja.security.AuthenticatedUser;
 import be.intecbrussel.bbjja.views.MainLayout;
-import be.intecbrussel.bbjja.views.home.SlidesView;
-import com.vaadin.flow.component.UI;
-import com.vaadin.flow.component.button.Button;
+import com.vaadin.flow.component.html.NativeButton;
 import com.vaadin.flow.component.notification.Notification;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
@@ -29,9 +27,13 @@ public class NinjaSchoolView extends VerticalLayout {
 		final var navLayout = new HorizontalLayout();
 		navLayout.setSpacing( false );
 
-		final var offersButton = new Button( "Manage Offers", onClick -> {
-			UI.getCurrent().navigate( SlidesView.class );
-		} );
+		final var offersButton = new NativeButton( "Offers" );
+		offersButton.addClickListener( onClick ->
+				offersButton.getUI().ifPresent( ui ->
+						ui.navigate( OffersView.class ) )
+		);
+
+		offersButton.setWidthFull();
 
 		navLayout.add( offersButton );
 		navLayout.setSizeFull();

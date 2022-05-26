@@ -3,8 +3,7 @@ package be.intecbrussel.bbjja.views.home;
 
 import be.intecbrussel.bbjja.security.AuthenticatedUser;
 import be.intecbrussel.bbjja.views.MainLayout;
-import com.vaadin.flow.component.UI;
-import com.vaadin.flow.component.button.Button;
+import com.vaadin.flow.component.html.NativeButton;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.router.PageTitle;
@@ -26,22 +25,25 @@ public class HomeView extends VerticalLayout {
 		final var navLayout = new HorizontalLayout();
 		navLayout.setSpacing( false );
 
-		final var slidesButton = new Button( "Manage Slides", onClick -> {
-			UI.getCurrent().navigate( SlidesView.class );
-		} );
-
-		final var subscribersButton = new Button( "Manage Slides", onClick -> {
-			UI.getCurrent().navigate( SubscribersView.class );
-		} );
-
+		final var slidesButton = new NativeButton( "Slides" );
+		slidesButton.addClickListener( onClick ->
+				slidesButton.getUI().ifPresent( ui ->
+						ui.navigate( SlidesView.class ) )
+		);
 		slidesButton.setWidthFull();
+
+		final var subscribersButton = new NativeButton( "Subscribers" );
+		slidesButton.addClickListener( onClick ->
+				slidesButton.getUI().ifPresent( ui ->
+						ui.navigate( SlidesView.class ) )
+		);
+
 		subscribersButton.setWidthFull();
 
 		navLayout.add( slidesButton, subscribersButton );
 		navLayout.setSizeFull();
 		navLayout.setAlignItems( Alignment.STRETCH );
 		navLayout.getStyle().set( "text-align", "center" );
-
 
 		add( navLayout );
 

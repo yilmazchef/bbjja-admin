@@ -5,16 +5,16 @@ import be.intecbrussel.bbjja.security.AuthenticatedUser;
 import be.intecbrussel.bbjja.views.about.AboutView;
 import be.intecbrussel.bbjja.views.about.PartnersView;
 import be.intecbrussel.bbjja.views.about.TeamsView;
+import be.intecbrussel.bbjja.views.grappling.SchoolGrapplingView;
+import be.intecbrussel.bbjja.views.grappling.StreetGrapplingView;
 import be.intecbrussel.bbjja.views.home.HomeView;
 import be.intecbrussel.bbjja.views.home.SlidesView;
 import be.intecbrussel.bbjja.views.home.SubscribersView;
 import be.intecbrussel.bbjja.views.ninjaschool.NinjaSchoolView;
 import be.intecbrussel.bbjja.views.ninjaschool.OffersView;
-import be.intecbrussel.bbjja.views.schoolgrappling.SchoolGrapplingView;
 import be.intecbrussel.bbjja.views.sitesettings.ContactView;
 import be.intecbrussel.bbjja.views.sitesettings.SettingsView;
 import be.intecbrussel.bbjja.views.sitesettings.UsersView;
-import be.intecbrussel.bbjja.views.streetgrappling.StreetGrapplingView;
 import com.vaadin.flow.component.Component;
 import com.vaadin.flow.component.applayout.AppLayout;
 import com.vaadin.flow.component.applayout.DrawerToggle;
@@ -170,7 +170,7 @@ public class MainLayout extends AppLayout {
 				schoolGrappling, //
 				streetGrappling, //
 				ninjaSchool, //
-				offers, //
+				// offers, //
 				// users, //
 				about, //
 				// teams, //

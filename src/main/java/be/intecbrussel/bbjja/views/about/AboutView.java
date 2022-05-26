@@ -4,8 +4,7 @@ package be.intecbrussel.bbjja.views.about;
 import be.intecbrussel.bbjja.data.entity.User;
 import be.intecbrussel.bbjja.security.AuthenticatedUser;
 import be.intecbrussel.bbjja.views.MainLayout;
-import com.vaadin.flow.component.UI;
-import com.vaadin.flow.component.button.Button;
+import com.vaadin.flow.component.html.NativeButton;
 import com.vaadin.flow.component.notification.Notification;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
@@ -30,13 +29,17 @@ public class AboutView extends VerticalLayout {
 		navLayout.setPadding( false );
 		navLayout.setSpacing( false );
 
-		final var teamsButton = new Button( "Manage Teams", onClick -> {
-			UI.getCurrent().navigate( TeamsView.class );
-		} );
+		final var teamsButton = new NativeButton( "Teams" );
+		teamsButton.addClickListener( onClick ->
+				teamsButton.getUI().ifPresent( ui ->
+						ui.navigate( TeamsView.class ) )
+		);
 
-		final var partnersButton = new Button( "Manage Partners", onClick -> {
-			UI.getCurrent().navigate( PartnersView.class );
-		} );
+		final var partnersButton = new NativeButton( "Partners" );
+		partnersButton.addClickListener( onClick ->
+				partnersButton.getUI().ifPresent( ui ->
+						ui.navigate( PartnersView.class ) )
+		);
 
 		navLayout.add( teamsButton, partnersButton );
 		navLayout.setSizeFull();
