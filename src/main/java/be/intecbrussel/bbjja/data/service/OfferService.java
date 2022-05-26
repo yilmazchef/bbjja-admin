@@ -1,11 +1,9 @@
 package be.intecbrussel.bbjja.data.service;
 
 
-import be.intecbrussel.bbjja.data.dto.NewOfferRequest;
-import be.intecbrussel.bbjja.data.dto.OfferResponse;
-import be.intecbrussel.bbjja.data.dto.UpdateOfferRequest;
-import be.intecbrussel.bbjja.data.mappers.OfferMapper;
+import be.intecbrussel.bbjja.data.entity.Offer;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
@@ -13,47 +11,33 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
-import java.util.stream.Collectors;
 
 @Service
 public class OfferService {
 
 	private final OfferRepository repository;
-	private final OfferMapper mapper;
 
 
 	@Autowired
-	public OfferService( final OfferRepository repository, final OfferMapper mapper ) {
+	public OfferService( final OfferRepository repository ) {
 
 		this.repository = repository;
-		this.mapper = mapper;
 	}
 
 
-	public Optional< OfferResponse > get( UUID id ) {
+	public Optional< Offer > get( UUID id ) {
 
-		return repository
-				.findById( id )
-				.map( mapper :: offerToOfferResponse );
+		return repository.findById( id );
 	}
 
+	public Offer create( Offer entity ) {
 
-	public OfferResponse create( NewOfferRequest newOfferRequest ) {
-
-		return mapper
-				.offerToOfferResponse(
-						repository.save(
-								mapper.newOfferRequestToOffer( newOfferRequest )
-						)
-				);
+		return repository.save( entity );
 	}
 
+	public Offer update( Offer entity ) {
 
-	public OfferResponse update( UpdateOfferRequest updateOfferRequest ) {
-
-		return mapper.offerToOfferResponse( repository.save(
-				mapper.updateOfferRequestToOffer( updateOfferRequest )
-		) );
+		return repository.save( entity );
 	}
 
 
@@ -63,33 +47,21 @@ public class OfferService {
 	}
 
 
-	public List< OfferResponse > list( Pageable pageable ) {
+	public Page< Offer > list( Pageable pageable ) {
 
-		return repository
-				.findAll( pageable )
-				.stream()
-				.map( mapper :: offerToOfferResponse )
-				.collect( Collectors.toUnmodifiableList() );
+		return repository.findAll( pageable );
 	}
 
 
-	public List< OfferResponse > list() {
+	public List< Offer > list() {
 
-		return repository
-				.findAll()
-				.stream()
-				.map( mapper :: offerToOfferResponse )
-				.collect( Collectors.toUnmodifiableList() );
+		return repository.findAll();
 	}
 
 
-	public List< OfferResponse > list( final Sort sort ) {
+	public List< Offer > list( final Sort sort ) {
 
-		return repository
-				.findAll( sort )
-				.stream()
-				.map( mapper :: offerToOfferResponse )
-				.collect( Collectors.toUnmodifiableList() );
+		return repository.findAll( sort );
 	}
 
 

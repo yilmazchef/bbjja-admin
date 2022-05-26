@@ -1,10 +1,7 @@
 package be.intecbrussel.bbjja.data.service;
 
 
-import be.intecbrussel.bbjja.data.dto.NewPageRequest;
-import be.intecbrussel.bbjja.data.dto.PageResponse;
-import be.intecbrussel.bbjja.data.dto.UpdatePageRequest;
-import be.intecbrussel.bbjja.data.mappers.PageMapper;
+import be.intecbrussel.bbjja.data.entity.Page;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
@@ -13,47 +10,35 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
-import java.util.stream.Collectors;
 
 @Service
 public class PageService {
 
 	private final PageRepository repository;
-	private final PageMapper mapper;
 
 
 	@Autowired
-	public PageService( final PageRepository repository, final PageMapper mapper ) {
+	public PageService( final PageRepository repository ) {
 
 		this.repository = repository;
-		this.mapper = mapper;
 	}
 
 
-	public Optional< PageResponse > get( UUID id ) {
+	public Optional< Page > get( UUID id ) {
 
-		return repository
-				.findById( id )
-				.map( mapper :: pageToPageResponse );
+		return repository.findById( id );
 	}
 
 
-	public PageResponse create( NewPageRequest newPageRequest ) {
+	public Page create( Page entity ) {
 
-		return mapper
-				.pageToPageResponse(
-						repository.save(
-								mapper.newPageRequestToPage( newPageRequest )
-						)
-				);
+		return repository.save( entity );
 	}
 
 
-	public PageResponse update( UpdatePageRequest updatePageRequest ) {
+	public Page update( Page entity ) {
 
-		return mapper.pageToPageResponse( repository.save(
-				mapper.updatePageRequestToPage( updatePageRequest )
-		) );
+		return repository.save( entity );
 	}
 
 
@@ -63,33 +48,21 @@ public class PageService {
 	}
 
 
-	public List< PageResponse > list( Pageable pageable ) {
+	public org.springframework.data.domain.Page< Page > list( Pageable pageable ) {
 
-		return repository
-				.findAll( pageable )
-				.stream()
-				.map( mapper :: pageToPageResponse )
-				.collect( Collectors.toUnmodifiableList() );
+		return repository.findAll( pageable );
 	}
 
 
-	public List< PageResponse > list() {
+	public List< Page > list() {
 
-		return repository
-				.findAll()
-				.stream()
-				.map( mapper :: pageToPageResponse )
-				.collect( Collectors.toUnmodifiableList() );
+		return repository.findAll();
 	}
 
 
-	public List< PageResponse > list( final Sort sort ) {
+	public List< Page > list( final Sort sort ) {
 
-		return repository
-				.findAll( sort )
-				.stream()
-				.map( mapper :: pageToPageResponse )
-				.collect( Collectors.toUnmodifiableList() );
+		return repository.findAll( sort );
 	}
 
 

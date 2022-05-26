@@ -94,7 +94,7 @@ public class SlidesView extends VerticalLayout {
 		}
 
 		accordion.add( "Add New Slide", newSlideLayout );
-		accordion.add( "View/Edit Slide", existingSlidesLayout );
+		accordion.add( "View/Edit Slides", existingSlidesLayout );
 		add( accordion );
 
 	}
