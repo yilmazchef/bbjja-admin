@@ -3,6 +3,7 @@ package be.intecbrussel.bbjja.data.mappers;
 
 import be.intecbrussel.bbjja.data.dto.DisablePageRequest;
 import be.intecbrussel.bbjja.data.dto.NewPageRequest;
+import be.intecbrussel.bbjja.data.dto.PageResponse;
 import be.intecbrussel.bbjja.data.dto.UpdatePageRequest;
 import be.intecbrussel.bbjja.data.entity.Page;
 import org.mapstruct.*;
@@ -30,5 +31,12 @@ public interface PageMapper {
 
 	@BeanMapping ( nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE )
 	void updatePageFromDisablePageRequest( DisablePageRequest disablePageRequest, @MappingTarget Page page );
+
+	Page pageResponseToPage( PageResponse pageResponse );
+
+	PageResponse pageToPageResponse( Page page );
+
+	@BeanMapping ( nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE )
+	void updatePageFromPageResponse( PageResponse pageResponse, @MappingTarget Page page );
 
 }
