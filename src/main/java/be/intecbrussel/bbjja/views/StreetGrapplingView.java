@@ -1,11 +1,10 @@
-package be.intecbrussel.bbjja.views.grappling;
+package be.intecbrussel.bbjja.views;
 
 
 import be.intecbrussel.bbjja.data.entity.Grappling;
 import be.intecbrussel.bbjja.data.entity.Grappling.GrapplingType;
 import be.intecbrussel.bbjja.data.service.GrapplingService;
 import be.intecbrussel.bbjja.security.AuthenticatedUser;
-import be.intecbrussel.bbjja.views.MainLayout;
 import be.intecbrussel.bbjja.views.layouts.YouTubeVideo;
 import com.vaadin.flow.component.accordion.Accordion;
 import com.vaadin.flow.component.button.Button;
@@ -23,12 +22,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import javax.annotation.security.RolesAllowed;
 
 @PageTitle ( "Grappling" )
-@Route ( value = "grappling/school", layout = MainLayout.class )
+@Route ( value = "grappling/street", layout = MainLayout.class )
 @RolesAllowed ( "ADMIN" )
-public class SchoolGrapplingView extends VerticalLayout {
+public class StreetGrapplingView extends VerticalLayout {
 
 	@Autowired
-	public SchoolGrapplingView( final AuthenticatedUser authenticatedUser, final GrapplingService grapplingService ) {
+	public StreetGrapplingView( final AuthenticatedUser authenticatedUser, final GrapplingService grapplingService ) {
 
 		final var accordion = new Accordion();
 		accordion.setSizeFull();
@@ -64,7 +63,7 @@ public class SchoolGrapplingView extends VerticalLayout {
 						.setIntroduction( newGrapplingTitleField.getValue() )
 						.setForWho( newGrapplingForWhoField.getValue() )
 						.setPractice( newGrapplingPracticeArea.getValue() )
-						.setType( GrapplingType.SCHOOL )
+						.setType( GrapplingType.STREET )
 						.setIsActive( Boolean.TRUE );
 				final var createdGrappling = grapplingService.create( newGrappling );
 				notifyGrapplingCreated( newGrappling.getVideoUrl() );
@@ -78,7 +77,7 @@ public class SchoolGrapplingView extends VerticalLayout {
 		);
 		accordion.add( "Add New Grappling", newGrapplingLayout );
 
-		final var existingGrapplingData = grapplingService.school();
+		final var existingGrapplingData = grapplingService.street();
 		for ( final var existingGrapplingItem : existingGrapplingData ) {
 
 			final var existingGrapplingItemLayout = new VerticalLayout();
@@ -126,6 +125,7 @@ public class SchoolGrapplingView extends VerticalLayout {
 					existingGrapplingItem.setIntroduction( newTitle );
 					existingGrapplingItem.setVideoUrl( newURL );
 					existingGrapplingItem.setForWho( newForWho );
+					existingGrapplingItem.setType( GrapplingType.STREET );
 					final var updatedGrappling = grapplingService.update( existingGrapplingItem );
 					notifyGrapplingUpdated( oldURL, newURL );
 				}

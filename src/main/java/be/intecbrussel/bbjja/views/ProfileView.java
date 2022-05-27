@@ -1,9 +1,8 @@
-package be.intecbrussel.bbjja.views.user;
+package be.intecbrussel.bbjja.views;
 
 
 import be.intecbrussel.bbjja.data.service.UserService;
 import be.intecbrussel.bbjja.security.AuthenticatedUser;
-import be.intecbrussel.bbjja.views.MainLayout;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.formlayout.FormLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;

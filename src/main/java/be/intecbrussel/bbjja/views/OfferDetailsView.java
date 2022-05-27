@@ -1,4 +1,4 @@
-package be.intecbrussel.bbjja.views.ninjaschool;
+package be.intecbrussel.bbjja.views;
 
 
 import be.intecbrussel.bbjja.data.entity.Offer;
@@ -6,7 +6,6 @@ import be.intecbrussel.bbjja.data.entity.School;
 import be.intecbrussel.bbjja.data.service.OfferService;
 import be.intecbrussel.bbjja.data.service.SchoolService;
 import be.intecbrussel.bbjja.security.AuthenticatedUser;
-import be.intecbrussel.bbjja.views.MainLayout;
 import be.intecbrussel.bbjja.views.layouts.Video;
 import com.vaadin.flow.component.accordion.Accordion;
 import com.vaadin.flow.component.button.Button;
@@ -37,6 +36,9 @@ public class OfferDetailsView extends VerticalLayout {
 		schoolsAccordion.setHeightFull();
 
 		final var newSchoolLayout = new VerticalLayout();
+		newSchoolLayout.getStyle()
+				.set( "box-shadow", " 0 4px 8px 0 rgba(0,0,0,0.2)" )
+				.set( "transition", "0.3s" );
 		newSchoolLayout.setSpacing( false );
 		newSchoolLayout.setPadding( false );
 
@@ -90,7 +92,7 @@ public class OfferDetailsView extends VerticalLayout {
 		newSchoolLayout.addAndExpand( newSchoolOfferSelect, newSchoolTitle, newSchoolPhone,
 				newSchoolCoordinates, newFrameVideo, newFrameView, newFrameButton );
 
-		schoolsAccordion.add( "Add New Offer", newSchoolLayout );
+		schoolsAccordion.add( "Add New School", newSchoolLayout );
 
 		final List< School > existingSchoolsData = schoolService.list();
 

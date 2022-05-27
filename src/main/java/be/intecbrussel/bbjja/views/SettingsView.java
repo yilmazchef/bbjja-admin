@@ -1,10 +1,9 @@
-package be.intecbrussel.bbjja.views.sitesettings;
+package be.intecbrussel.bbjja.views;
 
 
 import be.intecbrussel.bbjja.data.entity.User;
 import be.intecbrussel.bbjja.data.service.UserService;
 import be.intecbrussel.bbjja.security.AuthenticatedUser;
-import be.intecbrussel.bbjja.views.MainLayout;
 import com.vaadin.flow.component.accordion.Accordion;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.button.ButtonVariant;
@@ -22,15 +21,14 @@ import com.vaadin.flow.router.Route;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import javax.annotation.security.RolesAllowed;
-import java.util.Optional;
 
-@PageTitle ( "Users" )
-@Route ( value = "users/admin", layout = MainLayout.class )
+@PageTitle ( "Settings" )
+@Route ( value = "settings", layout = MainLayout.class )
 @RolesAllowed ( "ADMIN" )
-public class UsersView extends VerticalLayout {
+public class SettingsView extends VerticalLayout {
 
 	@Autowired
-	public UsersView( final AuthenticatedUser authenticatedUser, final UserService userService ) {
+	public SettingsView( final AuthenticatedUser authenticatedUser, final UserService userService ) {
 
 		final var accordion = new Accordion();
 		accordion.setSizeFull();
@@ -104,24 +102,11 @@ public class UsersView extends VerticalLayout {
 
 		add( accordion );
 
-		notifyAuthenticatedUser( authenticatedUser );
-
 		setSizeFull();
 		setJustifyContentMode( JustifyContentMode.CENTER );
 		setDefaultHorizontalComponentAlignment( Alignment.CENTER );
 		getStyle().set( "text-align", "center" );
 	}
-
-
-	private void notifyAuthenticatedUser( final AuthenticatedUser user ) {
-
-		final Optional< User > oUser = user.get();
-		oUser.ifPresent( u -> {
-
-			new Notification( u.getUsername() + " is logged in..", 1000, Notification.Position.BOTTOM_CENTER ).open();
-		} );
-	}
-
 
 	private void notifyUserDeleted( final User person ) {
 

@@ -1,4 +1,4 @@
-package be.intecbrussel.bbjja.views.user;
+package be.intecbrussel.bbjja.views;
 
 import com.vaadin.flow.component.login.LoginI18n;
 import com.vaadin.flow.component.login.LoginOverlay;

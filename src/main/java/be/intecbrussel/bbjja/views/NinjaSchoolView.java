@@ -1,4 +1,4 @@
-package be.intecbrussel.bbjja.views.ninjaschool;
+package be.intecbrussel.bbjja.views;
 
 
 import be.intecbrussel.bbjja.data.entity.Offer;
@@ -6,7 +6,6 @@ import be.intecbrussel.bbjja.data.entity.Page;
 import be.intecbrussel.bbjja.data.service.OfferService;
 import be.intecbrussel.bbjja.data.service.PageService;
 import be.intecbrussel.bbjja.security.AuthenticatedUser;
-import be.intecbrussel.bbjja.views.MainLayout;
 import com.vaadin.flow.component.accordion.Accordion;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
@@ -16,19 +15,20 @@ import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.data.value.ValueChangeMode;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
-import org.springframework.beans.factory.annotation.Autowired;
+import com.vaadin.flow.router.RouteAlias;
 
 import javax.annotation.security.RolesAllowed;
 import java.util.List;
 
-@PageTitle ( "Offers" )
-@Route ( value = "ninja_school/offers", layout = MainLayout.class )
+@PageTitle ( "Ninja School" )
+@Route ( value = "ninja_school", layout = MainLayout.class )
+@RouteAlias ( value = "ninja", layout = MainLayout.class )
 @RolesAllowed ( "ADMIN" )
-public class OffersView extends VerticalLayout {
+public class NinjaSchoolView extends VerticalLayout {
 
-	@Autowired
-	public OffersView( final AuthenticatedUser user,
-	                   final OfferService offerService, final PageService pageService ) {
+	public NinjaSchoolView( final AuthenticatedUser authenticatedUser,
+	                        final OfferService offerService, final PageService pageService ) {
+
 
 		final var accordion = new Accordion();
 		accordion.setWidthFull();
@@ -77,13 +77,10 @@ public class OffersView extends VerticalLayout {
 
 		final List< Offer > existingOffersData = offerService.list();
 
-		final var existingOffersLayout = new VerticalLayout();
-		existingOffersLayout.setPadding( false );
-		existingOffersLayout.setSpacing( false );
-
 		for ( final var existingOfferItem : existingOffersData ) {
 
 			final var existingOfferItemLayout = new VerticalLayout();
+
 			final var existingTitleField = new TextField();
 			existingTitleField.setWidthFull();
 			existingTitleField.setValue( existingOfferItem.getTitle() );
@@ -108,11 +105,10 @@ public class OffersView extends VerticalLayout {
 			updateOfferButton.setWidthFull();
 
 			existingOfferItemLayout.add( existingTitleField, existingDescriptionField, existingForwardUrlField, updateOfferButton );
-			existingOffersLayout.addAndExpand( existingOfferItemLayout );
+			accordion.add( String.format( "View/Edit %s", existingOfferItem.getTitle() ), existingOfferItemLayout );
 		}
 
 		accordion.add( "Add New Offer", newOfferLayout );
-		accordion.add( "View/Edit Offers", existingOffersLayout );
 		add( accordion );
 
 		setSizeFull();
@@ -120,5 +116,6 @@ public class OffersView extends VerticalLayout {
 		setDefaultHorizontalComponentAlignment( Alignment.CENTER );
 		getStyle().set( "text-align", "center" );
 	}
+
 
 }

@@ -1,12 +1,6 @@
 package be.intecbrussel.bbjja.views;
 
 
-import be.intecbrussel.bbjja.views.grappling.SchoolGrapplingView;
-import be.intecbrussel.bbjja.views.grappling.StreetGrapplingView;
-import be.intecbrussel.bbjja.views.home.SlidesView;
-import be.intecbrussel.bbjja.views.home.SubscribersView;
-import be.intecbrussel.bbjja.views.ninjaschool.OffersView;
-import be.intecbrussel.bbjja.views.sitesettings.UsersView;
 import com.vaadin.flow.component.Component;
 import com.vaadin.flow.component.applayout.AppLayout;
 import com.vaadin.flow.component.tabs.Tab;
@@ -23,12 +17,13 @@ public class MainLayout extends AppLayout {
 
 		final var tabs = new Tabs();
 		tabs.add(
-				createTab( "Home -> Slides", SlidesView.class ),
-				createTab( "Ninja School -> Offers", OffersView.class ),
-				createTab( "Grappling -> School", SchoolGrapplingView.class ),
-				createTab( "Grappling -> Street", StreetGrapplingView.class ),
-				createTab( "Admin -> Users", UsersView.class ),
-				createTab( "Admin -> Subscribers", SubscribersView.class )
+				createTab( "Home", HomeView.class ),
+				createTab( "Ninja School", NinjaSchoolView.class ),
+				createTab( "School Grappling", SchoolGrapplingView.class ),
+				createTab( "Street Grappling", StreetGrapplingView.class ),
+				createTab( "Site Settings", SettingsView.class ),
+				createTab( "About", AboutView.class ),
+				createTab( "My Profile", ProfileView.class )
 		);
 		tabs.addThemeVariants( TabsVariant.LUMO_CENTERED, TabsVariant.LUMO_SMALL );
 		addToNavbar( true, tabs );

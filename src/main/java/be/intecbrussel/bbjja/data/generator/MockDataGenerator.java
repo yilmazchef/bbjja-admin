@@ -20,9 +20,10 @@ public class MockDataGenerator {
 
 	@Bean
 	public CommandLineRunner loadData( PasswordEncoder passwordEncoder,
-	                                   UserRepository userRepository, SlideRepository slideRepository,
+	                                   UserRepository userRepository, EmployeeRepository employeeRepository,
 	                                   PageRepository pageRepository, SubscriberRepository subscriberRepository,
 	                                   OfferRepository offerRepository, SchoolRepository schoolRepository,
+	                                   SlideRepository slideRepository,
 	                                   MockPhotoGenerator photoGenerator ) {
 
 		return args -> {
@@ -161,6 +162,29 @@ public class MockDataGenerator {
 					logger.info( String.format( "A new offer is created with title: %s and coordinates: %s, %s", savedSchoolOffered.getTitle(), savedSchoolOffered.getLatitude(), savedSchoolOffered.getLongitude() ) );
 
 				}
+
+			}
+
+			final var aboutPage = new Page()
+					.setTitle( "About page title! " )
+					.setSlug( "about-team-partners" )
+					.setDescription( faker.lorem().paragraph() );
+
+			final var savedAboutPage = pageRepository.save( aboutPage );
+
+			for ( int index = 0; index < 12; index++ ) {
+				final var employee = new Employee()
+						.setEmail( faker.internet().emailAddress() )
+						.setFirstName( faker.name().firstName() )
+						.setLastName( faker.name().lastName() )
+						.setJobTitle( faker.job().title() )
+						.setProfilePictureUrl(
+								"https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=128&h=128&q=80"
+						);
+
+				final var savedEmployee = employeeRepository.save( employee );
+				logger.info( String.format( "A new member, %s %s with an email address %s has been added to BBJJA team.",
+						savedEmployee.getFirstName(), savedEmployee.getLastName(), savedEmployee.getEmail() ) );
 
 			}
 
