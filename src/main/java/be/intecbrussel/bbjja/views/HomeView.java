@@ -33,7 +33,7 @@ import javax.annotation.security.PermitAll;
 import static java.lang.System.out;
 
 @PageTitle ( "Home" )
-@Route ( value = "home", layout = MainLayout.class )
+@Route ( value = "ui/home", layout = MainLayout.class )
 @RouteAlias ( value = "", layout = MainLayout.class )
 @PermitAll
 public class HomeView extends VerticalLayout {

@@ -24,9 +24,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import javax.annotation.security.RolesAllowed;
 
 @PageTitle ( "About (Teams/Partners)" )
-@Route ( value = "about", layout = MainLayout.class )
-@RouteAlias ( value = "teams", layout = MainLayout.class )
-@RouteAlias ( value = "partners", layout = MainLayout.class )
+@Route ( value = "ui/about", layout = MainLayout.class )
+@RouteAlias ( value = "ui/teams", layout = MainLayout.class )
+@RouteAlias ( value = "ui/partners", layout = MainLayout.class )
 @RolesAllowed ( "ADMIN" )
 public class AboutView extends VerticalLayout {
 

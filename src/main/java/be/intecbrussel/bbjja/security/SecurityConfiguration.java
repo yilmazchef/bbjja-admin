@@ -37,7 +37,7 @@ public class SecurityConfiguration extends VaadinWebSecurityConfigurerAdapter {
 	public void configure( WebSecurity web ) throws Exception {
 
 		super.configure( web );
-		web.ignoring().antMatchers( "/images/*.png", "api/*" );
+		web.ignoring().antMatchers( "/images/*.png" );
 	}
 
 }
