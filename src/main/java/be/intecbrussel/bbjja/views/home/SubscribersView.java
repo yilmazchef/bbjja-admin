@@ -9,7 +9,6 @@ import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.button.ButtonVariant;
 import com.vaadin.flow.component.combobox.ComboBox;
 import com.vaadin.flow.component.grid.Grid;
-import com.vaadin.flow.component.html.Div;
 import com.vaadin.flow.component.icon.Icon;
 import com.vaadin.flow.component.icon.VaadinIcon;
 import com.vaadin.flow.component.notification.Notification;
@@ -29,23 +28,15 @@ public class SubscribersView extends VerticalLayout {
 
 
 	@Autowired
-	public SubscribersView( final AuthenticatedUser user, final SubscriberService service ) {
+	public SubscribersView( final AuthenticatedUser authenticatedUser, final SubscriberService subscriberService ) {
 
-		final var subscribersData = service.list();
+		final var subscribersData = subscriberService.list();
 
 		final var subscribersGrid = new Grid<>( Subscriber.class, false );
 		subscribersGrid.setAllRowsVisible( true );
 		subscribersGrid.addColumn( Subscriber :: getFirstName ).setHeader( "First Name" );
 		subscribersGrid.addColumn( Subscriber :: getLastName ).setHeader( "Last Name" );
 		subscribersGrid.addColumn( Subscriber :: getEmail ).setHeader( "Email" );
-
-		final var subscriberHint = new Div();
-		subscriberHint.setText( "No invitation has been sent" );
-		subscriberHint.getStyle()
-				.set( "padding", "var(--lumo-size-l)" )
-				.set( "text-align", "center" )
-				.set( "font-style", "italic" )
-				.set( "color", "var(--lumo-contrast-70pct)" );
 
 		subscribersGrid.addColumn(
 				new ComponentRenderer<>( Button :: new, ( deleteButton, subscriber ) -> {
@@ -58,16 +49,14 @@ public class SubscribersView extends VerticalLayout {
 							return;
 						}
 
-						service.delete( subscriber.getId() );
+						subscriberService.delete( subscriber.getId() );
 						subscribersData.remove( subscriber );
 
 						if ( subscribersData.size() > 0 ) {
 							subscribersGrid.setVisible( true );
-							subscriberHint.setVisible( false );
 							subscribersGrid.getDataProvider().refreshAll();
 						} else {
 							subscribersGrid.setVisible( false );
-							subscriberHint.setVisible( true );
 						}
 
 						subscribersGrid.setItems( subscribersData );
@@ -82,7 +71,7 @@ public class SubscribersView extends VerticalLayout {
 
 		final var comboBox = new ComboBox< Subscriber >();
 		comboBox.setItems( subscribersData );
-		comboBox.setItemLabelGenerator( Subscriber :: getEmail );
+		comboBox.setItemLabelGenerator( s -> String.format( "%s %s | %s", s.getFirstName(), s.getLastName(), s.getEmail() ) );
 
 		final var button = new Button( "Send invite" );
 		button.addThemeVariants( ButtonVariant.LUMO_PRIMARY );
@@ -94,7 +83,6 @@ public class SubscribersView extends VerticalLayout {
 
 			subscribersData.add( comboBox.getValue() );
 			subscribersGrid.setVisible( true );
-			subscriberHint.setVisible( false );
 			subscribersGrid.getDataProvider().refreshAll();
 
 			comboBox.setValue( null );
@@ -103,8 +91,7 @@ public class SubscribersView extends VerticalLayout {
 		final var invitationLayout = new HorizontalLayout( comboBox, button );
 		invitationLayout.setFlexGrow( 1, comboBox );
 
-		add( invitationLayout );
-		add( subscriberHint, subscribersGrid );
+		add( invitationLayout, subscribersGrid );
 	}
 
 

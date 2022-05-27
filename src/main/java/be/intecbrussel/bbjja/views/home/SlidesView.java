@@ -31,8 +31,7 @@ public class SlidesView extends VerticalLayout {
 	public SlidesView( final AuthenticatedUser user, final SlideService service ) {
 
 		final var accordion = new Accordion();
-		accordion.setWidthFull();
-		accordion.setHeightFull();
+		accordion.setSizeFull();
 
 		final var newSlideLayout = new VerticalLayout();
 		newSlideLayout.setSpacing( false );
@@ -51,12 +50,9 @@ public class SlidesView extends VerticalLayout {
 		} );
 		newImageButton.setWidthFull();
 		newSlideLayout.addAndExpand( newImageTitle, newImageURLField, newImageButton );
+		accordion.add( "Add New Slide", newSlideLayout );
 
 		final var existingSlidesData = service.list( Sort.by( "dateModified" ) );
-		final var existingSlidesLayout = new VerticalLayout();
-		existingSlidesLayout.setPadding( false );
-		existingSlidesLayout.setSpacing( false );
-
 		for ( final var existingSlideItem : existingSlidesData ) {
 
 			final var existingSlideItemLayout = new VerticalLayout();
@@ -72,7 +68,7 @@ public class SlidesView extends VerticalLayout {
 			updateSlideLayout.setSpacing( false );
 			final var updateSlideTitleField = new TextField( "Slide Title" );
 			updateSlideTitleField.setWidthFull();
-			final var updateSlideImageUrlField = new TextField( "Image URL" );
+			final var updateSlideImageUrlField = new TextField( "Slide Image URL" );
 			updateSlideImageUrlField.setWidthFull();
 
 			final var updateButton = new Button( "Update Slide", onClick -> {
@@ -89,12 +85,13 @@ public class SlidesView extends VerticalLayout {
 			updateButton.setWidthFull();
 			updateSlideLayout.addAndExpand( updateSlideImageUrlField, updateButton );
 
+			existingSlideItemLayout.add( updateSlideLayout );
+
 			// adding slideLayout and updateSlideLayout to parent layout.
-			existingSlidesLayout.addAndExpand( newSlideLayout, existingSlideItemLayout, updateSlideLayout );
+			accordion.add( String.format( "View/Edit %s ", existingSlideItem.getTitle() ), existingSlideItemLayout );
 		}
 
-		accordion.add( "Add New Slide", newSlideLayout );
-		accordion.add( "View/Edit Slides", existingSlidesLayout );
+		accordion.open( 0 );
 		add( accordion );
 
 	}

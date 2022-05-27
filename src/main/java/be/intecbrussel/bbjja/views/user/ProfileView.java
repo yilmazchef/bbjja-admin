@@ -63,7 +63,7 @@ public class ProfileView extends VerticalLayout {
 			} );
 
 			final var formLayout = new FormLayout();
-			formLayout.add( firstName, lastName, username, password, confirmPassword );
+			formLayout.add( firstName, lastName, username, password, confirmPassword, submit );
 			formLayout.setResponsiveSteps(
 					// Use one column by default
 					new FormLayout.ResponsiveStep( "0", 1 ),
