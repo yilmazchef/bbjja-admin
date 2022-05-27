@@ -42,6 +42,9 @@ public class OfferIDetailsView extends VerticalLayout {
 		final var newSchoolTitle = new TextField( "School Name" );
 		newSchoolTitle.setWidthFull();
 
+		final var newSchoolPhone = new TextField( "School Contact Phone" );
+		newSchoolPhone.setWidthFull();
+
 		final var newSchoolCoordinates = new TextField( "Coordinates" );
 		newSchoolCoordinates.setPlaceholder( "50.85994129672338, 4.3374293534765815" );
 		newSchoolCoordinates.setWidthFull();
@@ -69,6 +72,7 @@ public class OfferIDetailsView extends VerticalLayout {
 			if ( ! newSchoolCoordinates.getValue().isEmpty() ) {
 				final var newSchoolRequest = new School();
 				newSchoolRequest.setTitle( newSchoolTitle.getValue() );
+				newSchoolRequest.setPhone( newSchoolPhone.getValue() );
 				final var coordinatesArr = newSchoolCoordinates.getValue().split( "," );
 				newSchoolRequest.setLatitude( Float.parseFloat( coordinatesArr[ 0 ] ) );
 				newSchoolRequest.setLongitude( Float.parseFloat( coordinatesArr[ 1 ] ) );
@@ -80,7 +84,8 @@ public class OfferIDetailsView extends VerticalLayout {
 			}
 		} );
 		newFrameButton.setWidthFull();
-		newSchoolLayout.addAndExpand( newSchoolOfferSelect, newSchoolTitle, newSchoolCoordinates, newFrameVideo, newFrameView, newFrameButton );
+		newSchoolLayout.addAndExpand( newSchoolOfferSelect, newSchoolTitle, newSchoolPhone,
+				newSchoolCoordinates, newFrameVideo, newFrameView, newFrameButton );
 
 		final List< School > existingSchoolsData = schoolService.list();
 
@@ -91,12 +96,19 @@ public class OfferIDetailsView extends VerticalLayout {
 		for ( final var existingSchoolItem : existingSchoolsData ) {
 
 			final var existingSchoolItemLayout = new VerticalLayout();
+
 			final var existingTitleField = new TextField();
 			existingTitleField.setWidthFull();
 			existingTitleField.setValue( existingSchoolItem.getTitle() );
+
+			final var existingPhoneField = new TextField();
+			existingPhoneField.setWidthFull();
+			existingPhoneField.setValue( existingSchoolItem.getPhone() );
+
 			final var existingCoordinatesField = new TextField();
 			existingCoordinatesField.setValue( existingSchoolItem.getLatitude() + "," + existingSchoolItem.getLongitude() );
 			existingCoordinatesField.setWidthFull();
+
 			final var existingFrameView = new TextArea();
 			existingFrameView.setWidthFull();
 			existingFrameView.setLabel( "iFrame Maps" );
@@ -113,6 +125,7 @@ public class OfferIDetailsView extends VerticalLayout {
 
 			final var updateSchoolButton = new Button( "Update offer", onSave -> {
 				existingSchoolItem.setTitle( existingTitleField.getValue() );
+				existingSchoolItem.setPhone( existingPhoneField.getValue() );
 				final var existingCoordinatesArr = existingCoordinatesField.getValue().split( "" );
 				existingSchoolItem.setLatitude( Float.parseFloat( existingCoordinatesArr[ 0 ] ) );
 				existingSchoolItem.setLongitude( Float.parseFloat( existingCoordinatesArr[ 1 ] ) );
@@ -121,7 +134,8 @@ public class OfferIDetailsView extends VerticalLayout {
 			} );
 			updateSchoolButton.setWidthFull();
 
-			existingSchoolItemLayout.add( existingTitleField, existingCoordinatesField, existingFrameView, updateSchoolButton );
+			existingSchoolItemLayout.add( existingTitleField, existingPhoneField,
+					existingCoordinatesField, existingFrameView, updateSchoolButton );
 			existingSchoolsLayout.addAndExpand( existingSchoolItemLayout );
 		}
 
