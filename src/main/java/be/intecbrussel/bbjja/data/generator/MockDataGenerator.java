@@ -20,7 +20,7 @@ public class MockDataGenerator {
 	public CommandLineRunner loadData( PasswordEncoder passwordEncoder,
 	                                   UserRepository userRepository, SlideRepository slideRepository,
 	                                   PageRepository pageRepository, SubscriberRepository subscriberRepository,
-	                                   OfferRepository offerRepository,
+	                                   OfferRepository offerRepository, SchoolRepository schoolRepository,
 	                                   MockPhotoGenerator photoGenerator ) {
 
 		return args -> {
@@ -130,20 +130,27 @@ public class MockDataGenerator {
 				final var offer = new Offer();
 				offer.setTitle( String.format( "Ninja school offer title %d", index ) );
 				offer.setDescription( String.format( "Ninja school offer description: %d", index ) );
-				offer.setForwardUrl( String.format( "https://www.bbjja.be/offers/%d", index ));
+				offer.setForwardUrl( String.format( "https://www.bbjja.be/offers/%d", index ) );
 				offer.setPage( ninjaSchoolPage );
 
 				final var savedOffer = offerRepository.save( offer );
 
-				for ( int subIndex = 0; subIndex < 25; subIndex++ ) {
-					final var offeredSchool = new School();
-					offeredSchool.setTitle( String.format( "Ninja school title %s offered school title %d", index, subIndex ) );
-					offeredSchool.setPhone( "+32455611509" );
-					offeredSchool.setLatitude( 50.85994129672338F );
-					offeredSchool.setLongitude( 4.3374293534765815F );
-					offeredSchool.setIframe( "<iframe src=\"https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2518.4537430783535!2d4.334736415506741!3d50.85979907953399!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x47c3c392bd96d221%3A0x5d49a8f080c28411!2sBrussel%20Brazilian%20Jiu-Jitsu%20Academy!5e0!3m2!1sen!2sbe!4v1653630213331!5m2!1sen!2sbe\" width=\"800\" height=\"600\" style=\"border:0;\" allowfullscreen=\"\" loading=\"lazy\" referrerpolicy=\"no-referrer-when-downgrade\"></iframe>" );
+				logger.info( String.format( "A new offer is created with title: %s and url: %s", savedOffer.getTitle(), savedOffer.getForwardUrl() ) );
 
-					offeredSchool.setOffer( savedOffer );
+				for ( int subIndex = 0; subIndex < 25; subIndex++ ) {
+					final var schoolOffered = new School();
+					schoolOffered.setTitle( String.format( "Ninja school title %s offered school title %d", index, subIndex ) );
+					schoolOffered.setPhone( "+32455611509" );
+					schoolOffered.setLatitude( 50.85994129672338F );
+					schoolOffered.setLongitude( 4.3374293534765815F );
+					schoolOffered.setIframe( "<iframe src=\"https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2518.4537430783535!2d4.334736415506741!3d50.85979907953399!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x47c3c392bd96d221%3A0x5d49a8f080c28411!2sBrussel%20Brazilian%20Jiu-Jitsu%20Academy!5e0!3m2!1sen!2sbe!4v1653630213331!5m2!1sen!2sbe\" width=\"800\" height=\"600\" style=\"border:0;\" allowfullscreen=\"\" loading=\"lazy\" referrerpolicy=\"no-referrer-when-downgrade\"></iframe>" );
+
+					schoolOffered.setOffer( savedOffer );
+
+					final School savedSchoolOffered = schoolRepository.save( schoolOffered );
+
+					logger.info( String.format( "A new offer is created with title: %s and coordinates: %s, %s", savedSchoolOffered.getTitle(), savedSchoolOffered.getLatitude(), savedSchoolOffered.getLongitude() ) );
+
 				}
 
 			}

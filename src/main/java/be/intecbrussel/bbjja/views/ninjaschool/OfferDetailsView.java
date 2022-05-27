@@ -10,6 +10,7 @@ import be.intecbrussel.bbjja.views.MainLayout;
 import be.intecbrussel.bbjja.views.layouts.VideoLayout;
 import com.vaadin.flow.component.accordion.Accordion;
 import com.vaadin.flow.component.button.Button;
+import com.vaadin.flow.component.notification.Notification;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.component.select.Select;
 import com.vaadin.flow.component.textfield.TextArea;
@@ -25,11 +26,11 @@ import java.util.List;
 @PageTitle ( "Offer Details" )
 @Route ( value = "ninja_school/offer_details", layout = MainLayout.class )
 @RolesAllowed ( "ADMIN" )
-public class OfferIDetailsView extends VerticalLayout {
+public class OfferDetailsView extends VerticalLayout {
 
 	@Autowired
-	public OfferIDetailsView( final AuthenticatedUser user,
-	                          final SchoolService schoolService, final OfferService offerService ) {
+	public OfferDetailsView( final AuthenticatedUser user,
+	                         final SchoolService schoolService, final OfferService offerService ) {
 
 		final var schoolsAccordion = new Accordion();
 		schoolsAccordion.setWidthFull();
@@ -65,8 +66,11 @@ public class OfferIDetailsView extends VerticalLayout {
 		newFrameView.setValue( "Paste copied iframe code from the map here.." );
 
 		final var newSchoolOfferSelect = new Select< Offer >();
-		newSchoolOfferSelect.setItems( offerService.list() );
+		final List< Offer > offersData = offerService.list();
+		newSchoolOfferSelect.setItems( offersData );
 		newSchoolOfferSelect.setItemLabelGenerator( Offer :: getTitle );
+		newSchoolOfferSelect.setEmptySelectionAllowed( false );
+		newSchoolOfferSelect.setValue( offersData.get( 0 ) );
 
 		final var newFrameButton = new Button( "Add new school", onClick -> {
 			if ( ! newSchoolCoordinates.getValue().isEmpty() ) {
@@ -117,11 +121,13 @@ public class OfferIDetailsView extends VerticalLayout {
 			existingFrameView.addValueChangeListener( onValueChange -> {
 				onValueChange.getSource().setHelperText( onValueChange.getValue().length() + "/" + charLimit );
 			} );
-			existingFrameView.setValue( "Paste copied iframe code from the map here.." );
+			existingFrameView.setValue( existingSchoolItem.getIframe() );
 
 			final var existingOfferSelect = new Select< Offer >();
-			existingOfferSelect.setItems( offerService.list() );
+			existingOfferSelect.setItems( offersData );
 			existingOfferSelect.setItemLabelGenerator( Offer :: getTitle );
+			existingOfferSelect.setEmptySelectionAllowed( false );
+			existingOfferSelect.setValue( existingSchoolItem.getOffer() );
 
 			final var updateSchoolButton = new Button( "Update offer", onSave -> {
 				existingSchoolItem.setTitle( existingTitleField.getValue() );
@@ -130,11 +136,12 @@ public class OfferIDetailsView extends VerticalLayout {
 				existingSchoolItem.setLatitude( Float.parseFloat( existingCoordinatesArr[ 0 ] ) );
 				existingSchoolItem.setLongitude( Float.parseFloat( existingCoordinatesArr[ 1 ] ) );
 				existingSchoolItem.setOffer( existingOfferSelect.getValue() );
-				schoolService.update( existingSchoolItem );
+				final School updatedSchoolItem = schoolService.update( existingSchoolItem );
+				notifySchoolUpdatedSuccess( updatedSchoolItem );
 			} );
 			updateSchoolButton.setWidthFull();
 
-			existingSchoolItemLayout.add( existingTitleField, existingPhoneField,
+			existingSchoolItemLayout.add( existingOfferSelect, existingTitleField, existingPhoneField,
 					existingCoordinatesField, existingFrameView, updateSchoolButton );
 			existingSchoolsLayout.addAndExpand( existingSchoolItemLayout );
 		}
@@ -147,6 +154,13 @@ public class OfferIDetailsView extends VerticalLayout {
 		setJustifyContentMode( JustifyContentMode.CENTER );
 		setDefaultHorizontalComponentAlignment( Alignment.CENTER );
 		getStyle().set( "text-align", "center" );
+	}
+
+
+	private void notifySchoolUpdatedSuccess( final School school ) {
+
+		Notification.show( String.format( "School %s is updated.", school.getId() ), 3000, Notification.Position.BOTTOM_CENTER ).open();
+
 	}
 
 }

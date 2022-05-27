@@ -32,10 +32,17 @@ public class NinjaSchoolView extends VerticalLayout {
 				offersButton.getUI().ifPresent( ui ->
 						ui.navigate( OffersView.class ) )
 		);
-
 		offersButton.setWidthFull();
 
-		navLayout.add( offersButton );
+		final var offerDetailsButton = new NativeButton( "Offer Details" );
+		offerDetailsButton.addClickListener( onClick ->
+				offerDetailsButton.getUI().ifPresent( ui ->
+						ui.navigate( OfferDetailsView.class ) )
+		);
+
+		offerDetailsButton.setWidthFull();
+
+		navLayout.add( offersButton, offerDetailsButton );
 		navLayout.setSizeFull();
 		navLayout.setAlignItems( Alignment.STRETCH );
 		navLayout.getStyle().set( "text-align", "center" );
