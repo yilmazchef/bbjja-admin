@@ -19,7 +19,7 @@ import java.util.Set;
 @ToString ( onlyExplicitlyIncluded = true )
 @EqualsAndHashCode ( onlyExplicitlyIncluded = true, callSuper = true )
 @NoArgsConstructor
-@Accessors (chain = true )
+@Accessors ( chain = true )
 // JPA & HIBERNATE
 @Entity
 @Table ( name = "users" )
@@ -47,6 +47,7 @@ public class User extends AEntity {
 
 	@Enumerated ( EnumType.STRING )
 	@ElementCollection ( fetch = FetchType.EAGER )
+	@Column ( name = "roles" )
 	private Set< Role > roles;
 	@Lob
 	@Type ( type = "org.hibernate.type.TextType" )

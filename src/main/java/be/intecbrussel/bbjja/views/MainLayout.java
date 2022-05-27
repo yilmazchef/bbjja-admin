@@ -2,6 +2,7 @@ package be.intecbrussel.bbjja.views;
 
 
 import be.intecbrussel.bbjja.views.grappling.SchoolGrapplingView;
+import be.intecbrussel.bbjja.views.grappling.StreetGrapplingView;
 import be.intecbrussel.bbjja.views.home.SlidesView;
 import be.intecbrussel.bbjja.views.home.SubscribersView;
 import be.intecbrussel.bbjja.views.ninjaschool.OffersView;
@@ -25,7 +26,7 @@ public class MainLayout extends AppLayout {
 				createTab( "Home -> Slides", SlidesView.class ),
 				createTab( "Ninja School -> Offers", OffersView.class ),
 				createTab( "Grappling -> School", SchoolGrapplingView.class ),
-				createTab( "Grappling -> Street", SchoolGrapplingView.class ),
+				createTab( "Grappling -> Street", StreetGrapplingView.class ),
 				createTab( "Admin -> Users", UsersView.class ),
 				createTab( "Admin -> Subscribers", SubscribersView.class )
 		);
