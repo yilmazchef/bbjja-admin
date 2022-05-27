@@ -34,6 +34,7 @@ public class ProfileView extends VerticalLayout {
 			final var emailField = new TextField( "Email" );
 			emailField.setValue( u.getEmail() );
 			final var usernameField = new TextField( "Username" );
+			usernameField.setValue( u.getUsername() );
 			final var passwordField = new PasswordField( "Password" );
 			final var confirmPasswordField = new PasswordField( "Confirm password" );
 
