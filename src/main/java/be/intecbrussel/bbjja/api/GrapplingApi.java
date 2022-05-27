@@ -7,13 +7,17 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
-import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
+import javax.annotation.security.PermitAll;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
-@Service
+@RestController
+@RequestMapping ( value = "api/grappling" )
+@PermitAll
 public class GrapplingApi {
 
 	private final GrapplingService repository;

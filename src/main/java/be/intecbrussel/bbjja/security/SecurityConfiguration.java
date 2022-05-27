@@ -1,5 +1,6 @@
 package be.intecbrussel.bbjja.security;
 
+
 import be.intecbrussel.bbjja.views.LoginView;
 import com.vaadin.flow.spring.security.VaadinWebSecurityConfigurerAdapter;
 import org.springframework.context.annotation.Bean;
@@ -14,23 +15,30 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 @Configuration
 public class SecurityConfiguration extends VaadinWebSecurityConfigurerAdapter {
 
-    public static final String LOGOUT_URL = "/";
+	public static final String LOGOUT_URL = "/";
 
-    @Bean
-    public PasswordEncoder passwordEncoder() {
-        return new BCryptPasswordEncoder();
-    }
 
-    @Override
-    protected void configure(HttpSecurity http) throws Exception {
+	@Bean
+	public PasswordEncoder passwordEncoder() {
 
-        super.configure(http);
-        setLoginView(http, LoginView.class, LOGOUT_URL);
-    }
+		return new BCryptPasswordEncoder();
+	}
 
-    @Override
-    public void configure(WebSecurity web) throws Exception {
-        super.configure(web);
-        web.ignoring().antMatchers("/images/*.png");
-    }
+
+	@Override
+	protected void configure( HttpSecurity http ) throws Exception {
+
+		super.configure( http );
+		http.authorizeRequests().antMatchers( "/api/*" ).hasRole( "ADMIN" );
+		setLoginView( http, LoginView.class, LOGOUT_URL );
+	}
+
+
+	@Override
+	public void configure( WebSecurity web ) throws Exception {
+
+		super.configure( web );
+		web.ignoring().antMatchers( "/images/*.png" );
+	}
+
 }

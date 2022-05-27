@@ -9,6 +9,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.web.bind.annotation.*;
 
+import javax.annotation.security.PermitAll;
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 import java.util.List;
@@ -17,6 +18,7 @@ import java.util.UUID;
 
 @RestController
 @RequestMapping ( value = EndPoints.EMPLOYEE_CLASS_LEVEL )
+@PermitAll
 public class EmployeeApi {
 
 	private final EmployeeService employeeService;
