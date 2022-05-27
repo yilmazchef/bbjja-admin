@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -20,61 +21,62 @@ import java.util.UUID;
 @PermitAll
 public class SubscriberApi {
 
-	private final SubscriberService repository;
+	private final SubscriberService subscriberService;
 
 
 	@Autowired
-	public SubscriberApi( final SubscriberService repository ) {
+	public SubscriberApi( final SubscriberService subscriberService ) {
 
-		this.repository = repository;
+		this.subscriberService = subscriberService;
 	}
 
 
 	public Optional< Subscriber > get( UUID id ) {
 
-		return repository.get( id );
+		return subscriberService.get( id );
 	}
 
 
 	public Optional< Subscriber > get( final String email ) {
 
-		return repository.get( email );
+		return subscriberService.get( email );
 	}
 
 
 	public Subscriber update( Subscriber entity ) {
 
-		return repository.update( entity );
+		return subscriberService.update( entity );
 	}
 
 
 	public void delete( UUID id ) {
 
-		repository.delete( id );
+		subscriberService.delete( id );
 	}
 
 
 	public Page< Subscriber > list( Pageable pageable ) {
 
-		return repository.list( pageable );
+		return subscriberService.list( pageable );
 	}
 
 
+	@GetMapping ( "all" )
 	public List< Subscriber > list() {
 
-		return repository.list();
+		return subscriberService.list();
 	}
 
 
 	public List< Subscriber > list( final Sort sort ) {
 
-		return repository.list( sort );
+		return subscriberService.list( sort );
 	}
 
 
 	public int count() {
 
-		return ( int ) repository.count();
+		return ( int ) subscriberService.count();
 	}
 
 }

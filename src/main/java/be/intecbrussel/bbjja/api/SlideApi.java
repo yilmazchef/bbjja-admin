@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -20,59 +21,60 @@ import java.util.UUID;
 @PermitAll
 public class SlideApi {
 
-	private final SlideService repository;
+	private final SlideService slideService;
 
 
 	@Autowired
-	public SlideApi( final SlideService repository ) {
+	public SlideApi( final SlideService slideService ) {
 
-		this.repository = repository;
+		this.slideService = slideService;
 	}
 
 
 	public Optional< Slide > get( UUID id ) {
 
-		return repository.get( id );
+		return slideService.get( id );
 	}
 
 	public Slide create( Slide entity ) {
 
-		return repository.create( entity );
+		return slideService.create( entity );
 	}
 
 	public Slide update( Slide entity ) {
 
-		return repository.create( entity );
+		return slideService.create( entity );
 	}
 
 
 	public void delete( UUID id ) {
 
-		repository.delete( id );
+		slideService.delete( id );
 	}
 
 
 	public Page< Slide > list( Pageable pageable ) {
 
-		return repository.list( pageable );
+		return slideService.list( pageable );
 	}
 
 
+	@GetMapping ( "all" )
 	public List< Slide > list() {
 
-		return repository.list();
+		return slideService.list();
 	}
 
 
 	public List< Slide > list( final Sort sort ) {
 
-		return repository.list( sort );
+		return slideService.list( sort );
 	}
 
 
 	public int count() {
 
-		return ( int ) repository.count();
+		return ( int ) slideService.count();
 	}
 
 }

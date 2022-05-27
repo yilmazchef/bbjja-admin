@@ -6,6 +6,7 @@ import be.intecbrussel.bbjja.data.service.PageService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -19,61 +20,62 @@ import java.util.UUID;
 @PermitAll
 public class PageApi {
 
-	private final PageService repository;
+	private final PageService pageService;
 
 
 	@Autowired
-	public PageApi( final PageService repository ) {
+	public PageApi( final PageService pageService ) {
 
-		this.repository = repository;
+		this.pageService = pageService;
 	}
 
 
 	public Optional< Page > get( UUID id ) {
 
-		return repository.get( id );
+		return pageService.get( id );
 	}
 
 
 	public Page create( Page entity ) {
 
-		return repository.create( entity );
+		return pageService.create( entity );
 	}
 
 
 	public Page update( Page entity ) {
 
-		return repository.create( entity );
+		return pageService.create( entity );
 	}
 
 
 	public void delete( UUID id ) {
 
-		repository.delete( id );
+		pageService.delete( id );
 	}
 
 
 	public org.springframework.data.domain.Page< Page > list( Pageable pageable ) {
 
-		return repository.list( pageable );
+		return pageService.list( pageable );
 	}
 
 
+	@GetMapping ( "all" )
 	public List< Page > list() {
 
-		return repository.list();
+		return pageService.list();
 	}
 
 
 	public List< Page > list( final Sort sort ) {
 
-		return repository.list( sort );
+		return pageService.list( sort );
 	}
 
 
 	public int count() {
 
-		return ( int ) repository.count();
+		return ( int ) pageService.count();
 	}
 
 }

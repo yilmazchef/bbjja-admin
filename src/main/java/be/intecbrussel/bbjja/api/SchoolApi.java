@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -20,59 +21,60 @@ import java.util.UUID;
 @PermitAll
 public class SchoolApi {
 
-	private final SchoolService repository;
+	private final SchoolService schoolService;
 
 
 	@Autowired
-	public SchoolApi( final SchoolService repository ) {
+	public SchoolApi( final SchoolService schoolService ) {
 
-		this.repository = repository;
+		this.schoolService = schoolService;
 	}
 
 
 	public Optional< School > get( UUID id ) {
 
-		return repository.get( id );
+		return schoolService.get( id );
 	}
 
 	public School create( School entity ) {
 
-		return repository.create( entity );
+		return schoolService.create( entity );
 	}
 
 	public School update( School entity ) {
 
-		return repository.update( entity );
+		return schoolService.update( entity );
 	}
 
 
 	public void delete( UUID id ) {
 
-		repository.delete( id );
+		schoolService.delete( id );
 	}
 
 
 	public Page< School > list( Pageable pageable ) {
 
-		return repository.list( pageable );
+		return schoolService.list( pageable );
 	}
 
 
+	@GetMapping ( "all" )
 	public List< School > list() {
 
-		return repository.list();
+		return schoolService.list();
 	}
 
 
 	public List< School > list( final Sort sort ) {
 
-		return repository.list( sort );
+		return schoolService.list( sort );
 	}
 
 
 	public int count() {
 
-		return ( int ) repository.count();
+		return ( int ) schoolService.count();
 	}
 
 }

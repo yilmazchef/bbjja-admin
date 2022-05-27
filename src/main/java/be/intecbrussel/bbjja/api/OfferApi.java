@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -20,61 +21,62 @@ import java.util.UUID;
 @PermitAll
 public class OfferApi {
 
-	private final OfferService repository;
+	private final OfferService offerService;
 
 
 	@Autowired
-	public OfferApi( final OfferService repository ) {
+	public OfferApi( final OfferService offerService ) {
 
-		this.repository = repository;
+		this.offerService = offerService;
 	}
 
 
 	public Optional< Offer > get( UUID id ) {
 
-		return repository.get( id );
+		return offerService.get( id );
 	}
 
 
 	public Offer create( Offer entity ) {
 
-		return repository.create( entity );
+		return offerService.create( entity );
 	}
 
 
 	public Offer update( Offer entity ) {
 
-		return repository.update( entity );
+		return offerService.update( entity );
 	}
 
 
 	public void delete( UUID id ) {
 
-		repository.delete( id );
+		offerService.delete( id );
 	}
 
 
 	public Page< Offer > list( Pageable pageable ) {
 
-		return repository.list( pageable );
+		return offerService.list( pageable );
 	}
 
 
+	@GetMapping ( "all" )
 	public List< Offer > list() {
 
-		return repository.list();
+		return offerService.list();
 	}
 
 
 	public List< Offer > list( final Sort sort ) {
 
-		return repository.list( sort );
+		return offerService.list( sort );
 	}
 
 
 	public int count() {
 
-		return repository.count();
+		return offerService.count();
 	}
 
 }
