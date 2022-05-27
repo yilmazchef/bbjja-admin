@@ -84,6 +84,7 @@ public class SchoolGrapplingView extends VerticalLayout {
 
 			// TODO: experimental
 			final var existingGrapplingItemYTVideo = new YouTubeVideo( existingGrapplingItem.getVideoUrl() );
+			existingGrapplingItemYTVideo.setSize( "100%", "320px"  );
 
 			final var existingGrapplingItemIntroduction = new H2( existingGrapplingItem.getIntroduction() );
 			final var existingGrapplingItemPractice = new Paragraph( existingGrapplingItem.getPractice() );
@@ -114,6 +115,7 @@ public class SchoolGrapplingView extends VerticalLayout {
 
 			final var updateGrapplingVideoField = new TextField( "Video URL" );
 			updateGrapplingVideoField.setWidthFull();
+			updateGrapplingVideoField.setHeight( "320px" );
 			updateGrapplingVideoField.setValue( existingGrapplingItem.getVideoUrl() );
 
 			final var updateButton = new Button( "Update school grappling", onClick -> {

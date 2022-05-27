@@ -18,12 +18,15 @@ import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.data.renderer.ComponentRenderer;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
+import com.vaadin.flow.router.RouteAlias;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import javax.annotation.security.RolesAllowed;
 
 @PageTitle ( "About (Teams/Partners)" )
 @Route ( value = "about", layout = MainLayout.class )
+@RouteAlias ( value = "teams", layout = MainLayout.class )
+@RouteAlias ( value = "partners", layout = MainLayout.class )
 @RolesAllowed ( "ADMIN" )
 public class AboutView extends VerticalLayout {
 
@@ -86,7 +89,7 @@ public class AboutView extends VerticalLayout {
 			existingEmployeeLastNameField.setValue( existingEmployeeItem.getLastName() );
 
 			final var existingEmployeeJobTitleField = new TextField( "Job title" );
-			existingEmployeeJobTitleField.setValue( existingEmployeeItem.getLastName() );
+			existingEmployeeJobTitleField.setValue( existingEmployeeItem.getJobTitle() );
 
 			final var existingEmployeeProfileImageLoader = new Image(
 					existingEmployeeItem.getProfilePictureUrl(),
@@ -153,10 +156,13 @@ public class AboutView extends VerticalLayout {
 
 			updateEmployeeLayout.add( updateEmployeeButton );
 
-			accordion.add( String.format( "Edit %s %s.", existingEmployeeItem.getFirstName(), existingEmployeeItem.getLastName() ),
-					updateEmployeeLayout );
+			accordion.add(
+					String.format( "Edit %s %s.", existingEmployeeItem.getFirstName(), existingEmployeeItem.getLastName() ),
+					updateEmployeeLayout
+			);
 		}
 
+		accordion.open( 0 );
 		add( accordion );
 
 		setSizeFull();

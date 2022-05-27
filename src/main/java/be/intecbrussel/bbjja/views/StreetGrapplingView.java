@@ -84,6 +84,7 @@ public class StreetGrapplingView extends VerticalLayout {
 
 			// TODO: experimental
 			final var existingGrapplingItemYTVideo = new YouTubeVideo( existingGrapplingItem.getVideoUrl() );
+			existingGrapplingItemYTVideo.setSize( "100%", "320px"  );
 
 			final var existingGrapplingItemIntroduction = new H2( existingGrapplingItem.getIntroduction() );
 			final var existingGrapplingItemPractice = new Paragraph( existingGrapplingItem.getPractice() );
