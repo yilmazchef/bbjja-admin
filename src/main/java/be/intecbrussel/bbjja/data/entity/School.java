@@ -3,6 +3,7 @@ package be.intecbrussel.bbjja.data.entity;
 
 import lombok.*;
 import lombok.experimental.Accessors;
+import org.hibernate.annotations.Type;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotEmpty;
@@ -37,6 +38,12 @@ public class School extends AEntity {
 	@Column ( nullable = false )
 	@NotNull
 	private Float longitude;
+
+	// TODO: REGEX for iframe, experimental.
+	// @Pattern ( regexp = "(?<=src=\").*?(?=[\\?\"])\n", message = "iframe format is invalid" )
+	@Lob
+	@Type ( type = "org.hibernate.type.TextType" )
+	private String iframe;
 
 	@ManyToOne
 	@JoinColumn ( name = "offer_id" )

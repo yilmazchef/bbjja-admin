@@ -2,7 +2,7 @@ package be.intecbrussel.bbjja.views.home;
 
 
 import be.intecbrussel.bbjja.data.entity.Subscriber;
-import be.intecbrussel.bbjja.data.service.SubscriptionService;
+import be.intecbrussel.bbjja.data.service.SubscriberService;
 import be.intecbrussel.bbjja.security.AuthenticatedUser;
 import be.intecbrussel.bbjja.views.MainLayout;
 import com.vaadin.flow.component.button.Button;
@@ -29,7 +29,7 @@ import java.util.List;
 public class SubscribersView extends VerticalLayout {
 
 	private final AuthenticatedUser user;
-	private final SubscriptionService service;
+	private final SubscriberService service;
 
 	private Grid< Subscriber > grid;
 	private Div hint;
@@ -37,7 +37,7 @@ public class SubscribersView extends VerticalLayout {
 	private final List< Subscriber > subscribersData = new ArrayList<>();
 
 
-	public SubscribersView( final AuthenticatedUser user, final SubscriptionService service ) {
+	public SubscribersView( final AuthenticatedUser user, final SubscriberService service ) {
 
 		this.user = user;
 		this.service = service;

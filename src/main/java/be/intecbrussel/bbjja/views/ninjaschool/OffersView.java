@@ -40,8 +40,8 @@ public class OffersView extends VerticalLayout {
 
 		final var newOfferTitle = new TextField( "Offer Title" );
 		newOfferTitle.setWidthFull();
-		int charLimit = 600;
 
+		int charLimit = 600;
 		final var newOfferDescription = new TextArea();
 		newOfferDescription.setWidthFull();
 		newOfferDescription.setLabel( "Offer Description" );

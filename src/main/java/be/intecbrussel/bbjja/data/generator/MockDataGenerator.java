@@ -2,14 +2,8 @@ package be.intecbrussel.bbjja.data.generator;
 
 
 import be.intecbrussel.bbjja.data.Role;
-import be.intecbrussel.bbjja.data.entity.Page;
-import be.intecbrussel.bbjja.data.entity.Slide;
-import be.intecbrussel.bbjja.data.entity.Subscriber;
-import be.intecbrussel.bbjja.data.entity.User;
-import be.intecbrussel.bbjja.data.service.PageRepository;
-import be.intecbrussel.bbjja.data.service.SlideRepository;
-import be.intecbrussel.bbjja.data.service.SubscriberRepository;
-import be.intecbrussel.bbjja.data.service.UserRepository;
+import be.intecbrussel.bbjja.data.entity.*;
+import be.intecbrussel.bbjja.data.service.*;
 import com.vaadin.flow.spring.annotation.SpringComponent;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.CommandLineRunner;
@@ -26,6 +20,7 @@ public class MockDataGenerator {
 	public CommandLineRunner loadData( PasswordEncoder passwordEncoder,
 	                                   UserRepository userRepository, SlideRepository slideRepository,
 	                                   PageRepository pageRepository, SubscriberRepository subscriberRepository,
+	                                   OfferRepository offerRepository,
 	                                   MockPhotoGenerator photoGenerator ) {
 
 		return args -> {
@@ -117,6 +112,41 @@ public class MockDataGenerator {
 
 			}
 
+			final var contactPage = new Page()
+					.setTitle( "Contact page title! " )
+					.setSlug( "contact01" )
+					.setDescription( "Contact page description here..." );
+
+			final var savedContactPage = pageRepository.save( contactPage );
+
+			final var ninjaSchoolPage = new Page()
+					.setTitle( "Ninja school page title! " )
+					.setSlug( "ninjaSchool01" )
+					.setDescription( "Ninja school page description here..." );
+
+			final var savedNinjaSchoolPage = pageRepository.save( ninjaSchoolPage );
+
+			for ( int index = 0; index < 4; index++ ) {
+				final var offer = new Offer();
+				offer.setTitle( String.format( "Ninja school offer title %d", index ) );
+				offer.setDescription( String.format( "Ninja school offer description: %d", index ) );
+				offer.setForwardUrl( String.format( "https://www.bbjja.be/offers/%d", index ));
+				offer.setPage( ninjaSchoolPage );
+
+				final var savedOffer = offerRepository.save( offer );
+
+				for ( int subIndex = 0; subIndex < 25; subIndex++ ) {
+					final var offeredSchool = new School();
+					offeredSchool.setTitle( String.format( "Ninja school title %s offered school title %d", index, subIndex ) );
+					offeredSchool.setPhone( "+32455611509" );
+					offeredSchool.setLatitude( 50.85994129672338F );
+					offeredSchool.setLongitude( 4.3374293534765815F );
+					offeredSchool.setIframe( "<iframe src=\"https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2518.4537430783535!2d4.334736415506741!3d50.85979907953399!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x47c3c392bd96d221%3A0x5d49a8f080c28411!2sBrussel%20Brazilian%20Jiu-Jitsu%20Academy!5e0!3m2!1sen!2sbe!4v1653630213331!5m2!1sen!2sbe\" width=\"800\" height=\"600\" style=\"border:0;\" allowfullscreen=\"\" loading=\"lazy\" referrerpolicy=\"no-referrer-when-downgrade\"></iframe>" );
+
+					offeredSchool.setOffer( savedOffer );
+				}
+
+			}
 
 			logger.info( "Generated mock data with a user, an editor, and an admin." );
 		};
