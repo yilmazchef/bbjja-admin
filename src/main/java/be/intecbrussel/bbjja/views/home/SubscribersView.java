@@ -75,9 +75,10 @@ public class SubscribersView extends VerticalLayout {
 		comboBox.setWidthFull();
 		comboBox.setItemLabelGenerator( s -> String.format( "%s %s | %s", s.getFirstName(), s.getLastName(), s.getEmail() ) );
 
-		final var button = new Button( "Send invite" );
-		button.addThemeVariants( ButtonVariant.LUMO_PRIMARY );
-		button.addClickListener( e -> {
+		final var sendInviteButton = new Button( "Send invite" );
+		sendInviteButton.setWidthFull();
+		sendInviteButton.addThemeVariants( ButtonVariant.LUMO_PRIMARY );
+		sendInviteButton.addClickListener( e -> {
 
 			if ( comboBox.getValue() == null || subscribersData.contains( comboBox.getValue() ) ) {
 				return;
@@ -90,7 +91,7 @@ public class SubscribersView extends VerticalLayout {
 			comboBox.setValue( null );
 		} );
 
-		final var invitationLayout = new HorizontalLayout( comboBox, button );
+		final var invitationLayout = new HorizontalLayout( comboBox, sendInviteButton );
 		invitationLayout.setFlexGrow( 1, comboBox );
 
 		add( invitationLayout, subscribersGrid );
