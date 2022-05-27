@@ -6,7 +6,7 @@ import be.intecbrussel.bbjja.data.entity.Grappling.GrapplingType;
 import be.intecbrussel.bbjja.data.service.GrapplingService;
 import be.intecbrussel.bbjja.security.AuthenticatedUser;
 import be.intecbrussel.bbjja.views.MainLayout;
-import be.intecbrussel.bbjja.views.layouts.VideoLayout;
+import be.intecbrussel.bbjja.views.layouts.YouTubeVideo;
 import com.vaadin.flow.component.accordion.Accordion;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.html.H2;
@@ -83,19 +83,26 @@ public class SchoolGrapplingView extends VerticalLayout {
 		for ( final var existingGrapplingItem : existingGrapplingData ) {
 
 			final var existingGrapplingItemLayout = new VerticalLayout();
-			final var existingGrapplingItemVideo = new VideoLayout( existingGrapplingItem.getVideoUrl() );
-			existingGrapplingItemVideo.setWidthFull();
+
+			// TODO: experimental
+			final var existingGrapplingItemYTVideo = new YouTubeVideo(  existingGrapplingItem.getVideoUrl());
+
 			final var existingGrapplingItemIntroduction = new H2( existingGrapplingItem.getIntroduction() );
-			final var existingGrapplingItemDetails = new Paragraph( "Grappling description, slogan, message, detailed content etc. is written here. 🤗" );
-			existingGrapplingItemLayout.add( existingGrapplingItemVideo, existingGrapplingItemIntroduction, existingGrapplingItemDetails );
+			final var existingGrapplingItemPractice = new Paragraph( existingGrapplingItem.getPractice() );
+			existingGrapplingItemLayout.add(
+					existingGrapplingItemIntroduction, existingGrapplingItemPractice,
+					existingGrapplingItemYTVideo
+			);
 
 			final var updateGrapplingLayout = new VerticalLayout();
 			updateGrapplingLayout.setPadding( false );
 			updateGrapplingLayout.setSpacing( false );
-			final var updateGrapplingTitleField = new TextField( "Title" );
-			updateGrapplingTitleField.setWidthFull();
+			final var updateGrapplingIntroField = new TextField( "Title" );
+			updateGrapplingIntroField.setWidthFull();
+			updateGrapplingIntroField.setValue( existingGrapplingItem.getIntroduction() );
 			final var updateGrapplingForWhoField = new TextField( "For Who?" );
 			updateGrapplingForWhoField.setWidthFull();
+			updateGrapplingForWhoField.setValue( existingGrapplingItem.getForWho() );
 
 			final var updateGrapplingPracticeArea = new TextArea();
 			updateGrapplingPracticeArea.setWidthFull();
@@ -109,12 +116,13 @@ public class SchoolGrapplingView extends VerticalLayout {
 
 			final var updateGrapplingVideoField = new TextField( "Video URL" );
 			updateGrapplingVideoField.setWidthFull();
+			updateGrapplingVideoField.setValue( existingGrapplingItem.getVideoUrl() );
 
 			final var updateButton = new Button( "Update Grappling", onClick -> {
 				if ( ! updateGrapplingVideoField.getValue().isEmpty() ) {
 					final var oldURL = existingGrapplingItem.getVideoUrl();
 					final var newURL = updateGrapplingVideoField.getValue();
-					final var newTitle = updateGrapplingTitleField.getValue();
+					final var newTitle = updateGrapplingIntroField.getValue();
 					final var newForWho = updateGrapplingForWhoField.getValue();
 					existingGrapplingItem.setIntroduction( newTitle );
 					existingGrapplingItem.setVideoUrl( newURL );
@@ -125,7 +133,7 @@ public class SchoolGrapplingView extends VerticalLayout {
 			} );
 			updateButton.setWidthFull();
 			updateGrapplingLayout.addAndExpand(
-					updateGrapplingTitleField, updateGrapplingForWhoField,
+					updateGrapplingIntroField, updateGrapplingForWhoField,
 					updateGrapplingVideoField, updateGrapplingPracticeArea,
 					updateButton
 			);

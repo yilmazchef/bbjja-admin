@@ -18,6 +18,7 @@ import com.vaadin.flow.data.renderer.ComponentRenderer;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
 
 import javax.annotation.security.RolesAllowed;
 
@@ -30,7 +31,7 @@ public class SubscribersView extends VerticalLayout {
 	@Autowired
 	public SubscribersView( final AuthenticatedUser authenticatedUser, final SubscriberService subscriberService ) {
 
-		final var subscribersData = subscriberService.list();
+		final var subscribersData = subscriberService.list( PageRequest.of( 1, 25 ) ).toList();
 
 		final var subscribersGrid = new Grid<>( Subscriber.class, false );
 		subscribersGrid.setAllRowsVisible( true );
@@ -71,6 +72,7 @@ public class SubscribersView extends VerticalLayout {
 
 		final var comboBox = new ComboBox< Subscriber >();
 		comboBox.setItems( subscribersData );
+		comboBox.setWidthFull();
 		comboBox.setItemLabelGenerator( s -> String.format( "%s %s | %s", s.getFirstName(), s.getLastName(), s.getEmail() ) );
 
 		final var button = new Button( "Send invite" );

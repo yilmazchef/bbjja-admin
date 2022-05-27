@@ -29,7 +29,7 @@ public class MainLayout extends AppLayout {
 				createTab( "Admin -> Users", UsersView.class ),
 				createTab( "Admin -> Subscribers", SubscribersView.class )
 		);
-		tabs.addThemeVariants( TabsVariant.LUMO_CENTERED, TabsVariant.LUMO_EQUAL_WIDTH_TABS );
+		tabs.addThemeVariants( TabsVariant.LUMO_CENTERED, TabsVariant.LUMO_SMALL );
 		addToNavbar( true, tabs );
 	}
 

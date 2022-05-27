@@ -7,7 +7,7 @@ import be.intecbrussel.bbjja.data.service.OfferService;
 import be.intecbrussel.bbjja.data.service.SchoolService;
 import be.intecbrussel.bbjja.security.AuthenticatedUser;
 import be.intecbrussel.bbjja.views.MainLayout;
-import be.intecbrussel.bbjja.views.layouts.VideoLayout;
+import be.intecbrussel.bbjja.views.layouts.Video;
 import com.vaadin.flow.component.accordion.Accordion;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.notification.Notification;
@@ -50,8 +50,7 @@ public class OfferDetailsView extends VerticalLayout {
 		newSchoolCoordinates.setPlaceholder( "50.85994129672338, 4.3374293534765815" );
 		newSchoolCoordinates.setWidthFull();
 
-		final var newFrameVideo = new VideoLayout( "media/maps.mp4" );
-		newFrameVideo.setWidthFull();
+		final var newFrameVideo = new Video( "./videos/maps.mp4" );
 		add( newFrameVideo );
 
 		int charLimit = 2048;
