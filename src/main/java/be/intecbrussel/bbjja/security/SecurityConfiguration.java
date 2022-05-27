@@ -29,7 +29,6 @@ public class SecurityConfiguration extends VaadinWebSecurityConfigurerAdapter {
 	protected void configure( HttpSecurity http ) throws Exception {
 
 		super.configure( http );
-		http.authorizeRequests().antMatchers( "/api/*" ).hasRole( "ADMIN" );
 		setLoginView( http, LoginView.class, LOGOUT_URL );
 	}
 
@@ -38,7 +37,7 @@ public class SecurityConfiguration extends VaadinWebSecurityConfigurerAdapter {
 	public void configure( WebSecurity web ) throws Exception {
 
 		super.configure( web );
-		web.ignoring().antMatchers( "/images/*.png" );
+		web.ignoring().antMatchers( "/images/*.png", "api/*" );
 	}
 
 }
