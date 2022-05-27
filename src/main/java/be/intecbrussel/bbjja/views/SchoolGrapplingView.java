@@ -45,7 +45,7 @@ public class SchoolGrapplingView extends VerticalLayout {
 		int charLimit = 2000;
 		final var newGrapplingPracticeArea = new TextArea();
 		newGrapplingPracticeArea.setWidthFull();
-		newGrapplingPracticeArea.setLabel( "Article Description" );
+		newGrapplingPracticeArea.setLabel( "Practice" );
 		newGrapplingPracticeArea.setMaxLength( charLimit );
 		newGrapplingPracticeArea.setValueChangeMode( ValueChangeMode.EAGER );
 		newGrapplingPracticeArea.addValueChangeListener( onValueChange -> {
@@ -56,7 +56,7 @@ public class SchoolGrapplingView extends VerticalLayout {
 
 		final var newGrapplingVideoField = new TextField( "Video URL" );
 		newGrapplingVideoField.setWidthFull();
-		final var newGrapplingButton = new Button( "Add new grappling", onClick -> {
+		final var newGrapplingButton = new Button( "Submit new school grappling request", onClick -> {
 			if ( ! newGrapplingVideoField.getValue().isEmpty() ) {
 				final var newGrappling = ( Grappling ) new Grappling()
 						.setVideoUrl( newGrapplingVideoField.getValue() )
@@ -75,7 +75,7 @@ public class SchoolGrapplingView extends VerticalLayout {
 				newGrapplingVideoField, newGrapplingPracticeArea,
 				newGrapplingButton
 		);
-		accordion.add( "Add New Grappling", newGrapplingLayout );
+		accordion.add( "Add new school grappling", newGrapplingLayout );
 
 		final var existingGrapplingData = grapplingService.school();
 		for ( final var existingGrapplingItem : existingGrapplingData ) {
@@ -104,7 +104,7 @@ public class SchoolGrapplingView extends VerticalLayout {
 
 			final var updateGrapplingPracticeArea = new TextArea();
 			updateGrapplingPracticeArea.setWidthFull();
-			updateGrapplingPracticeArea.setLabel( "Description" );
+			updateGrapplingPracticeArea.setLabel( "Practice" );
 			updateGrapplingPracticeArea.setMaxLength( charLimit );
 			updateGrapplingPracticeArea.setValueChangeMode( ValueChangeMode.EAGER );
 			updateGrapplingPracticeArea.addValueChangeListener( onValueChange -> {
@@ -116,7 +116,7 @@ public class SchoolGrapplingView extends VerticalLayout {
 			updateGrapplingVideoField.setWidthFull();
 			updateGrapplingVideoField.setValue( existingGrapplingItem.getVideoUrl() );
 
-			final var updateButton = new Button( "Update Grappling", onClick -> {
+			final var updateButton = new Button( "Update school grappling", onClick -> {
 				if ( ! updateGrapplingVideoField.getValue().isEmpty() ) {
 					final var oldURL = existingGrapplingItem.getVideoUrl();
 					final var newURL = updateGrapplingVideoField.getValue();

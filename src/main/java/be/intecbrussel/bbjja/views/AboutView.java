@@ -9,6 +9,7 @@ import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.button.ButtonVariant;
 import com.vaadin.flow.component.formlayout.FormLayout;
 import com.vaadin.flow.component.grid.Grid;
+import com.vaadin.flow.component.html.Image;
 import com.vaadin.flow.component.icon.Icon;
 import com.vaadin.flow.component.icon.VaadinIcon;
 import com.vaadin.flow.component.notification.Notification;
@@ -87,6 +88,14 @@ public class AboutView extends VerticalLayout {
 			final var existingEmployeeJobTitleField = new TextField( "Job title" );
 			existingEmployeeJobTitleField.setValue( existingEmployeeItem.getLastName() );
 
+			final var existingEmployeeProfileImageLoader = new Image(
+					existingEmployeeItem.getProfilePictureUrl(),
+					String.format( "Profile photo for %s %s", existingEmployeeItem.getFirstName(), existingEmployeeItem.getLastName() )
+			);
+
+			final var existingEmployeeProfileImageField = new TextField( "Profile photo URL" );
+			existingEmployeeProfileImageField.setValue( existingEmployeeItem.getProfilePictureUrl() );
+
 			final var updateEmployeeLayout = new FormLayout();
 			updateEmployeeLayout.add(
 					existingEmployeeFirstNameField, existingEmployeeLastNameField,
@@ -99,11 +108,12 @@ public class AboutView extends VerticalLayout {
 					// Use two columns, if layout's width exceeds 500px
 					new FormLayout.ResponsiveStep( "500px", 2 ) );
 
-			final var updateEmployeeButton = new Button( "Submit", onClick -> {
+			final var updateEmployeeButton = new Button( "Update employee info", onClick -> {
 				final var newEmail = existingEmployeeEmailField.getValue();
 				final var newFirstName = existingEmployeeFirstNameField.getValue();
 				final var newLastName = existingEmployeeLastNameField.getValue();
 				final var newJobTitle = existingEmployeeJobTitleField.getValue();
+				final var newProfileImage = existingEmployeeProfileImageField.getValue();
 
 				final var changeAnalyzer = new Object() {
 					Boolean hasAnyChange = Boolean.FALSE;
@@ -115,17 +125,22 @@ public class AboutView extends VerticalLayout {
 				}
 
 				if ( ! existingEmployeeItem.getFirstName().equalsIgnoreCase( newFirstName ) ) {
-					existingEmployeeItem.setFirstName( newEmail );
+					existingEmployeeItem.setFirstName( newFirstName );
 					changeAnalyzer.hasAnyChange = true;
 				}
 
 				if ( ! existingEmployeeItem.getLastName().equalsIgnoreCase( newLastName ) ) {
-					existingEmployeeItem.setLastName( newEmail );
+					existingEmployeeItem.setLastName( newLastName );
 					changeAnalyzer.hasAnyChange = true;
 				}
 
 				if ( ! existingEmployeeItem.getJobTitle().equalsIgnoreCase( newJobTitle ) ) {
-					existingEmployeeItem.setJobTitle( newEmail );
+					existingEmployeeItem.setJobTitle( newJobTitle );
+					changeAnalyzer.hasAnyChange = true;
+				}
+
+				if ( ! existingEmployeeItem.getProfilePictureUrl().equalsIgnoreCase( newProfileImage ) ) {
+					existingEmployeeItem.setProfilePictureUrl( newProfileImage );
 					changeAnalyzer.hasAnyChange = true;
 				}
 
@@ -160,6 +175,7 @@ public class AboutView extends VerticalLayout {
 				Notification.Position.TOP_CENTER
 		).open();
 	}
+
 
 	private void notifyEmployeeUpdated( final Employee employee ) {
 

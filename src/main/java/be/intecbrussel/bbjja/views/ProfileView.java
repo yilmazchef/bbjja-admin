@@ -27,49 +27,52 @@ public class ProfileView extends VerticalLayout {
 
 			final var u = user.get().get();
 
-			final var firstName = new TextField( "First name" );
-			firstName.setValue( u.getFirstName() );
-			final var lastName = new TextField( "Last name" );
-			lastName.setValue( u.getLastName() );
-			final var email = new TextField( "Email" );
-			email.setValue( u.getEmail() );
-			final var username = new TextField( "Username" );
-			final var password = new PasswordField( "Password" );
-			final var confirmPassword = new PasswordField( "Confirm password" );
+			final var firstNameField = new TextField( "First name" );
+			firstNameField.setValue( u.getFirstName() );
+			final var lastNameField = new TextField( "Last name" );
+			lastNameField.setValue( u.getLastName() );
+			final var emailField = new TextField( "Email" );
+			emailField.setValue( u.getEmail() );
+			final var usernameField = new TextField( "Username" );
+			final var passwordField = new PasswordField( "Password" );
+			final var confirmPasswordField = new PasswordField( "Confirm password" );
 
-			final var submit = new Button( "Submit", onClick -> {
-				if ( ! u.getFirstName().equalsIgnoreCase( firstName.getValue() ) ) {
-					u.setFirstName( firstName.getValue() );
+			final var updateProfileButton = new Button( "Update profile", onClick -> {
+				if ( ! u.getFirstName().equalsIgnoreCase( firstNameField.getValue() ) ) {
+					u.setFirstName( firstNameField.getValue() );
 				}
 
-				if ( ! u.getLastName().equalsIgnoreCase( lastName.getValue() ) ) {
-					u.setLastName( lastName.getValue() );
+				if ( ! u.getLastName().equalsIgnoreCase( lastNameField.getValue() ) ) {
+					u.setLastName( lastNameField.getValue() );
 				}
 
-				if ( ! u.getUsername().equalsIgnoreCase( username.getValue() ) ) {
-					u.setUsername( username.getValue() );
+				if ( ! u.getUsername().equalsIgnoreCase( usernameField.getValue() ) ) {
+					u.setUsername( usernameField.getValue() );
 				}
 
-				if ( ! u.getEmail().equalsIgnoreCase( email.getValue() ) ) {
-					u.setEmail( email.getValue() );
+				if ( ! u.getEmail().equalsIgnoreCase( emailField.getValue() ) ) {
+					u.setEmail( emailField.getValue() );
 				}
 
-				if ( ! u.getHashedPassword().equalsIgnoreCase( encoder.encode( password.getValue() ) ) ) {
-					u.setHashedPassword( encoder.encode( password.getValue() ) );
+				if ( ! u.getHashedPassword().equalsIgnoreCase( encoder.encode( passwordField.getValue() ) ) ) {
+					u.setHashedPassword( encoder.encode( passwordField.getValue() ) );
 				}
 
 				service.update( u );
 			} );
 
 			final var formLayout = new FormLayout();
-			formLayout.add( firstName, lastName, username, password, confirmPassword, submit );
+			formLayout.add(
+					firstNameField, lastNameField, usernameField, emailField,
+					passwordField, confirmPasswordField,
+					updateProfileButton
+			);
+
 			formLayout.setResponsiveSteps(
 					// Use one column by default
 					new FormLayout.ResponsiveStep( "0", 1 ),
 					// Use two columns, if layout's width exceeds 500px
 					new FormLayout.ResponsiveStep( "500px", 2 ) );
-			// Stretch the username field over 2 columns
-			formLayout.setColspan( username, 2 );
 			// end::snippet[]
 
 			add( formLayout );
