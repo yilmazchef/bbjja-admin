@@ -4,6 +4,7 @@ package be.intecbrussel.bbjja.data.generator;
 import be.intecbrussel.bbjja.data.Role;
 import be.intecbrussel.bbjja.data.entity.*;
 import be.intecbrussel.bbjja.data.service.*;
+import com.github.javafaker.Faker;
 import com.vaadin.flow.spring.annotation.SpringComponent;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.CommandLineRunner;
@@ -11,6 +12,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.util.Collections;
+import java.util.Locale;
 import java.util.Set;
 
 @SpringComponent
@@ -27,6 +29,7 @@ public class MockDataGenerator {
 			final var logger = LoggerFactory.getLogger( getClass() );
 
 			final var photos = photoGenerator.fetchLocal();
+			final var faker = new Faker( Locale.getDefault() );
 
 			Thread.sleep( 5000 );
 
@@ -37,53 +40,59 @@ public class MockDataGenerator {
 
 			logger.info( "Generating mock data..." );
 
+			final var emailUser = faker.internet().emailAddress();
+			final var usernameUser = "user";
 			final var user = new User()
-					.setFirstName( "John" )
-					.setLastName( "Normal" )
-					.setEmail( "user@bbjja.be" )
-					.setUsername( "user" )
+					.setFirstName( faker.name().firstName() )
+					.setLastName( faker.name().lastName() )
+					.setEmail( emailUser )
+					.setUsername( usernameUser )
 					.setHashedPassword( passwordEncoder.encode( "user" ) )
 					.setProfilePictureUrl(
 							"https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=128&h=128&q=80" )
 					.setRoles( Collections.singleton( Role.USER ) );
 
-			if ( ! userRepository.existsByUsernameOrEmail( "user", "user@bbjja.be" ) ) {
+			if ( ! userRepository.existsByUsernameOrEmail( usernameUser, emailUser ) ) {
 				userRepository.save( user );
 			}
 
+			final var emailEditor = faker.internet().emailAddress();
+			final var usernameEditor = "editor";
 			final var editor = new User()
-					.setFirstName( "Eddy" )
-					.setLastName( "Teour" )
-					.setEmail( "editor@bbjja.be" )
-					.setUsername( "editor" )
+					.setFirstName( faker.name().firstName() )
+					.setLastName( faker.name().lastName() )
+					.setEmail( emailEditor )
+					.setUsername( usernameEditor )
 					.setHashedPassword( passwordEncoder.encode( "editor" ) )
 					.setProfilePictureUrl(
 							"https://images.unsplash.com/photo-1607746882042-944635dfe10e?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=128&h=128&q=80" )
 					.setRoles( Set.of( Role.USER, Role.EDITOR ) );
 
-			if ( ! userRepository.existsByUsernameOrEmail( "editor", "editor@bbjja.be" ) ) {
+			if ( ! userRepository.existsByUsernameOrEmail( usernameEditor, emailEditor ) ) {
 				userRepository.save( editor );
 			}
 
+			final var emailAdmin = faker.internet().emailAddress();
+			final var usernameAdmin = "admin";
 			final var admin = new User()
-					.setFirstName( "Emma Powerful" )
-					.setLastName( "Powerful" )
-					.setEmail( "admin@bbjja.be" )
-					.setUsername( "admin" )
+					.setFirstName( faker.name().firstName() )
+					.setLastName( faker.name().lastName() )
+					.setEmail( emailAdmin )
+					.setUsername( usernameAdmin )
 					.setHashedPassword( passwordEncoder.encode( "admin" ) )
 					.setProfilePictureUrl(
 							"https://images.unsplash.com/photo-1607746882042-944635dfe10e?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=128&h=128&q=80" )
-					.setRoles( Set.of( Role.USER, Role.ADMIN ) );
+					.setRoles( Set.of( Role.USER, Role.EDITOR, Role.ADMIN ) );
 
-			if ( ! userRepository.existsByUsernameOrEmail( "admin", "admin@bbjja.be" ) ) {
+			if ( ! userRepository.existsByUsernameOrEmail( usernameAdmin, emailAdmin ) ) {
 				userRepository.save( admin );
 			}
 
 
 			final var homePage = new Page()
 					.setTitle( "Home page title! " )
-					.setSlug( "home01" )
-					.setDescription( "Home page description here..." );
+					.setSlug( String.format( "https://www.%s.com/", faker.internet().domainName() ) )
+					.setDescription( faker.lorem().paragraph() );
 
 			final var savedHomePage = pageRepository.save( homePage );
 
@@ -91,7 +100,7 @@ public class MockDataGenerator {
 
 				final var newSlide = new Slide()
 						.setImageUrl( photos[ index ].getUrl() )
-						.setTitle( String.format( "Slide %d", index ) );
+						.setTitle( faker.ancient().hero() );
 
 				newSlide.setPage( savedHomePage );
 
@@ -100,11 +109,11 @@ public class MockDataGenerator {
 
 			}
 
-			for ( int index = 0; index < 10; index++ ) {
+			for ( int index = 0; index < 200; index++ ) {
 				final var subscriber = new Subscriber()
-						.setEmail( String.format( "subs%d@cribe.com", index ) )
-						.setFirstName( String.format( "SubFirst %s", index ) )
-						.setLastName( String.format( "SubLast %s", index ) );
+						.setEmail( faker.internet().emailAddress() )
+						.setFirstName( faker.name().firstName() )
+						.setLastName( faker.name().lastName() );
 
 				final Subscriber savedSubscriber = subscriberRepository.save( subscriber );
 				homePage.getSubscribers().add( savedSubscriber );
@@ -115,7 +124,7 @@ public class MockDataGenerator {
 			final var contactPage = new Page()
 					.setTitle( "Contact page title! " )
 					.setSlug( "contact01" )
-					.setDescription( "Contact page description here..." );
+					.setDescription( faker.lorem().paragraph() );
 
 			final var savedContactPage = pageRepository.save( contactPage );
 
@@ -137,7 +146,7 @@ public class MockDataGenerator {
 
 				logger.info( String.format( "A new offer is created with title: %s and url: %s", savedOffer.getTitle(), savedOffer.getForwardUrl() ) );
 
-				for ( int subIndex = 0; subIndex < 25; subIndex++ ) {
+				for ( int subIndex = 0; subIndex < 5; subIndex++ ) {
 					final var schoolOffered = new School();
 					schoolOffered.setTitle( String.format( "Ninja school title %s offered school title %d", index, subIndex ) );
 					schoolOffered.setPhone( "+32455611509" );

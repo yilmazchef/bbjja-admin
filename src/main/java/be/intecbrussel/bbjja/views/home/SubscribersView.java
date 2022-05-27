@@ -18,89 +18,93 @@ import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.data.renderer.ComponentRenderer;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import javax.annotation.security.RolesAllowed;
-import java.util.ArrayList;
-import java.util.List;
 
 @PageTitle ( "Subscribers" )
 @Route ( value = "subscribers", layout = MainLayout.class )
 @RolesAllowed ( "ADMIN" )
 public class SubscribersView extends VerticalLayout {
 
-	private final AuthenticatedUser user;
-	private final SubscriberService service;
 
-	private Grid< Subscriber > grid;
-	private Div hint;
-
-	private final List< Subscriber > subscribersData = new ArrayList<>();
-
-
+	@Autowired
 	public SubscribersView( final AuthenticatedUser user, final SubscriberService service ) {
 
-		this.user = user;
-		this.service = service;
+		final var subscribersData = service.list();
 
-		this.subscribersData.addAll( this.service.list() );
+		final var subscribersGrid = new Grid<>( Subscriber.class, false );
+		subscribersGrid.setAllRowsVisible( true );
+		subscribersGrid.addColumn( Subscriber :: getFirstName ).setHeader( "First Name" );
+		subscribersGrid.addColumn( Subscriber :: getLastName ).setHeader( "Last Name" );
+		subscribersGrid.addColumn( Subscriber :: getEmail ).setHeader( "Email" );
 
-		setupInvitationForm();
-		setupGrid();
-	}
+		final var subscriberHint = new Div();
+		subscriberHint.setText( "No invitation has been sent" );
+		subscriberHint.getStyle()
+				.set( "padding", "var(--lumo-size-l)" )
+				.set( "text-align", "center" )
+				.set( "font-style", "italic" )
+				.set( "color", "var(--lumo-contrast-70pct)" );
+
+		subscribersGrid.addColumn(
+				new ComponentRenderer<>( Button :: new, ( deleteButton, subscriber ) -> {
+
+					deleteButton.setIcon( new Icon( VaadinIcon.TRASH ) );
+					deleteButton.addThemeVariants( ButtonVariant.LUMO_ICON, ButtonVariant.LUMO_ERROR, ButtonVariant.LUMO_TERTIARY );
+					deleteButton.addClickListener( onDelete -> {
+
+						if ( subscriber == null ) {
+							return;
+						}
+
+						service.delete( subscriber.getId() );
+						subscribersData.remove( subscriber );
+
+						if ( subscribersData.size() > 0 ) {
+							subscribersGrid.setVisible( true );
+							subscriberHint.setVisible( false );
+							subscribersGrid.getDataProvider().refreshAll();
+						} else {
+							subscribersGrid.setVisible( false );
+							subscriberHint.setVisible( true );
+						}
+
+						subscribersGrid.setItems( subscribersData );
+						notifySubscriberDeleted( subscriber );
+
+					} );
 
 
-	private void setupInvitationForm() {
+				} ) ).setHeader( "Manage" );
+
+		subscribersGrid.setItems( subscribersData );
 
 		final var comboBox = new ComboBox< Subscriber >();
-		comboBox.setItems( this.subscribersData );
+		comboBox.setItems( subscribersData );
 		comboBox.setItemLabelGenerator( Subscriber :: getEmail );
 
 		final var button = new Button( "Send invite" );
 		button.addThemeVariants( ButtonVariant.LUMO_PRIMARY );
 		button.addClickListener( e -> {
-			sendInvitation( comboBox.getValue() );
+
+			if ( comboBox.getValue() == null || subscribersData.contains( comboBox.getValue() ) ) {
+				return;
+			}
+
+			subscribersData.add( comboBox.getValue() );
+			subscribersGrid.setVisible( true );
+			subscriberHint.setVisible( false );
+			subscribersGrid.getDataProvider().refreshAll();
+
 			comboBox.setValue( null );
 		} );
 
-		final var layout = new HorizontalLayout( comboBox, button );
-		layout.setFlexGrow( 1, comboBox );
+		final var invitationLayout = new HorizontalLayout( comboBox, button );
+		invitationLayout.setFlexGrow( 1, comboBox );
 
-		add( layout );
-	}
-
-
-	private void setupGrid() {
-
-		grid = new Grid<>( Subscriber.class, false );
-		grid.setAllRowsVisible( true );
-		grid.addColumn( Subscriber :: getFirstName ).setHeader( "First Name" );
-		grid.addColumn( Subscriber :: getLastName ).setHeader( "Last Name" );
-		grid.addColumn( Subscriber :: getEmail ).setHeader( "Email" );
-
-		grid.addColumn(
-				new ComponentRenderer<>( Button :: new, ( button, person ) -> {
-					button.addThemeVariants( ButtonVariant.LUMO_ICON,
-							ButtonVariant.LUMO_ERROR,
-							ButtonVariant.LUMO_TERTIARY );
-					button.addClickListener( e -> this.removeInvitation( person ) );
-					button.setIcon( new Icon( VaadinIcon.TRASH ) );
-					button.addClickListener( onClick -> {
-						this.subscribersData.remove( person );
-						this.service.delete( person.getId() );
-						this.grid.setItems( this.subscribersData );
-						notifySubscriberDeleted( person );
-					} );
-				} ) ).setHeader( "Manage" );
-
-		grid.setItems( this.subscribersData );
-
-		hint = new Div();
-		hint.setText( "No invitation has been sent" );
-		hint.getStyle().set( "padding", "var(--lumo-size-l)" )
-				.set( "text-align", "center" ).set( "font-style", "italic" )
-				.set( "color", "var(--lumo-contrast-70pct)" );
-
-		add( hint, grid );
+		add( invitationLayout );
+		add( subscriberHint, subscribersGrid );
 	}
 
 
@@ -113,38 +117,5 @@ public class SubscribersView extends VerticalLayout {
 		).open();
 	}
 
-
-	private void refreshGrid() {
-
-		if ( this.subscribersData.size() > 0 ) {
-			grid.setVisible( true );
-			hint.setVisible( false );
-			grid.getDataProvider().refreshAll();
-		} else {
-			grid.setVisible( false );
-			hint.setVisible( true );
-		}
-	}
-
-
-	private void sendInvitation( Subscriber person ) {
-
-		if ( person == null || this.subscribersData.contains( person ) ) {
-			return;
-		}
-		this.subscribersData.add( person );
-		this.refreshGrid();
-	}
-
-
-	private void removeInvitation( Subscriber subscriber ) {
-
-		if ( subscriber == null ) {
-			return;
-		}
-		this.service.delete( subscriber.getId() );
-		this.subscribersData.remove( subscriber );
-		this.refreshGrid();
-	}
 
 }

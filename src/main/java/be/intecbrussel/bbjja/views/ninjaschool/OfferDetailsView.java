@@ -91,11 +91,9 @@ public class OfferDetailsView extends VerticalLayout {
 		newSchoolLayout.addAndExpand( newSchoolOfferSelect, newSchoolTitle, newSchoolPhone,
 				newSchoolCoordinates, newFrameVideo, newFrameView, newFrameButton );
 
-		final List< School > existingSchoolsData = schoolService.list();
+		schoolsAccordion.add( "Add New Offer", newSchoolLayout );
 
-		final var existingSchoolsLayout = new VerticalLayout();
-		existingSchoolsLayout.setPadding( false );
-		existingSchoolsLayout.setSpacing( false );
+		final List< School > existingSchoolsData = schoolService.list();
 
 		for ( final var existingSchoolItem : existingSchoolsData ) {
 
@@ -143,11 +141,10 @@ public class OfferDetailsView extends VerticalLayout {
 
 			existingSchoolItemLayout.add( existingOfferSelect, existingTitleField, existingPhoneField,
 					existingCoordinatesField, existingFrameView, updateSchoolButton );
-			existingSchoolsLayout.addAndExpand( existingSchoolItemLayout );
+
+			schoolsAccordion.add( existingSchoolItem.getTitle(), existingSchoolItemLayout );
 		}
 
-		schoolsAccordion.add( "Add New Offer", newSchoolLayout );
-		schoolsAccordion.add( "View/Edit Offers", existingSchoolsLayout );
 		add( schoolsAccordion );
 
 		setSizeFull();
