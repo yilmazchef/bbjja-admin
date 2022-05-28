@@ -11,7 +11,6 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.util.Collections;
-import java.util.List;
 import java.util.Locale;
 import java.util.Set;
 
@@ -42,24 +41,25 @@ public class MockDataGenerator {
 			logger.info( "Generating mock data..." );
 
 			final var userRole = new Role()
-					.setTitle( "User" )
+					.setTitle( "USER" )
 					.setDescription( "Has LIMITED access to all services including UI and API." )
-					.setParent( null )
 					.setMaxAllowedUsers( 10 );
+
+			roleRepository.save( userRole );
 
 			final var editorRole = new Role()
-					.setTitle( "Editor" )
+					.setTitle( "EDITOR" )
 					.setDescription( "Has full access to all services from UI." )
-					.setParent( userRole )
 					.setMaxAllowedUsers( 10 );
+
+			roleRepository.save( editorRole );
 
 			final var adminRole = new Role()
-					.setTitle( "Administrator" )
+					.setTitle( "ADMIN" )
 					.setDescription( "Has full access to all services including UI and API." )
-					.setParent( editorRole )
 					.setMaxAllowedUsers( 10 );
 
-			roleRepository.saveAll( List.of( adminRole, editorRole, userRole ) );
+			roleRepository.save( adminRole );
 
 
 			final var emailUser = faker.internet().emailAddress();
