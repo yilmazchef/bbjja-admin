@@ -25,22 +25,19 @@ public class Role extends AEntity {
 	public static final Role ADMIN = new Role()
 			.setTitle( "ADMIN" )
 			.setDescription( "Has FULL access to all UI pages and endpoints." )
-			.setMaxAllowedUsers( 10 )
-			.setParent( null );
+			.setMaxAllowedUsers( 10 );
 
 	@Transient
 	public static final Role EDITOR = new Role()
 			.setTitle( "EDITOR" )
 			.setDescription( "Has access to all UI pages." )
-			.setMaxAllowedUsers( 1000 )
-			.setParent( null );
+			.setMaxAllowedUsers( 1000 );
 
 	@Transient
 	public static final Role USER = new Role()
 			.setTitle( "USER" )
 			.setDescription( "Has LIMITED access to all pages." )
-			.setMaxAllowedUsers( 1000000 )
-			.setParent( null );
+			.setMaxAllowedUsers( 1000000 );
 
 
 	@EqualsAndHashCode.Include

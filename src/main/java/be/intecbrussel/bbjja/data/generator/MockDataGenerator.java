@@ -10,9 +10,7 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Bean;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
-import java.util.Collections;
 import java.util.Locale;
-import java.util.Set;
 
 @SpringComponent
 public class MockDataGenerator {
@@ -32,27 +30,27 @@ public class MockDataGenerator {
 			final var faker = new Faker( Locale.getDefault() );
 
 			logger.info( "Generating mock data..." );
-
-			final var userRole = new Role()
-					.setTitle( "USER" )
-					.setDescription( "Has LIMITED access to all services including UI and API." )
-					.setMaxAllowedUsers( 10 );
-
-			roleRepository.save( userRole );
-
-			final var editorRole = new Role()
-					.setTitle( "EDITOR" )
-					.setDescription( "Has full access to all services from UI." )
-					.setMaxAllowedUsers( 10 );
-
-			roleRepository.save( editorRole );
-
-			final var adminRole = new Role()
-					.setTitle( "ADMIN" )
-					.setDescription( "Has full access to all services including UI and API." )
-					.setMaxAllowedUsers( 10 );
-
-			roleRepository.save( adminRole );
+//
+//			final var userRole = new Role()
+//					.setTitle( "USER" )
+//					.setDescription( "Has LIMITED access to all services including UI and API." )
+//					.setMaxAllowedUsers( 10 );
+//
+//			final Role savedUserRole = roleRepository.save( userRole );
+//
+//			final var editorRole = new Role()
+//					.setTitle( "EDITOR" )
+//					.setDescription( "Has full access to all services from UI." )
+//					.setMaxAllowedUsers( 10 );
+//
+//			final Role savedEditorRole = roleRepository.save( editorRole );
+//
+//			final var adminRole = new Role()
+//					.setTitle( "ADMIN" )
+//					.setDescription( "Has full access to all services including UI and API." )
+//					.setMaxAllowedUsers( 10 );
+//
+//			final Role savedAdminRole = roleRepository.save( adminRole );
 
 
 			final var emailUser = faker.internet().emailAddress();
@@ -64,8 +62,10 @@ public class MockDataGenerator {
 					.setUsername( usernameUser )
 					.setHashedPassword( passwordEncoder.encode( "user" ) )
 					.setProfilePictureUrl(
-							"https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=128&h=128&q=80" )
-					.setRoles( Collections.singleton( userRole ) );
+							"https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=128&h=128&q=80" );
+
+			user.getRoles().add( Role.USER );
+
 
 			if ( ! userRepository.existsByUsernameOrEmail( usernameUser, emailUser ) ) {
 				userRepository.save( user );
@@ -80,8 +80,9 @@ public class MockDataGenerator {
 					.setUsername( usernameEditor )
 					.setHashedPassword( passwordEncoder.encode( "editor" ) )
 					.setProfilePictureUrl(
-							"https://images.unsplash.com/photo-1607746882042-944635dfe10e?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=128&h=128&q=80" )
-					.setRoles( Set.of( userRole, editorRole ) );
+							"https://images.unsplash.com/photo-1607746882042-944635dfe10e?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=128&h=128&q=80" );
+
+			editor.getRoles().add( Role.EDITOR );
 
 			if ( ! userRepository.existsByUsernameOrEmail( usernameEditor, emailEditor ) ) {
 				userRepository.save( editor );
@@ -96,8 +97,9 @@ public class MockDataGenerator {
 					.setUsername( usernameAdmin )
 					.setHashedPassword( passwordEncoder.encode( "admin" ) )
 					.setProfilePictureUrl(
-							"https://images.unsplash.com/photo-1607746882042-944635dfe10e?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=128&h=128&q=80" )
-					.setRoles( Set.of( userRole, editorRole, adminRole ) );
+							"https://images.unsplash.com/photo-1607746882042-944635dfe10e?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=128&h=128&q=80" );
+
+			admin.addRole( Role.ADMIN );
 
 			if ( ! userRepository.existsByUsernameOrEmail( usernameAdmin, emailAdmin ) ) {
 				userRepository.save( admin );

@@ -10,7 +10,7 @@ import org.hibernate.validator.constraints.URL;
 import javax.persistence.*;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotEmpty;
-import java.util.HashSet;
+import java.util.LinkedHashSet;
 import java.util.Set;
 
 // LOMBOK
@@ -45,13 +45,26 @@ public class User extends AEntity {
 	@JsonIgnore
 	private String hashedPassword;
 
-	@ManyToMany ( cascade = { CascadeType.ALL } )
+	@ManyToMany ( fetch = FetchType.EAGER, cascade = CascadeType.ALL )
 	@JoinTable (
 			name = "authorizations",
-			joinColumns = { @JoinColumn ( name = "user_id" ) },
-			inverseJoinColumns = { @JoinColumn ( name = "role_id" ) }
+			joinColumns = { @JoinColumn ( name = "user_id", referencedColumnName = "id" ) },
+			inverseJoinColumns = { @JoinColumn ( name = "role_id", referencedColumnName = "id" ) }
 	)
-	private Set< Role > roles = new HashSet<>();
+	private Set< Role > roles = new LinkedHashSet<>();
+
+
+	public void addRole( final Role role ) {
+
+		this.getRoles().add( role );
+	}
+
+
+	public void removeRole( final Role role ) {
+
+		this.getRoles().remove( role );
+	}
+
 
 	@Lob
 	@Type ( type = "org.hibernate.type.TextType" )
