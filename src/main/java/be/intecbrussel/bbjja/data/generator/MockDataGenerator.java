@@ -31,13 +31,6 @@ public class MockDataGenerator {
 			final var photos = photoGenerator.fetchLocal();
 			final var faker = new Faker( Locale.getDefault() );
 
-			Thread.sleep( 5000 );
-
-			if ( userRepository.count() != 0L ) {
-				logger.info( "Using existing database" );
-				return;
-			}
-
 			logger.info( "Generating mock data..." );
 
 			final var userRole = new Role()
@@ -72,7 +65,7 @@ public class MockDataGenerator {
 					.setHashedPassword( passwordEncoder.encode( "user" ) )
 					.setProfilePictureUrl(
 							"https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=128&h=128&q=80" )
-					.setRoles( Collections.singleton( Role.USER ) );
+					.setRoles( Collections.singleton( userRole ) );
 
 			if ( ! userRepository.existsByUsernameOrEmail( usernameUser, emailUser ) ) {
 				userRepository.save( user );
@@ -88,7 +81,7 @@ public class MockDataGenerator {
 					.setHashedPassword( passwordEncoder.encode( "editor" ) )
 					.setProfilePictureUrl(
 							"https://images.unsplash.com/photo-1607746882042-944635dfe10e?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=128&h=128&q=80" )
-					.setRoles( Set.of( Role.USER, Role.EDITOR ) );
+					.setRoles( Set.of( userRole, editorRole ) );
 
 			if ( ! userRepository.existsByUsernameOrEmail( usernameEditor, emailEditor ) ) {
 				userRepository.save( editor );
@@ -104,7 +97,7 @@ public class MockDataGenerator {
 					.setHashedPassword( passwordEncoder.encode( "admin" ) )
 					.setProfilePictureUrl(
 							"https://images.unsplash.com/photo-1607746882042-944635dfe10e?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=128&h=128&q=80" )
-					.setRoles( Set.of( Role.USER, Role.EDITOR, Role.ADMIN ) );
+					.setRoles( Set.of( userRole, editorRole, adminRole ) );
 
 			if ( ! userRepository.existsByUsernameOrEmail( usernameAdmin, emailAdmin ) ) {
 				userRepository.save( admin );
