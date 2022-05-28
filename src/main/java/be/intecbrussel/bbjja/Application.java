@@ -20,6 +20,8 @@ import org.springframework.context.annotation.Bean;
  * Use the @PWA annotation make the application installable on phones, tablets
  * and some desktop browsers.
  */
+
+// VAADIN SPRING BOOT FOLDER STRUCTURE : /src/main/resources/META-INF/resources/images/logo.png
 @SpringBootApplication
 @Theme ( value = "bbjjaadmin" )
 @PWA (
@@ -27,7 +29,7 @@ import org.springframework.context.annotation.Bean;
 		shortName = "BBJJA",
 		offlinePath = "offline.html",
 		offlineResources = { "./images/offline.png" },
-		iconPath = "./images/bbjjalogo.png"
+		iconPath = "./images/logo.png"
 )
 @NpmPackage ( value = "line-awesome", version = "1.3.0" )
 public class Application extends SpringBootServletInitializer implements AppShellConfigurator {
@@ -46,8 +48,8 @@ public class Application extends SpringBootServletInitializer implements AppShel
 						.title( "BBJJA Admin API" )
 						.version( appVersion )
 						.description( appDescription )
-						.termsOfService( "http://swagger.io/terms/" )
-						.license( new License().name( "Apache 2.0" ).url( "http://springdoc.org" ) ) );
+						.termsOfService( "https://swagger.io/terms/" )
+						.license( new License().name( "Apache 2.0" ).url( "https://springdoc.org" ) ) );
 	}
 
 }
