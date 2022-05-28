@@ -6,6 +6,7 @@ import be.intecbrussel.bbjja.data.entity.Subscriber;
 import be.intecbrussel.bbjja.data.service.SlideService;
 import be.intecbrussel.bbjja.data.service.SubscriberService;
 import be.intecbrussel.bbjja.security.AuthenticatedUser;
+import com.vaadin.flow.component.Direction;
 import com.vaadin.flow.component.accordion.Accordion;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.button.ButtonVariant;
@@ -21,6 +22,8 @@ import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.data.renderer.ComponentRenderer;
+import com.vaadin.flow.i18n.LocaleChangeEvent;
+import com.vaadin.flow.i18n.LocaleChangeObserver;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
 import com.vaadin.flow.router.RouteAlias;
@@ -29,6 +32,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 
 import javax.annotation.security.PermitAll;
+import java.util.Objects;
 
 import static java.lang.System.out;
 
@@ -36,7 +40,7 @@ import static java.lang.System.out;
 @Route ( value = "home", layout = MainLayout.class )
 @RouteAlias ( value = "", layout = MainLayout.class )
 @PermitAll
-public class HomeView extends VerticalLayout {
+public class HomeView extends VerticalLayout implements LocaleChangeObserver {
 
 	@Autowired
 	public HomeView( final AuthenticatedUser authenticatedUser, final SlideService slideService, final SubscriberService subscriberService ) {
@@ -197,6 +201,17 @@ public class HomeView extends VerticalLayout {
 				3000,
 				Notification.Position.TOP_CENTER
 		).open();
+	}
+
+
+	@Override
+	public void localeChange( LocaleChangeEvent event ) {
+
+		if ( Objects.equals( event.getLocale().getLanguage(), "ar" ) ) {
+			event.getUI().setDirection( Direction.RIGHT_TO_LEFT );
+		} else {
+			event.getUI().setDirection( Direction.LEFT_TO_RIGHT );
+		}
 	}
 
 

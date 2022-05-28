@@ -22,7 +22,13 @@ import org.springframework.context.annotation.Bean;
  */
 @SpringBootApplication
 @Theme ( value = "bbjjaadmin" )
-@PWA ( name = "BBJJA Admin", shortName = "BBJJA Admin", offlineResources = { } )
+@PWA (
+		name = "BBJJA Admin",
+		shortName = "BBJJA",
+		offlinePath = "offline.html",
+		offlineResources = { "./images/offline.png" },
+		iconPath = "./images/bbjjalogo.png"
+)
 @NpmPackage ( value = "line-awesome", version = "1.3.0" )
 public class Application extends SpringBootServletInitializer implements AppShellConfigurator {
 
