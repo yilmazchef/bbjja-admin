@@ -5,19 +5,20 @@ import be.intecbrussel.bbjja.data.entity.Slide;
 import be.intecbrussel.bbjja.data.service.SlideService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.security.PermitAll;
+import javax.validation.Valid;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.PositiveOrZero;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
 @RestController
-@RequestMapping ( value = "api/slides" )
+@RequestMapping ( value = EndPoints.SLIDE_CLASS_LEVEL )
 @PermitAll
 public class SlideApi {
 
@@ -31,50 +32,59 @@ public class SlideApi {
 	}
 
 
-	public Optional< Slide > get( UUID id ) {
+	@GetMapping ( EndPoints.SLIDE_GET_BY_ID )
+	public Optional< Slide > get( @PathVariable @NotNull final UUID id ) {
 
 		return slideService.get( id );
 	}
 
-	public Slide create( Slide entity ) {
+
+	@PostMapping ( EndPoints.SLIDE_CREATE )
+	public Slide create( @RequestBody @Valid final Slide entity ) {
 
 		return slideService.create( entity );
 	}
 
-	public Slide update( Slide entity ) {
+
+	@PutMapping ( EndPoints.SLIDE_UPDATE_BY_EXAMPLE )
+	public Slide update( @RequestBody @Valid final Slide entity ) {
 
 		return slideService.create( entity );
 	}
 
 
-	public void delete( UUID id ) {
+	@DeleteMapping ( EndPoints.SLIDE_DELETE_BY_ID )
+	public void delete( @PathVariable @NotNull final UUID id ) {
 
 		slideService.delete( id );
 	}
 
 
-	public Page< Slide > list( Pageable pageable ) {
+	@GetMapping ( EndPoints.SCHOOLS_LIST_IN_PAGES )
+	public Page< Slide > list( @PathVariable @NotNull @PositiveOrZero final Integer page ) {
 
-		return slideService.list( pageable );
+		return slideService.list( PageRequest.of( page, 25 ) );
 	}
 
 
-	@GetMapping ( "all" )
+	@GetMapping ( EndPoints.SCHOOLS_LIST_ALL )
 	public List< Slide > list() {
 
 		return slideService.list();
 	}
 
 
-	public List< Slide > list( final Sort sort ) {
+	@GetMapping ( EndPoints.SCHOOLS_LIST_SORTED )
+	public List< Slide > list( @RequestBody @Valid final Sort sort ) {
 
 		return slideService.list( sort );
 	}
 
 
+	@GetMapping ( EndPoints.SLIDES_COUNT )
 	public int count() {
 
-		return ( int ) slideService.count();
+		return slideService.count();
 	}
 
 }

@@ -7,21 +7,22 @@ import be.intecbrussel.bbjja.data.service.UserService;
 import be.intecbrussel.bbjja.security.AuthenticatedUser;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.security.PermitAll;
+import javax.validation.Valid;
 import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.PositiveOrZero;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
 @RestController
-@RequestMapping ( value = "api/users" )
+@RequestMapping ( value = EndPoints.USER_CLASS_LEVEL )
 @PermitAll
 public class UserApi {
 
@@ -40,13 +41,15 @@ public class UserApi {
 	}
 
 
-	public Optional< User > get( UUID id ) {
+	@GetMapping ( EndPoints.USER_GET_BY_ID )
+	public Optional< User > get( @PathVariable @NotNull final UUID id ) {
 
 		return userService.get( id );
 	}
 
 
-	public User create( User entity ) {
+	@PostMapping ( EndPoints.USERS_CREATE )
+	public User create( @RequestBody @Valid final User entity ) {
 
 		final Optional< User > oUser = authenticatedUser.get();
 		oUser.ifPresent( u -> {
@@ -58,7 +61,8 @@ public class UserApi {
 	}
 
 
-	public User update( User entity ) {
+	@PutMapping ( EndPoints.USER_UPDATE_BY_EXAMPLE )
+	public User update( @RequestBody @Valid final User entity ) {
 
 		final Optional< User > oUser = authenticatedUser.get();
 		oUser.ifPresent( u -> {
@@ -69,27 +73,31 @@ public class UserApi {
 	}
 
 
+	@PatchMapping ( EndPoints.USER_CHANGE_PASSWORD_NO_OLD )
 	public User changePassword( final @NotEmpty String username, final @NotEmpty String newPassword ) throws UserServiceException {
 
 		return userService.changePassword( username, newPassword );
 	}
 
 
+	@PatchMapping ( EndPoints.USER_CHANGE_PASSWORD_WITH_VALIDATION )
 	public User changePassword( final @NotEmpty String username, final @NotEmpty String oldPassword, final @NotEmpty String newPassword ) throws UserServiceException {
 
 		return userService.changePassword( username, oldPassword, newPassword );
 	}
 
 
-	public void delete( UUID id ) {
+	@DeleteMapping ( EndPoints.USER_DELETE_BY_ID )
+	public void delete( @PathVariable @NotNull final UUID id ) {
 
 		userService.delete( id );
 	}
 
 
-	public Page< User > list( Pageable pageable ) {
+	@GetMapping ( EndPoints.USERS_LIST_IN_PAGES )
+	public Page< User > list( @PathVariable @NotNull @PositiveOrZero final Integer page ) {
 
-		return userService.list( pageable );
+		return userService.list( PageRequest.of( page, 25 ) );
 	}
 
 

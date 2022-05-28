@@ -5,19 +5,20 @@ import be.intecbrussel.bbjja.data.entity.Offer;
 import be.intecbrussel.bbjja.data.service.OfferService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.security.PermitAll;
+import javax.validation.Valid;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.PositiveOrZero;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
 @RestController
-@RequestMapping ( value = "api/offers" )
+@RequestMapping ( value = EndPoints.OFFER_CLASS_LEVEL )
 @PermitAll
 public class OfferApi {
 
@@ -31,49 +32,56 @@ public class OfferApi {
 	}
 
 
-	public Optional< Offer > get( UUID id ) {
+	@GetMapping ( EndPoints.OFFER_GET_BY_ID )
+	public Optional< Offer > get( @PathVariable final UUID id ) {
 
 		return offerService.get( id );
 	}
 
 
-	public Offer create( Offer entity ) {
+	@PostMapping ( EndPoints.OFFER_CREATE )
+	public Offer create( @RequestBody @Valid final Offer entity ) {
 
 		return offerService.create( entity );
 	}
 
 
-	public Offer update( Offer entity ) {
+	@PutMapping ( EndPoints.OFFER_UPDATE_BY_EXAMPLE )
+	public Offer update( @RequestBody @Valid final Offer entity ) {
 
 		return offerService.update( entity );
 	}
 
 
-	public void delete( UUID id ) {
+	@DeleteMapping ( EndPoints.OFFER_DELETE_BY_ID )
+	public void delete( @PathVariable @NotNull final UUID id ) {
 
 		offerService.delete( id );
 	}
 
 
-	public Page< Offer > list( Pageable pageable ) {
+	@GetMapping ( EndPoints.OFFERS_LIST_IN_PAGES )
+	public Page< Offer > list( @PathVariable @NotNull @PositiveOrZero final Integer page ) {
 
-		return offerService.list( pageable );
+		return offerService.list( PageRequest.of( page, 25 ) );
 	}
 
 
-	@GetMapping ( "all" )
+	@GetMapping ( EndPoints.OFFERS_LIST_ALL )
 	public List< Offer > list() {
 
 		return offerService.list();
 	}
 
 
-	public List< Offer > list( final Sort sort ) {
+	@GetMapping ( EndPoints.OFFERS_LIST_SORTED )
+	public List< Offer > list( @RequestBody @NotNull final Sort sort ) {
 
 		return offerService.list( sort );
 	}
 
 
+	@GetMapping ( EndPoints.OFFERS_COUNT )
 	public int count() {
 
 		return offerService.count();

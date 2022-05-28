@@ -5,19 +5,20 @@ import be.intecbrussel.bbjja.data.entity.School;
 import be.intecbrussel.bbjja.data.service.SchoolService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.security.PermitAll;
+import javax.validation.Valid;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.PositiveOrZero;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
 @RestController
-@RequestMapping ( value = "api/schools_offered" )
+@RequestMapping ( value = EndPoints.SCHOOL_CLASS_LEVEL )
 @PermitAll
 public class SchoolApi {
 
@@ -31,50 +32,59 @@ public class SchoolApi {
 	}
 
 
-	public Optional< School > get( UUID id ) {
+	@GetMapping ( EndPoints.SCHOOL_GET_BY_ID )
+	public Optional< School > get( @PathVariable @NotNull final UUID id ) {
 
 		return schoolService.get( id );
 	}
 
-	public School create( School entity ) {
+
+	@PostMapping ( EndPoints.SCHOOL_CREATE )
+	public School create( @RequestBody @Valid final School entity ) {
 
 		return schoolService.create( entity );
 	}
 
-	public School update( School entity ) {
+
+	@PutMapping ( EndPoints.SCHOOL_UPDATE_BY_EXAMPLE )
+	public School update( @RequestBody @Valid final School entity ) {
 
 		return schoolService.update( entity );
 	}
 
 
-	public void delete( UUID id ) {
+	@DeleteMapping ( EndPoints.SCHOOL_DELETE_BY_ID )
+	public void delete( @PathVariable @NotNull final UUID id ) {
 
 		schoolService.delete( id );
 	}
 
 
-	public Page< School > list( Pageable pageable ) {
+	@GetMapping ( EndPoints.SCHOOLS_LIST_IN_PAGES )
+	public Page< School > list( @PathVariable @NotNull @PositiveOrZero final Integer page ) {
 
-		return schoolService.list( pageable );
+		return schoolService.list( PageRequest.of( page, 25 ) );
 	}
 
 
-	@GetMapping ( "all" )
+	@GetMapping ( EndPoints.SCHOOLS_LIST_ALL )
 	public List< School > list() {
 
 		return schoolService.list();
 	}
 
 
-	public List< School > list( final Sort sort ) {
+	@GetMapping ( EndPoints.SCHOOLS_LIST_SORTED )
+	public List< School > list( @RequestBody @NotNull final Sort sort ) {
 
 		return schoolService.list( sort );
 	}
 
 
+	@GetMapping ( EndPoints.SCHOOLS_COUNT )
 	public int count() {
 
-		return ( int ) schoolService.count();
+		return schoolService.count();
 	}
 
 }
