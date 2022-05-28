@@ -3,6 +3,7 @@ package be.intecbrussel.bbjja;
 
 import com.vaadin.flow.component.dependency.NpmPackage;
 import com.vaadin.flow.component.page.AppShellConfigurator;
+import com.vaadin.flow.component.page.Viewport;
 import com.vaadin.flow.server.PWA;
 import com.vaadin.flow.theme.Theme;
 import io.swagger.v3.oas.models.OpenAPI;
@@ -32,6 +33,7 @@ import org.springframework.context.annotation.Bean;
 		iconPath = "./images/logo.png"
 )
 @NpmPackage ( value = "line-awesome", version = "1.3.0" )
+@Viewport ( "width=device-width, minimum-scale=1.0, initial-scale=1.0, user-scalable=yes" )
 public class Application extends SpringBootServletInitializer implements AppShellConfigurator {
 
 	public static void main( String[] args ) {

@@ -1,7 +1,7 @@
 package be.intecbrussel.bbjja.security;
 
 
-import be.intecbrussel.bbjja.views.LoginView;
+import be.intecbrussel.bbjja.ui.views.LoginView;
 import com.vaadin.flow.spring.security.VaadinWebSecurityConfigurerAdapter;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
