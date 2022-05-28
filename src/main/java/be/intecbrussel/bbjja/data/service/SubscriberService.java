@@ -37,6 +37,12 @@ public class SubscriberService {
 	}
 
 
+	public Subscriber create( Subscriber entity ) {
+
+		return repository.save( entity );
+	}
+
+
 	public Subscriber update( Subscriber entity ) {
 
 		return repository.save( entity );

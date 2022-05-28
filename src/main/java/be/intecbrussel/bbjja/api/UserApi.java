@@ -101,22 +101,24 @@ public class UserApi {
 	}
 
 
-	@GetMapping ( "all" )
+	@GetMapping ( EndPoints.USER_LIST_ALL )
 	public List< User > list() {
 
 		return userService.list();
 	}
 
 
-	public List< User > list( final Sort sort ) {
+	@GetMapping ( EndPoints.USERS_LIST_SORTED )
+	public List< User > list( @RequestBody @Valid final Sort sort ) {
 
 		return userService.list( sort );
 	}
 
 
+	@GetMapping ( EndPoints.USERS_COUNT )
 	public int count() {
 
-		return ( int ) userService.count();
+		return userService.count();
 	}
 
 }

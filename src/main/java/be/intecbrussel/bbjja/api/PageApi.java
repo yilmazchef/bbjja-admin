@@ -2,7 +2,9 @@ package be.intecbrussel.bbjja.api;
 
 
 import be.intecbrussel.bbjja.data.entity.Page;
+import be.intecbrussel.bbjja.data.entity.User;
 import be.intecbrussel.bbjja.data.service.PageService;
+import be.intecbrussel.bbjja.security.AuthenticatedUser;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
@@ -22,12 +24,14 @@ import java.util.UUID;
 public class PageApi {
 
 	private final PageService pageService;
+	private final AuthenticatedUser authenticatedUser;
 
 
 	@Autowired
-	public PageApi( final PageService pageService ) {
+	public PageApi( final PageService pageService, final AuthenticatedUser authenticatedUser ) {
 
 		this.pageService = pageService;
+		this.authenticatedUser = authenticatedUser;
 	}
 
 
@@ -40,6 +44,12 @@ public class PageApi {
 
 	@PostMapping ( EndPoints.PAGE_CREATE )
 	public Page create( @RequestBody @Valid final Page entity ) {
+
+		final Optional< User > oUser = authenticatedUser.get();
+		oUser.ifPresent( u -> {
+			entity.setCreatedBy( u.getUsername() );
+			entity.setModifiedBy( u.getUsername() );
+		} );
 
 		return pageService.create( entity );
 	}

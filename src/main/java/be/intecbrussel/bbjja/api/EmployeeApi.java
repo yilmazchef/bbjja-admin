@@ -2,7 +2,9 @@ package be.intecbrussel.bbjja.api;
 
 
 import be.intecbrussel.bbjja.data.entity.Employee;
+import be.intecbrussel.bbjja.data.entity.User;
 import be.intecbrussel.bbjja.data.service.EmployeeService;
+import be.intecbrussel.bbjja.security.AuthenticatedUser;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -22,12 +24,14 @@ import java.util.UUID;
 public class EmployeeApi {
 
 	private final EmployeeService employeeService;
+	private final AuthenticatedUser authenticatedUser;
 
 
 	@Autowired
-	public EmployeeApi( final EmployeeService employeeService ) {
+	public EmployeeApi( final EmployeeService employeeService, final AuthenticatedUser authenticatedUser ) {
 
 		this.employeeService = employeeService;
+		this.authenticatedUser = authenticatedUser;
 	}
 
 
@@ -47,6 +51,12 @@ public class EmployeeApi {
 
 	@PostMapping ( EndPoints.EMPLOYEE_CREATE )
 	public Employee create( @RequestBody @Valid final Employee entity ) {
+
+		final Optional< User > oUser = authenticatedUser.get();
+		oUser.ifPresent( u -> {
+			entity.setCreatedBy( u.getUsername() );
+			entity.setModifiedBy( u.getUsername() );
+		} );
 
 		return employeeService.create( entity );
 	}

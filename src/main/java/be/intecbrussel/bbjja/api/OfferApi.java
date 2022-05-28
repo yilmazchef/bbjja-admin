@@ -2,7 +2,9 @@ package be.intecbrussel.bbjja.api;
 
 
 import be.intecbrussel.bbjja.data.entity.Offer;
+import be.intecbrussel.bbjja.data.entity.User;
 import be.intecbrussel.bbjja.data.service.OfferService;
+import be.intecbrussel.bbjja.security.AuthenticatedUser;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -23,12 +25,14 @@ import java.util.UUID;
 public class OfferApi {
 
 	private final OfferService offerService;
+	private final AuthenticatedUser authenticatedUser;
 
 
 	@Autowired
-	public OfferApi( final OfferService offerService ) {
+	public OfferApi( final OfferService offerService, final AuthenticatedUser authenticatedUser ) {
 
 		this.offerService = offerService;
+		this.authenticatedUser = authenticatedUser;
 	}
 
 
@@ -41,6 +45,12 @@ public class OfferApi {
 
 	@PostMapping ( EndPoints.OFFER_CREATE )
 	public Offer create( @RequestBody @Valid final Offer entity ) {
+
+		final Optional< User > oUser = authenticatedUser.get();
+		oUser.ifPresent( u -> {
+			entity.setCreatedBy( u.getUsername() );
+			entity.setModifiedBy( u.getUsername() );
+		} );
 
 		return offerService.create( entity );
 	}

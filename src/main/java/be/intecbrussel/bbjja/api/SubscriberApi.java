@@ -2,7 +2,9 @@ package be.intecbrussel.bbjja.api;
 
 
 import be.intecbrussel.bbjja.data.entity.Subscriber;
+import be.intecbrussel.bbjja.data.entity.User;
 import be.intecbrussel.bbjja.data.service.SubscriberService;
+import be.intecbrussel.bbjja.security.AuthenticatedUser;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -23,12 +25,14 @@ import java.util.UUID;
 public class SubscriberApi {
 
 	private final SubscriberService subscriberService;
+	private final AuthenticatedUser authenticatedUser;
 
 
 	@Autowired
-	public SubscriberApi( final SubscriberService subscriberService ) {
+	public SubscriberApi( final SubscriberService subscriberService, final AuthenticatedUser authenticatedUser ) {
 
 		this.subscriberService = subscriberService;
+		this.authenticatedUser = authenticatedUser;
 	}
 
 
@@ -43,6 +47,19 @@ public class SubscriberApi {
 	public Optional< Subscriber > get( @PathVariable @NotNull final String email ) {
 
 		return subscriberService.get( email );
+	}
+
+
+	@PostMapping ( EndPoints.USERS_CREATE )
+	public Subscriber create( @RequestBody @Valid final Subscriber entity ) {
+
+		final Optional< User > oUser = authenticatedUser.get();
+		oUser.ifPresent( u -> {
+			entity.setCreatedBy( u.getUsername() );
+			entity.setModifiedBy( u.getUsername() );
+		} );
+
+		return subscriberService.create( entity );
 	}
 
 

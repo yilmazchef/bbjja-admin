@@ -2,7 +2,9 @@ package be.intecbrussel.bbjja.api;
 
 
 import be.intecbrussel.bbjja.data.entity.Grappling;
+import be.intecbrussel.bbjja.data.entity.User;
 import be.intecbrussel.bbjja.data.service.GrapplingService;
+import be.intecbrussel.bbjja.security.AuthenticatedUser;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -20,12 +22,14 @@ import java.util.UUID;
 public class GrapplingApi {
 
 	private final GrapplingService grapplingService;
+	private final AuthenticatedUser authenticatedUser;
 
 
 	@Autowired
-	public GrapplingApi( final GrapplingService grapplingService ) {
+	public GrapplingApi( final GrapplingService grapplingService, final AuthenticatedUser authenticatedUser ) {
 
 		this.grapplingService = grapplingService;
+		this.authenticatedUser = authenticatedUser;
 	}
 
 
@@ -38,6 +42,12 @@ public class GrapplingApi {
 
 	@PostMapping ( EndPoints.GRAPPLING_CREATE )
 	public Grappling create( @RequestBody final Grappling entity ) {
+
+		final Optional< User > oUser = authenticatedUser.get();
+		oUser.ifPresent( u -> {
+			entity.setCreatedBy( u.getUsername() );
+			entity.setModifiedBy( u.getUsername() );
+		} );
 
 		return grapplingService.create( entity );
 	}

@@ -2,7 +2,9 @@ package be.intecbrussel.bbjja.api;
 
 
 import be.intecbrussel.bbjja.data.entity.Slide;
+import be.intecbrussel.bbjja.data.entity.User;
 import be.intecbrussel.bbjja.data.service.SlideService;
+import be.intecbrussel.bbjja.security.AuthenticatedUser;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -23,12 +25,14 @@ import java.util.UUID;
 public class SlideApi {
 
 	private final SlideService slideService;
+	private final AuthenticatedUser authenticatedUser;
 
 
 	@Autowired
-	public SlideApi( final SlideService slideService ) {
+	public SlideApi( final SlideService slideService, final AuthenticatedUser authenticatedUser ) {
 
 		this.slideService = slideService;
+		this.authenticatedUser = authenticatedUser;
 	}
 
 
@@ -41,6 +45,12 @@ public class SlideApi {
 
 	@PostMapping ( EndPoints.SLIDE_CREATE )
 	public Slide create( @RequestBody @Valid final Slide entity ) {
+
+		final Optional< User > oUser = authenticatedUser.get();
+		oUser.ifPresent( u -> {
+			entity.setCreatedBy( u.getUsername() );
+			entity.setModifiedBy( u.getUsername() );
+		} );
 
 		return slideService.create( entity );
 	}

@@ -2,7 +2,9 @@ package be.intecbrussel.bbjja.api;
 
 
 import be.intecbrussel.bbjja.data.entity.School;
+import be.intecbrussel.bbjja.data.entity.User;
 import be.intecbrussel.bbjja.data.service.SchoolService;
+import be.intecbrussel.bbjja.security.AuthenticatedUser;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -23,12 +25,14 @@ import java.util.UUID;
 public class SchoolApi {
 
 	private final SchoolService schoolService;
+	private final AuthenticatedUser authenticatedUser;
 
 
 	@Autowired
-	public SchoolApi( final SchoolService schoolService ) {
+	public SchoolApi( final SchoolService schoolService, final AuthenticatedUser authenticatedUser ) {
 
 		this.schoolService = schoolService;
+		this.authenticatedUser = authenticatedUser;
 	}
 
 
@@ -41,6 +45,12 @@ public class SchoolApi {
 
 	@PostMapping ( EndPoints.SCHOOL_CREATE )
 	public School create( @RequestBody @Valid final School entity ) {
+
+		final Optional< User > oUser = authenticatedUser.get();
+		oUser.ifPresent( u -> {
+			entity.setCreatedBy( u.getUsername() );
+			entity.setModifiedBy( u.getUsername() );
+		} );
 
 		return schoolService.create( entity );
 	}
