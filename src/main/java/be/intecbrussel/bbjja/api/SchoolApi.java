@@ -15,6 +15,7 @@ import javax.annotation.security.PermitAll;
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.PositiveOrZero;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -58,6 +59,12 @@ public class SchoolApi {
 
 	@PutMapping ( EndPoints.SCHOOL_UPDATE_BY_EXAMPLE )
 	public School update( @RequestBody @Valid final School entity ) {
+
+		final Optional< User > oUser = authenticatedUser.get();
+		oUser.ifPresent( u -> {
+			entity.setDateModified( LocalDateTime.now() );
+			entity.setModifiedBy( u.getUsername() );
+		} );
 
 		return schoolService.update( entity );
 	}
