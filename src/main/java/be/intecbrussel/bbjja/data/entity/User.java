@@ -1,7 +1,6 @@
 package be.intecbrussel.bbjja.data.entity;
 
 
-import be.intecbrussel.bbjja.data.Role;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 import lombok.experimental.Accessors;
@@ -11,6 +10,7 @@ import org.hibernate.validator.constraints.URL;
 import javax.persistence.*;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotEmpty;
+import java.util.HashSet;
 import java.util.Set;
 
 // LOMBOK
@@ -45,14 +45,17 @@ public class User extends AEntity {
 	@JsonIgnore
 	private String hashedPassword;
 
-	@Enumerated ( EnumType.STRING )
-	@ElementCollection ( fetch = FetchType.EAGER )
-	@Column ( name = "roles" )
-	private Set< Role > roles;
+	@ManyToMany ( cascade = { CascadeType.ALL } )
+	@JoinTable (
+			name = "authorizations",
+			joinColumns = { @JoinColumn ( name = "user_id" ) },
+			inverseJoinColumns = { @JoinColumn ( name = "role_id" ) }
+	)
+	private Set< Role > roles = new HashSet<>();
+
 	@Lob
 	@Type ( type = "org.hibernate.type.TextType" )
 	@URL
 	private String profilePictureUrl;
-
 
 }

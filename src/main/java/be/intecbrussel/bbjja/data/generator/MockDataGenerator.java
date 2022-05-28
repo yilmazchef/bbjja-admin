@@ -1,7 +1,6 @@
 package be.intecbrussel.bbjja.data.generator;
 
 
-import be.intecbrussel.bbjja.data.Role;
 import be.intecbrussel.bbjja.data.entity.*;
 import be.intecbrussel.bbjja.data.service.*;
 import com.github.javafaker.Faker;
@@ -12,6 +11,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.util.Collections;
+import java.util.List;
 import java.util.Locale;
 import java.util.Set;
 
@@ -20,7 +20,7 @@ public class MockDataGenerator {
 
 	@Bean
 	public CommandLineRunner loadData( PasswordEncoder passwordEncoder,
-	                                   UserRepository userRepository, EmployeeRepository employeeRepository,
+	                                   UserRepository userRepository, EmployeeRepository employeeRepository, RoleRepository roleRepository,
 	                                   PageRepository pageRepository, SubscriberRepository subscriberRepository,
 	                                   OfferRepository offerRepository, SchoolRepository schoolRepository,
 	                                   SlideRepository slideRepository,
@@ -40,6 +40,27 @@ public class MockDataGenerator {
 			}
 
 			logger.info( "Generating mock data..." );
+
+			final var userRole = new Role()
+					.setTitle( "User" )
+					.setDescription( "Has LIMITED access to all services including UI and API." )
+					.setParent( null )
+					.setMaxAllowedUsers( 10 );
+
+			final var editorRole = new Role()
+					.setTitle( "Editor" )
+					.setDescription( "Has full access to all services from UI." )
+					.setParent( userRole )
+					.setMaxAllowedUsers( 10 );
+
+			final var adminRole = new Role()
+					.setTitle( "Administrator" )
+					.setDescription( "Has full access to all services including UI and API." )
+					.setParent( editorRole )
+					.setMaxAllowedUsers( 10 );
+
+			roleRepository.saveAll( List.of( adminRole, editorRole, userRole ) );
+
 
 			final var emailUser = faker.internet().emailAddress();
 			final var usernameUser = "user";
