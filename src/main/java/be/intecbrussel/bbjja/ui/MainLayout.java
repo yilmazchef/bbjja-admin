@@ -114,28 +114,33 @@ public class MainLayout extends FlexBoxLayout implements RouterLayout, AfterNavi
 
 		final var menu = naviDrawer.getMenu();
 
+		final var slides = menu.addNaviItem( VaadinIcon.SLIDER, "Slides", null );
+		menu.addNaviItem( slides, "New", SlidesNewView.class );
+		menu.addNaviItem( slides, "View", SlidesQuickView.class );
+		menu.addNaviItem( slides, "Edit", SlidesEditView.class );
+
 		final var ninjaSchool = menu.addNaviItem( VaadinIcon.INSTITUTION, "Ninja School", null );
-		menu.addNaviItem( ninjaSchool, "Offers", OffersQuickView.class );
-		menu.addNaviItem( ninjaSchool, "Schools", SchoolsView.class );
+		menu.addNaviItem( ninjaSchool, "New", OffersNewView.class );
+		menu.addNaviItem( ninjaSchool, "View", OffersQuickView.class );
+		menu.addNaviItem( ninjaSchool, "Edit", OffersEditView.class );
 
-		final var grappling = menu.addNaviItem( VaadinIcon.INSTITUTION, "Grappling", null );
-		menu.addNaviItem( grappling, "School", SchoolGrapplingView.class );
-		menu.addNaviItem( grappling, "Street", StreetGrapplingView.class );
+		final var schoolGrappling = menu.addNaviItem( VaadinIcon.INSTITUTION, "School Grappling", null );
+		menu.addNaviItem( schoolGrappling, "Edit", SchoolGrapplingView.class );
 
-		final var home = menu.addNaviItem( VaadinIcon.HOME, "Home", null );
-		menu.addNaviItem( home, "Slides Quick View", SlidesQuickView.class );
-		menu.addNaviItem( home, "Slides Edit View", SlidesEditView.class );
-		menu.addNaviItem( home, "Subscribers Quick View", SubscribersQuickView.class );
-		menu.addNaviItem( home, "Subscribers Edit View", SubscribersEditView.class );
+		final var streetGrappling = menu.addNaviItem( VaadinIcon.INSTITUTION, "Street Grappling", null );
+		menu.addNaviItem( streetGrappling, "Edit", StreetGrapplingView.class );
 
 		final var teams = menu.addNaviItem( VaadinIcon.WORKPLACE, "Teams", null );
-		menu.addNaviItem( teams, "Teams quick view", EmployeesQuickView.class );
-		menu.addNaviItem( teams, "Teams edit view", EmployeesEditView.class );
+		menu.addNaviItem( teams, "View", EmployeesQuickView.class );
+		menu.addNaviItem( teams, "Edit", EmployeesEditView.class );
 
+		final var users = menu.addNaviItem( VaadinIcon.USERS, "Users", null );
+		menu.addNaviItem( users, "View", UsersQuickView.class );
+		menu.addNaviItem( users, "Edit", UsersEditView.class );
 
-		final var settings = menu.addNaviItem( VaadinIcon.USERS, "Settings", null );
-		menu.addNaviItem( settings, "Users quick view", UsersQuickView.class );
-		menu.addNaviItem( settings, "Users edit view", UsersEditView.class );
+		final var subscribers = menu.addNaviItem( VaadinIcon.SLIDER, "Subscribers", null );
+		menu.addNaviItem( subscribers, "Subscribers Quick View", SubscribersQuickView.class );
+		menu.addNaviItem( subscribers, "Subscribers Edit View", SubscribersEditView.class );
 	}
 
 
