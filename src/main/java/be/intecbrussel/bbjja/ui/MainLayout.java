@@ -20,6 +20,7 @@ import com.vaadin.flow.router.AfterNavigationObserver;
 import com.vaadin.flow.router.RouterLayout;
 import com.vaadin.flow.server.ErrorHandler;
 import com.vaadin.flow.server.VaadinSession;
+import com.vaadin.flow.server.auth.AnonymousAllowed;
 import com.vaadin.flow.theme.lumo.Lumo;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -37,6 +38,7 @@ import org.slf4j.LoggerFactory;
 @CssImport ( "./styles/misc/box-shadow-borders.css" )
 @CssImport ( value = "./styles/styles.css", include = "lumo-badge" )
 @JsModule ( "@vaadin/vaadin-lumo-styles/badge" )
+@AnonymousAllowed
 public class MainLayout extends FlexBoxLayout implements RouterLayout, AfterNavigationObserver {
 
 	private static final Logger log = LoggerFactory.getLogger( MainLayout.class );

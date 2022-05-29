@@ -11,9 +11,7 @@ import be.intecbrussel.bbjja.ui.styling.size.Horizontal;
 import be.intecbrussel.bbjja.ui.styling.size.Uniform;
 import com.vaadin.flow.component.Component;
 import com.vaadin.flow.component.button.Button;
-import com.vaadin.flow.component.html.H2;
 import com.vaadin.flow.component.html.Image;
-import com.vaadin.flow.component.html.Paragraph;
 import com.vaadin.flow.component.notification.Notification;
 import com.vaadin.flow.component.orderedlayout.FlexLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
@@ -60,9 +58,16 @@ public class SlidesEditView extends ViewFrame implements LocaleChangeObserver {
 			final var existingSlideItemImage = new Image( existingSlideItem.getImageUrl(), "BBJA Slide Image" );
 			out.println( existingSlideItem.getImageUrl() );
 			existingSlideItemImage.setWidthFull();
-			final var existingSlideItemTitle = new H2( existingSlideItem.getTitle() );
-			final var existingSlideItemDetails = new Paragraph( "Description, slogan, message, detailed content etc. is written here. 🤗" );
-			existingSlideItemLayout.add( existingSlideItemImage, existingSlideItemTitle, existingSlideItemDetails );
+
+			final var existingSlideItemTitleField = new TextField( "Title" );
+			existingSlideItemTitleField.setValue( existingSlideItem.getPage().getSlug() );
+			existingSlideItemTitleField.setWidthFull();
+
+			final var existingDescriptionField = new TextField( "Page slug" );
+			existingDescriptionField.setValue( existingSlideItem.getPage().getSlug() );
+			existingDescriptionField.setWidthFull();
+
+			existingSlideItemLayout.add( existingSlideItemImage, existingSlideItemTitleField, existingDescriptionField );
 
 			final var updateSlideLayout = new VerticalLayout();
 			updateSlideLayout.setPadding( false );
