@@ -48,10 +48,11 @@ public class SlidesQuickView extends ViewFrame implements LocaleChangeObserver {
 
 	private Component createContent() {
 
-		final var slidesData = slideService.list( PageRequest.of( 1, 25 ) ).toList();
+		final var slidesData = slideService.list( PageRequest.of( 0, 25 ) ).toList();
 
 		final var slidesGrid = new Grid<>( Slide.class, false );
 		slidesGrid.setAllRowsVisible( true );
+		slidesGrid.setWidthFull();
 		slidesGrid.addColumn( Slide :: getTitle ).setHeader( "Title" );
 		slidesGrid.addColumn( Slide :: getImageUrl ).setHeader( "Image URL" );
 		slidesGrid.addColumn( Slide :: getPage ).setHeader( "Page" );
