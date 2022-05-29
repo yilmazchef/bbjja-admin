@@ -60,7 +60,9 @@ public class SlidesEditView extends ViewFrame implements LocaleChangeObserver {
 			existingSlideItemImage.setWidthFull();
 
 			final var existingSlideItemTitleField = new TextField( "Title" );
-			existingSlideItemTitleField.setValue( existingSlideItem.getPage().getSlug() );
+			existingSlideItemTitleField.setValue( existingSlideItem.getTitle() );
+			existingSlideItemTitleField.setRequiredIndicatorVisible( true );
+			existingSlideItemTitleField.setRequired( true );
 			existingSlideItemTitleField.setWidthFull();
 
 			final var existingDescriptionField = new TextField( "Page slug" );
