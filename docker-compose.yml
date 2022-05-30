@@ -1,10 +1,10 @@
 version: "3.9"
 services:
   app:
+    container_name: bbjja_admin_app
     build: .
     ports:
       - "8080:8080"
-      - "443:443"
     depends_on:
       - db
     environment:
@@ -12,8 +12,13 @@ services:
       - SPRING_DATASOURCE_USERNAME=postgres
       - SPRING_DATASOURCE_PASSWORD=postgres
       - SPRING_JPA_HIBERNATE_DDL_AUTO=update
+    networks:
+      - dev-net
+    volumes:
+      - dev-vol:/home/app/web_server/
 
   db:
+    container_name: bbjja_admin_db
     image: postgres:latest
     ports:
       - "5432:5432"
@@ -26,9 +31,26 @@ services:
       interval: 10s
       timeout: 5s
       retries: 5
+    networks:
+      - dev-net
+    volumes:
+      - dev-vol:/home/app/web_server/
 
   db-admin:
+    container_name: bbjja_admin_db_panel
     image: adminer
     restart: always
     ports:
       - "9090:8080"
+    networks:
+      - dev-net
+    volumes:
+      - dev-vol:/home/app/web_server/
+
+networks:
+  prod-net:
+  dev-net:
+
+volumes:
+  prod-vol:
+  dev-vol:
