@@ -39,8 +39,6 @@ public class OffersDetailedViewLayout extends VerticalLayout {
 		newSchoolLayout.getStyle()
 				.set( "box-shadow", " 0 4px 8px 0 rgba(0,0,0,0.2)" )
 				.set( "transition", "0.3s" );
-		newSchoolLayout.setSpacing( false );
-		newSchoolLayout.setPadding( false );
 
 		final var newSchoolTitle = new TextField( "School Name" );
 		newSchoolTitle.setWidthFull();

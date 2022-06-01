@@ -2,7 +2,7 @@ package be.intecbrussel.bbjja.ui.layouts;
 
 
 import be.intecbrussel.bbjja.data.entity.Employee;
-import be.intecbrussel.bbjja.data.service.EmployeeService;
+import be.intecbrussel.bbjja.data.service.TeamService;
 import be.intecbrussel.bbjja.security.AuthenticatedUser;
 import com.vaadin.flow.component.Component;
 import com.vaadin.flow.component.Tag;
@@ -26,97 +26,100 @@ public class TeamUpdateLayout extends VerticalLayout implements LocaleChangeObse
 
 
 	@Autowired
-	public TeamUpdateLayout( final AuthenticatedUser authenticatedUser, final EmployeeService employeeService ) {
+	public TeamUpdateLayout( final AuthenticatedUser authenticatedUser, final TeamService teamService ) {
 
 		setId( "team-update-layout".concat( String.valueOf( Instant.now().getNano() ) ) );
 
-		final var existingEmployeeData = employeeService.list();
-		final var existingEmployeeComponents = new ArrayList< Component >();
+		if ( teamService.count() > 0 ) {
 
-		for ( final Employee item : existingEmployeeData ) {
+			final var teams = teamService.list();
+			final var components = new ArrayList< Component >();
 
-			final var emailField = new TextField( "Email" );
-			emailField.setValue( item.getEmail() );
+			for ( final Employee t : teams ) {
 
-			final var firstNameField = new TextField( "First name" );
-			firstNameField.setValue( item.getFirstName() );
+				final var emailField = new TextField( "Email" );
+				emailField.setValue( t.getEmail() );
 
-			final var lastNameField = new TextField( "Last name" );
-			lastNameField.setValue( item.getLastName() );
+				final var firstNameField = new TextField( "First name" );
+				firstNameField.setValue( t.getFirstName() );
 
-			final var jobTitleField = new TextField( "Job title" );
-			jobTitleField.setValue( item.getJobTitle() );
+				final var lastNameField = new TextField( "Last name" );
+				lastNameField.setValue( t.getLastName() );
 
-			final var existingEmployeeProfileImageLoader = new Image(
-					item.getProfilePictureUrl(),
-					String.format( "Profile photo for %s %s", item.getFirstName(), item.getLastName() )
-			);
+				final var jobTitleField = new TextField( "Job title" );
+				jobTitleField.setValue( t.getJobTitle() );
 
-			final var existingEmployeeProfileImageField = new TextField( "Profile photo URL" );
-			existingEmployeeProfileImageField.setValue( item.getProfilePictureUrl() );
+				final var existingEmployeeProfileImageLoader = new Image(
+						t.getProfilePictureUrl(),
+						String.format( "Profile photo for %s %s", t.getFirstName(), t.getLastName() )
+				);
 
-			final var itemLayout = new FormLayout();
-			itemLayout.add(
-					firstNameField, lastNameField, emailField, jobTitleField
-			);
+				final var existingEmployeeProfileImageField = new TextField( "Profile photo URL" );
+				existingEmployeeProfileImageField.setValue( t.getProfilePictureUrl() );
 
-			itemLayout.setResponsiveSteps(
-					// Use one column by default
-					new FormLayout.ResponsiveStep( "0", 1 ),
-					// Use two columns, if layout's width exceeds 500px
-					new FormLayout.ResponsiveStep( "500px", 2 ) );
+				final var tLayout = new FormLayout();
+				tLayout.add(
+						firstNameField, lastNameField, emailField, jobTitleField
+				);
 
-			final var updateButton = new Button( "Update employee info", onClick -> {
-				final var newEmail = emailField.getValue();
-				final var newFirstName = firstNameField.getValue();
-				final var newLastName = lastNameField.getValue();
-				final var newJobTitle = jobTitleField.getValue();
-				final var newProfileImage = existingEmployeeProfileImageField.getValue();
+				tLayout.setResponsiveSteps(
+						// Use one column by default
+						new FormLayout.ResponsiveStep( "0", 1 ),
+						// Use two columns, if layout's width exceeds 500px
+						new FormLayout.ResponsiveStep( "500px", 2 ) );
 
-				final var changeAnalyzer = new Object() {
-					Boolean hasAnyChange = Boolean.FALSE;
-				};
+				final var updateButton = new Button( "Update employee info", onClick -> {
+					final var newEmail = emailField.getValue();
+					final var newFirstName = firstNameField.getValue();
+					final var newLastName = lastNameField.getValue();
+					final var newJobTitle = jobTitleField.getValue();
+					final var newProfileImage = existingEmployeeProfileImageField.getValue();
 
-				if ( ! item.getEmail().equalsIgnoreCase( newEmail ) ) {
-					item.setEmail( newEmail );
-					changeAnalyzer.hasAnyChange = true;
-				}
+					final var changeAnalyzer = new Object() {
+						Boolean hasAnyChange = Boolean.FALSE;
+					};
 
-				if ( ! item.getFirstName().equalsIgnoreCase( newFirstName ) ) {
-					item.setFirstName( newFirstName );
-					changeAnalyzer.hasAnyChange = true;
-				}
+					if ( ! t.getEmail().equalsIgnoreCase( newEmail ) ) {
+						t.setEmail( newEmail );
+						changeAnalyzer.hasAnyChange = true;
+					}
 
-				if ( ! item.getLastName().equalsIgnoreCase( newLastName ) ) {
-					item.setLastName( newLastName );
-					changeAnalyzer.hasAnyChange = true;
-				}
+					if ( ! t.getFirstName().equalsIgnoreCase( newFirstName ) ) {
+						t.setFirstName( newFirstName );
+						changeAnalyzer.hasAnyChange = true;
+					}
 
-				if ( ! item.getJobTitle().equalsIgnoreCase( newJobTitle ) ) {
-					item.setJobTitle( newJobTitle );
-					changeAnalyzer.hasAnyChange = true;
-				}
+					if ( ! t.getLastName().equalsIgnoreCase( newLastName ) ) {
+						t.setLastName( newLastName );
+						changeAnalyzer.hasAnyChange = true;
+					}
 
-				if ( ! item.getProfilePictureUrl().equalsIgnoreCase( newProfileImage ) ) {
-					item.setProfilePictureUrl( newProfileImage );
-					changeAnalyzer.hasAnyChange = true;
-				}
+					if ( ! t.getJobTitle().equalsIgnoreCase( newJobTitle ) ) {
+						t.setJobTitle( newJobTitle );
+						changeAnalyzer.hasAnyChange = true;
+					}
+
+					if ( ! t.getProfilePictureUrl().equalsIgnoreCase( newProfileImage ) ) {
+						t.setProfilePictureUrl( newProfileImage );
+						changeAnalyzer.hasAnyChange = true;
+					}
 
 
-				if ( changeAnalyzer.hasAnyChange ) {
-					final var savedEmployee = employeeService.update( item );
-					notifyEmployeeUpdated( savedEmployee );
-				}
-			} );
+					if ( changeAnalyzer.hasAnyChange ) {
+						final var savedEmployee = teamService.update( t );
+						notifyEmployeeUpdated( savedEmployee );
+					}
+				} );
 
-			itemLayout.add( updateButton );
+				tLayout.add( updateButton );
 
-			existingEmployeeComponents.add( itemLayout );
+				components.add( tLayout );
 
-		}
+			}
 
-		for ( final Component employeeComponent : existingEmployeeComponents ) {
-			add( employeeComponent );
+			for ( final Component employeeComponent : components ) {
+				add( employeeComponent );
+			}
 		}
 
 

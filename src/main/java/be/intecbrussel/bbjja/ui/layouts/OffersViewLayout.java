@@ -33,45 +33,48 @@ public class OffersViewLayout extends VerticalLayout implements LocaleChangeObse
 
 		setId( "offers-view-layout".concat( String.valueOf( Instant.now().getNano() ) ) );
 
-		final List< Offer > existingOffersData = offerService.list();
-		final var existingOfferItemLayoutList = new ArrayList< Component >();
+		if ( offerService.count() > 0 ) {
+			final List< Offer > existingOffersData = offerService.list();
+			final var existingOfferItemLayoutList = new ArrayList< Component >();
 
-		for ( final var existingOfferItem : existingOffersData ) {
+			for ( final var existingOfferItem : existingOffersData ) {
 
-			final var existingOfferItemLayout = new VerticalLayout();
+				final var existingOfferItemLayout = new VerticalLayout();
 
-			final var existingTitleField = new TextField();
-			existingTitleField.setWidthFull();
-			existingTitleField.setValue( existingOfferItem.getTitle() );
-			final var existingDescriptionField = new TextArea();
-			existingDescriptionField.setValue( existingOfferItem.getDescription() );
-			existingDescriptionField.setWidthFull();
-			existingDescriptionField.setHeight( "200px" );
-			final var existingForwardUrlField = new TextField();
-			existingForwardUrlField.setWidthFull();
-			existingForwardUrlField.setValue( existingOfferItem.getForwardUrl() );
+				final var existingTitleField = new TextField();
+				existingTitleField.setWidthFull();
+				existingTitleField.setValue( existingOfferItem.getTitle() );
+				final var existingDescriptionField = new TextArea();
+				existingDescriptionField.setValue( existingOfferItem.getDescription() );
+				existingDescriptionField.setWidthFull();
+				existingDescriptionField.setHeight( "200px" );
+				final var existingForwardUrlField = new TextField();
+				existingForwardUrlField.setWidthFull();
+				existingForwardUrlField.setValue( existingOfferItem.getForwardUrl() );
 
-			final var existingOfferPageSelect = new Select< Page >();
-			existingOfferPageSelect.setItems( pageService.list() );
-			existingOfferPageSelect.setItemLabelGenerator( Page :: getSlug );
+				final var existingOfferPageSelect = new Select< Page >();
+				existingOfferPageSelect.setItems( pageService.list() );
+				existingOfferPageSelect.setItemLabelGenerator( Page :: getSlug );
 
-			final var updateOfferButton = new Button( "Update offer", onSave -> {
-				existingOfferItem.setTitle( existingTitleField.getValue() );
-				existingOfferItem.setDescription( existingDescriptionField.getValue() );
-				existingOfferItem.setForwardUrl( existingForwardUrlField.getValue() );
-				existingOfferItem.setPage( existingOfferPageSelect.getValue() );
-				offerService.update( existingOfferItem );
-			} );
-			updateOfferButton.setWidthFull();
+				final var updateOfferButton = new Button( "Update offer", onSave -> {
+					existingOfferItem.setTitle( existingTitleField.getValue() );
+					existingOfferItem.setDescription( existingDescriptionField.getValue() );
+					existingOfferItem.setForwardUrl( existingForwardUrlField.getValue() );
+					existingOfferItem.setPage( existingOfferPageSelect.getValue() );
+					offerService.update( existingOfferItem );
+				} );
+				updateOfferButton.setWidthFull();
 
-			existingOfferItemLayout.add( existingTitleField, existingDescriptionField, existingForwardUrlField, updateOfferButton );
+				existingOfferItemLayout.add( existingTitleField, existingDescriptionField, existingForwardUrlField, updateOfferButton );
 
-			existingOfferItemLayoutList.add( existingOfferItemLayout );
+				existingOfferItemLayoutList.add( existingOfferItemLayout );
+			}
+
+			for ( final Component component : existingOfferItemLayoutList ) {
+				add( component );
+			}
 		}
 
-		for ( final Component component : existingOfferItemLayoutList ) {
-			add( component );
-		}
 
 	}
 

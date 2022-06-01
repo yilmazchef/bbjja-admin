@@ -4,6 +4,7 @@ package be.intecbrussel.bbjja.ui.layouts;
 import be.intecbrussel.bbjja.data.entity.Slide;
 import be.intecbrussel.bbjja.data.service.SlideService;
 import be.intecbrussel.bbjja.security.AuthenticatedUser;
+import com.vaadin.flow.component.Tag;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.notification.Notification;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
@@ -13,7 +14,10 @@ import com.vaadin.flow.i18n.LocaleChangeObserver;
 import com.vaadin.flow.spring.annotation.SpringComponent;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import java.time.Instant;
+
 @SpringComponent
+@Tag ( "slides-create-layout" )
 public class SlidesCreateLayout extends VerticalLayout implements LocaleChangeObserver {
 
 
@@ -21,11 +25,9 @@ public class SlidesCreateLayout extends VerticalLayout implements LocaleChangeOb
 	public SlidesCreateLayout( final AuthenticatedUser authenticatedUser, final SlideService slideService ) {
 
 
-		setId( "slides-create-layout" );
+		setId( "slides-create-layout".concat( String.valueOf( Instant.now().getNano() ) ) );
 
 		final var newSlideLayout = new VerticalLayout();
-		newSlideLayout.setSpacing( false );
-		newSlideLayout.setPadding( false );
 
 		final var newImageTitle = new TextField( "Title" );
 		newImageTitle.setWidthFull();

@@ -31,13 +31,13 @@ public class UsersUpdateLayout extends VerticalLayout implements LocaleChangeObs
 		setId( "users-update-layout".concat( String.valueOf( Instant.now().getNano() ) ) );
 
 
-		final var existingUserData = userService.list();
-		final var userEditLayouts = new ArrayList< Component >();
+		final var users = userService.list();
+		final var components = new ArrayList< Component >();
 
-		for ( final User existingUserItem : existingUserData ) {
+		for ( final User u : users ) {
 
 			final var usernameField = new TextField( "Username" );
-			usernameField.setValue( existingUserItem.getUsername() );
+			usernameField.setValue( u.getUsername() );
 			final var newPasswordField = new PasswordField( "New Password" );
 			final var confirmPasswordField = new PasswordField( "Confirm password" );
 
@@ -58,19 +58,9 @@ public class UsersUpdateLayout extends VerticalLayout implements LocaleChangeObs
 
 			updateUserLayout.add( updateUserButton );
 
-			userEditLayouts.add( updateUserLayout );
+			components.add( updateUserLayout );
 
 		}
-	}
-
-
-	private void notifyUserDeleted( final User person ) {
-
-		Notification.show(
-				String.format( "User with email %s has been removed from the list.", person.getEmail() ),
-				3000,
-				Notification.Position.TOP_CENTER
-		).open();
 	}
 
 

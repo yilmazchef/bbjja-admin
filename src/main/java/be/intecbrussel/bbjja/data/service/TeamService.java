@@ -13,13 +13,13 @@ import java.util.Optional;
 import java.util.UUID;
 
 @Service
-public class EmployeeService {
+public class TeamService {
 
 	private final EmployeeRepository repository;
 
 
 	@Autowired
-	public EmployeeService( final EmployeeRepository repository ) {
+	public TeamService( final EmployeeRepository repository ) {
 
 		this.repository = repository;
 	}

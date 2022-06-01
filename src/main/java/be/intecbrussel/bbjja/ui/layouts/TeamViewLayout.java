@@ -2,7 +2,7 @@ package be.intecbrussel.bbjja.ui.layouts;
 
 
 import be.intecbrussel.bbjja.data.entity.Employee;
-import be.intecbrussel.bbjja.data.service.EmployeeService;
+import be.intecbrussel.bbjja.data.service.TeamService;
 import be.intecbrussel.bbjja.security.AuthenticatedUser;
 import com.vaadin.flow.component.Tag;
 import com.vaadin.flow.component.grid.Grid;
@@ -20,12 +20,12 @@ public class TeamViewLayout extends VerticalLayout implements LocaleChangeObserv
 
 
 	@Autowired
-	public TeamViewLayout( final AuthenticatedUser authenticatedUser, final EmployeeService employeeService ) {
+	public TeamViewLayout( final AuthenticatedUser authenticatedUser, final TeamService teamService ) {
 
 
 		setId( "team-view-layout".concat( String.valueOf( Instant.now().getNano() ) ) );
 
-		final var existingEmployeeData = employeeService.list();
+		final var existingEmployeeData = teamService.list();
 
 		final var employeesGrid = new Grid<>( Employee.class, false );
 		employeesGrid.setAllRowsVisible( true );

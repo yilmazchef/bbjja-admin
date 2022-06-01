@@ -31,8 +31,6 @@ public class OffersCreateLayout extends VerticalLayout implements LocaleChangeOb
 		setId( "offers-create-layout".concat( String.valueOf( Instant.now().getNano() ) ) );
 
 		final var newOfferLayout = new VerticalLayout();
-		newOfferLayout.setSpacing( false );
-		newOfferLayout.setPadding( false );
 
 		final var newOfferTitle = new TextField( "Offer Title" );
 		newOfferTitle.setWidthFull();

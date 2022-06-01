@@ -32,48 +32,52 @@ public class UsersViewLayout extends VerticalLayout implements LocaleChangeObser
 
 		setId( "users-view-layout".concat( String.valueOf( Instant.now().getNano() ) ) );
 
-		final var existingUserData = userService.list();
+		if ( userService.count() > 0 ) {
 
-		final var usersGrid = new Grid<>( User.class, false );
-		usersGrid.setAllRowsVisible( true );
+			final var existingUserData = userService.list();
 
-		usersGrid.addColumn( User :: getFirstName ).setSortable( true ).setHeader( "First Name" ).setEditorComponent( user -> {
-			final var userFirstNameEditorField = new TextField( "set new first name here" );
-			userFirstNameEditorField.setWidthFull();
-			return userFirstNameEditorField;
-		} );
-		usersGrid.addColumn( User :: getLastName ).setHeader( "Last Name" );
-		usersGrid.addColumn( User :: getEmail ).setHeader( "Email" );
-		usersGrid.addColumn(
-				new ComponentRenderer<>( Button :: new, ( b, u ) -> {
+			final var usersGrid = new Grid<>( User.class, false );
+			usersGrid.setAllRowsVisible( true );
 
-					b.setIcon( new Icon( VaadinIcon.TRASH ) );
-					b.addThemeVariants( ButtonVariant.LUMO_ICON, ButtonVariant.LUMO_ERROR, ButtonVariant.LUMO_TERTIARY );
-					b.addClickListener( onDelete -> {
+			usersGrid.addColumn( User :: getFirstName ).setSortable( true ).setHeader( "First Name" ).setEditorComponent( user -> {
+				final var userFirstNameEditorField = new TextField( "set new first name here" );
+				userFirstNameEditorField.setWidthFull();
+				return userFirstNameEditorField;
+			} );
+			usersGrid.addColumn( User :: getLastName ).setHeader( "Last Name" );
+			usersGrid.addColumn( User :: getEmail ).setHeader( "Email" );
+			usersGrid.addColumn(
+					new ComponentRenderer<>( Button :: new, ( b, u ) -> {
 
-						if ( u == null ) {
-							return;
-						}
+						b.setIcon( new Icon( VaadinIcon.TRASH ) );
+						b.addThemeVariants( ButtonVariant.LUMO_ICON, ButtonVariant.LUMO_ERROR, ButtonVariant.LUMO_TERTIARY );
+						b.addClickListener( onDelete -> {
 
-						userService.delete( u.getId() );
-						existingUserData.remove( u );
+							if ( u == null ) {
+								return;
+							}
 
-						if ( existingUserData.size() > 0 ) {
-							usersGrid.setVisible( true );
-							usersGrid.getDataProvider().refreshAll();
-						} else {
-							usersGrid.setVisible( false );
-						}
+							userService.delete( u.getId() );
+							existingUserData.remove( u );
 
-						usersGrid.setItems( existingUserData );
-						notifyUserDeleted( u );
+							if ( existingUserData.size() > 0 ) {
+								usersGrid.setVisible( true );
+								usersGrid.getDataProvider().refreshAll();
+							} else {
+								usersGrid.setVisible( false );
+							}
 
-					} );
+							usersGrid.setItems( existingUserData );
+							notifyUserDeleted( u );
+
+						} );
 
 
-				} ) ).setHeader( "Manage" );
+					} ) ).setHeader( "Manage" );
 
-		usersGrid.setItems( existingUserData );
+			usersGrid.setItems( existingUserData );
+		}
+
 
 	}
 

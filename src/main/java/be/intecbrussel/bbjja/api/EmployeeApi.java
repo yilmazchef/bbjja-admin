@@ -3,7 +3,7 @@ package be.intecbrussel.bbjja.api;
 
 import be.intecbrussel.bbjja.data.entity.Employee;
 import be.intecbrussel.bbjja.data.entity.User;
-import be.intecbrussel.bbjja.data.service.EmployeeService;
+import be.intecbrussel.bbjja.data.service.TeamService;
 import be.intecbrussel.bbjja.security.AuthenticatedUser;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -24,14 +24,14 @@ import java.util.UUID;
 @PermitAll
 public class EmployeeApi {
 
-	private final EmployeeService employeeService;
+	private final TeamService teamService;
 	private final AuthenticatedUser authenticatedUser;
 
 
 	@Autowired
-	public EmployeeApi( final EmployeeService employeeService, final AuthenticatedUser authenticatedUser ) {
+	public EmployeeApi( final TeamService teamService, final AuthenticatedUser authenticatedUser ) {
 
-		this.employeeService = employeeService;
+		this.teamService = teamService;
 		this.authenticatedUser = authenticatedUser;
 	}
 
@@ -39,14 +39,14 @@ public class EmployeeApi {
 	@GetMapping ( EndPoints.EMPLOYEE_GET_BY_ID )
 	public Optional< Employee > get( @PathVariable @NotNull final UUID id ) {
 
-		return employeeService.get( id );
+		return teamService.get( id );
 	}
 
 
 	@GetMapping ( EndPoints.EMPLOYEE_GET_BY_EMAIL )
 	public Optional< Employee > get( @PathVariable @Valid final String email ) {
 
-		return employeeService.get( email );
+		return teamService.get( email );
 	}
 
 
@@ -59,7 +59,7 @@ public class EmployeeApi {
 			entity.setModifiedBy( u.getUsername() );
 		} );
 
-		return employeeService.create( entity );
+		return teamService.create( entity );
 	}
 
 
@@ -72,42 +72,42 @@ public class EmployeeApi {
 			entity.setModifiedBy( u.getUsername() );
 		} );
 
-		return employeeService.update( entity );
+		return teamService.update( entity );
 	}
 
 
 	@DeleteMapping ( EndPoints.EMPLOYEE_DELETE_BY_ID )
 	public void delete( @PathVariable final UUID id ) {
 
-		employeeService.delete( id );
+		teamService.delete( id );
 	}
 
 
 	@GetMapping ( EndPoints.EMPLOYEE_LIST_IN_PAGES )
 	public Page< Employee > list( @PathVariable final Integer page ) {
 
-		return employeeService.list( PageRequest.of( page, 25 ) );
+		return teamService.list( PageRequest.of( page, 25 ) );
 	}
 
 
 	@GetMapping ( EndPoints.EMPLOYEE_LIST_ALL )
 	public List< Employee > list() {
 
-		return employeeService.list();
+		return teamService.list();
 	}
 
 
 	@GetMapping ( EndPoints.EMPLOYEE_LIST_SORTED )
 	public List< Employee > list( final Sort sort ) {
 
-		return employeeService.list( sort );
+		return teamService.list( sort );
 	}
 
 
 	@GetMapping ( EndPoints.EMPLOYEES_COUNT )
 	public int count() {
 
-		return employeeService.count();
+		return teamService.count();
 	}
 
 }

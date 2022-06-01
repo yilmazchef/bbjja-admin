@@ -27,43 +27,47 @@ public class SubscribersDeleteLayout extends VerticalLayout implements LocaleCha
 
 		setId( "subscribers-delete-layout" );
 
-		final var subscribersData = subscriberService.list( PageRequest.of( 1, 25 ) ).toList();
+		if ( subscriberService.count() > 0 ) {
+			final var subscribersData = subscriberService.list( PageRequest.of( 1, 25 ) ).toList();
 
-		final var subscribersGrid = new Grid<>( Subscriber.class, false );
-		subscribersGrid.setAllRowsVisible( true );
-		subscribersGrid.addColumn( Subscriber :: getFirstName ).setHeader( "First Name" );
-		subscribersGrid.addColumn( Subscriber :: getLastName ).setHeader( "Last Name" );
-		subscribersGrid.addColumn( Subscriber :: getEmail ).setHeader( "Email" );
+			final var subscribersGrid = new Grid<>( Subscriber.class, false );
+			subscribersGrid.setAllRowsVisible( true );
+			subscribersGrid.addColumn( Subscriber :: getFirstName ).setHeader( "First Name" );
+			subscribersGrid.addColumn( Subscriber :: getLastName ).setHeader( "Last Name" );
+			subscribersGrid.addColumn( Subscriber :: getEmail ).setHeader( "Email" );
 
-		subscribersGrid.addColumn( new ComponentRenderer<>( Button :: new, ( deleteButton, subscriber ) -> {
+			subscribersGrid.addColumn( new ComponentRenderer<>( Button :: new, ( deleteButton, subscriber ) -> {
 
-			deleteButton.setIcon( new Icon( VaadinIcon.TRASH ) );
-			deleteButton.addThemeVariants( ButtonVariant.LUMO_ICON, ButtonVariant.LUMO_ERROR, ButtonVariant.LUMO_TERTIARY );
-			deleteButton.addClickListener( onDelete -> {
+				deleteButton.setIcon( new Icon( VaadinIcon.TRASH ) );
+				deleteButton.addThemeVariants( ButtonVariant.LUMO_ICON, ButtonVariant.LUMO_ERROR, ButtonVariant.LUMO_TERTIARY );
+				deleteButton.addClickListener( onDelete -> {
 
-				if ( subscriber == null ) {
-					return;
-				}
+					if ( subscriber == null ) {
+						return;
+					}
 
-				subscriberService.delete( subscriber.getId() );
-				subscribersData.remove( subscriber );
+					subscriberService.delete( subscriber.getId() );
+					subscribersData.remove( subscriber );
 
-				if ( subscribersData.size() > 0 ) {
-					subscribersGrid.setVisible( true );
-					subscribersGrid.getDataProvider().refreshAll();
-				} else {
-					subscribersGrid.setVisible( false );
-				}
+					if ( subscribersData.size() > 0 ) {
+						subscribersGrid.setVisible( true );
+						subscribersGrid.getDataProvider().refreshAll();
+					} else {
+						subscribersGrid.setVisible( false );
+					}
 
-				subscribersGrid.setItems( subscribersData );
-				notifySubscriberDeleted( subscriber );
+					subscribersGrid.setItems( subscribersData );
+					notifySubscriberDeleted( subscriber );
 
-			} );
+				} );
 
 
-		} ) ).setHeader( "Manage" );
+			} ) ).setHeader( "Manage" );
 
-		subscribersGrid.setItems( subscribersData );
+			subscribersGrid.setItems( subscribersData );
+		}
+
+
 	}
 
 

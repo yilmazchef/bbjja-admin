@@ -14,17 +14,10 @@ import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.component.tabs.Tab;
 import com.vaadin.flow.component.tabs.Tabs;
 import com.vaadin.flow.router.RouterLink;
-import lombok.Getter;
 
 
 // tag::snippet[]
 public class MainLayout extends AppLayout {
-
-	@Getter
-	private final Tabs subMenuTabs = new Tabs();
-
-	@Getter
-	private final H2 subMenuHeader = new H2( "BBJJA Submenu" );
 
 
 	public MainLayout() {
@@ -39,20 +32,21 @@ public class MainLayout extends AppLayout {
 
 		final var toggle = new DrawerToggle();
 
-		subMenuHeader.getStyle()
+		final var subHeader = new H2( "BBJJA Submenu" );
+		subHeader.getStyle()
 				.set( "font-size", "var(--lumo-font-size-l)" )
 				.set( "margin", "0" );
 
-		final var wrapper = new HorizontalLayout( toggle, subMenuHeader );
+		final var wrapper = new HorizontalLayout( toggle, subHeader );
 		wrapper.setAlignItems( FlexComponent.Alignment.CENTER );
 		wrapper.setSpacing( false );
 
-		final var viewHeader = new VerticalLayout( wrapper, subMenuTabs );
-		viewHeader.setPadding( false );
-		viewHeader.setSpacing( false );
+		final var headerLayout = new VerticalLayout( wrapper );
+		headerLayout.setPadding( false );
+		headerLayout.setSpacing( false );
 
 		addToDrawer( appTitle, views );
-		addToNavbar( viewHeader );
+		addToNavbar( headerLayout );
 
 		setPrimarySection( Section.DRAWER );
 	}

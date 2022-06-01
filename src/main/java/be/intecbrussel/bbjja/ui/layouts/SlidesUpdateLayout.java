@@ -30,59 +30,62 @@ public class SlidesUpdateLayout extends VerticalLayout implements LocaleChangeOb
 
 		setId( "slides-update-layout" );
 
-		final var existingSlidesData = slideService.list( Sort.by( "dateModified" ) );
-		final var existingSlidesLayoutList = new ArrayList< Component >();
+		if ( slideService.count() > 0 ) {
+			final var existingSlidesData = slideService.list( Sort.by( "dateModified" ) );
+			final var existingSlidesLayoutList = new ArrayList< Component >();
 
-		for ( final var existingSlideItem : existingSlidesData ) {
+			for ( final var existingSlideItem : existingSlidesData ) {
 
-			final var existingSlideItemLayout = new VerticalLayout();
-			final var existingSlideItemImage = new Image( existingSlideItem.getImageUrl(), "BBJA Slide Image" );
-			out.println( existingSlideItem.getImageUrl() );
-			existingSlideItemImage.setWidthFull();
+				final var existingSlideItemLayout = new VerticalLayout();
+				final var existingSlideItemImage = new Image( existingSlideItem.getImageUrl(), "BBJA Slide Image" );
+				out.println( existingSlideItem.getImageUrl() );
+				existingSlideItemImage.setWidthFull();
 
-			final var existingSlideItemTitleField = new TextField( "Title" );
-			existingSlideItemTitleField.setValue( existingSlideItem.getTitle() );
-			existingSlideItemTitleField.setRequiredIndicatorVisible( true );
-			existingSlideItemTitleField.setRequired( true );
-			existingSlideItemTitleField.setWidthFull();
+				final var existingSlideItemTitleField = new TextField( "Title" );
+				existingSlideItemTitleField.setValue( existingSlideItem.getTitle() );
+				existingSlideItemTitleField.setRequiredIndicatorVisible( true );
+				existingSlideItemTitleField.setRequired( true );
+				existingSlideItemTitleField.setWidthFull();
 
-			final var existingDescriptionField = new TextField( "Page slug" );
-			existingDescriptionField.setValue( existingSlideItem.getPage().getSlug() );
-			existingDescriptionField.setWidthFull();
+				final var existingDescriptionField = new TextField( "Page slug" );
+				existingDescriptionField.setValue( existingSlideItem.getPage().getSlug() );
+				existingDescriptionField.setWidthFull();
 
-			existingSlideItemLayout.add( existingSlideItemImage, existingSlideItemTitleField, existingDescriptionField );
+				existingSlideItemLayout.add( existingSlideItemImage, existingSlideItemTitleField, existingDescriptionField );
 
-			final var updateSlideLayout = new VerticalLayout();
-			updateSlideLayout.setPadding( false );
-			updateSlideLayout.setSpacing( false );
-			final var updateSlideTitleField = new TextField( "Title" );
-			updateSlideTitleField.setWidthFull();
-			final var updateSlideImageUrlField = new TextField( "Image URL" );
-			updateSlideImageUrlField.setWidthFull();
+				final var updateSlideLayout = new VerticalLayout();
+				updateSlideLayout.setPadding( false );
+				updateSlideLayout.setSpacing( false );
+				final var updateSlideTitleField = new TextField( "Title" );
+				updateSlideTitleField.setWidthFull();
+				final var updateSlideImageUrlField = new TextField( "Image URL" );
+				updateSlideImageUrlField.setWidthFull();
 
-			final var updateButton = new Button( "Update Slide", onClick -> {
-				if ( ! updateSlideImageUrlField.getValue().isEmpty() ) {
-					final String oldURL = existingSlideItem.getImageUrl();
-					final String newURL = updateSlideImageUrlField.getValue();
-					final String newTitle = updateSlideTitleField.getValue();
-					existingSlideItem.setImageUrl( newURL );
-					existingSlideItem.setTitle( newTitle );
-					final Slide updatedSlide = slideService.update( existingSlideItem );
-					notifySlideUpdated( oldURL, newURL );
-				}
-			} );
-			updateButton.setWidthFull();
-			updateSlideLayout.addAndExpand( updateSlideImageUrlField, updateButton );
+				final var updateButton = new Button( "Update Slide", onClick -> {
+					if ( ! updateSlideImageUrlField.getValue().isEmpty() ) {
+						final String oldURL = existingSlideItem.getImageUrl();
+						final String newURL = updateSlideImageUrlField.getValue();
+						final String newTitle = updateSlideTitleField.getValue();
+						existingSlideItem.setImageUrl( newURL );
+						existingSlideItem.setTitle( newTitle );
+						final Slide updatedSlide = slideService.update( existingSlideItem );
+						notifySlideUpdated( oldURL, newURL );
+					}
+				} );
+				updateButton.setWidthFull();
+				updateSlideLayout.addAndExpand( updateSlideImageUrlField, updateButton );
 
-			existingSlideItemLayout.add( updateSlideLayout );
+				existingSlideItemLayout.add( updateSlideLayout );
 
-			existingSlidesLayoutList.add( existingSlideItemLayout );
+				existingSlidesLayoutList.add( existingSlideItemLayout );
 
+			}
+
+			for ( final Component component : existingSlidesLayoutList ) {
+				add( component );
+			}
 		}
 
-		for ( final Component component : existingSlidesLayoutList ) {
-			add( component );
-		}
 
 	}
 

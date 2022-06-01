@@ -2,9 +2,9 @@ package be.intecbrussel.bbjja.ui.views;
 
 
 import be.intecbrussel.bbjja.ui.layouts.*;
+import com.vaadin.flow.component.accordion.Accordion;
+import com.vaadin.flow.component.accordion.AccordionPanel;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
-import com.vaadin.flow.component.tabs.Tab;
-import com.vaadin.flow.component.tabs.Tabs;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
 import com.vaadin.flow.router.RouteAlias;
@@ -39,16 +39,13 @@ public class HomePage extends VerticalLayout {
 				subscribersUpdateLayout
 		);
 
-		final var tabSlides = new Tab( slidesLayout );
-		tabSlides.setLabel( "Slides" );
-		final var tabSubscribers = new Tab( subscribersLayout );
-		tabSubscribers.setLabel( "Subscribers" );
-		final var tabs = new Tabs(
-				tabSlides,
-				tabSubscribers
-		);
+		final var slides = new AccordionPanel( "Slides", slidesLayout );
+		final var subscribers = new AccordionPanel( "Subscribers", subscribersLayout );
+		final var accordion = new Accordion();
+		accordion.add( slides );
+		accordion.add( subscribers );
 
-		add( tabs );
+		add( accordion );
 	}
 
 }

@@ -2,7 +2,7 @@ package be.intecbrussel.bbjja.ui.layouts;
 
 
 import be.intecbrussel.bbjja.data.entity.Employee;
-import be.intecbrussel.bbjja.data.service.EmployeeService;
+import be.intecbrussel.bbjja.data.service.TeamService;
 import be.intecbrussel.bbjja.security.AuthenticatedUser;
 import com.vaadin.flow.component.Tag;
 import com.vaadin.flow.component.button.Button;
@@ -26,51 +26,55 @@ public class TeamDeleteLayout extends VerticalLayout implements LocaleChangeObse
 
 
 	@Autowired
-	public TeamDeleteLayout( final AuthenticatedUser authenticatedUser, final EmployeeService employeeService ) {
+	public TeamDeleteLayout( final AuthenticatedUser authenticatedUser, final TeamService teamService ) {
 
 
 		setId( "team-delete-layout".concat( String.valueOf( Instant.now().getNano() ) ) );
 
-		final var existingEmployeeData = employeeService.list();
+		if ( teamService.count() > 0 ) {
 
-		final var employeesGrid = new Grid<>( Employee.class, false );
-		employeesGrid.setAllRowsVisible( true );
-		employeesGrid.addColumn( Employee :: getFirstName ).setHeader( "First Name" );
-		employeesGrid.addColumn( Employee :: getLastName ).setHeader( "Last Name" );
-		employeesGrid.addColumn( Employee :: getEmail ).setHeader( "Email" );
-		employeesGrid.addColumn( Employee :: getJobTitle ).setHeader( "Job Title" );
-		employeesGrid.addColumn(
-				new ComponentRenderer<>( Button :: new, ( btn, emp ) -> {
+			final var employees = teamService.list();
 
-					btn.setIcon( new Icon( VaadinIcon.TRASH ) );
-					btn.addThemeVariants( ButtonVariant.LUMO_ICON, ButtonVariant.LUMO_ERROR, ButtonVariant.LUMO_TERTIARY );
-					btn.addClickListener( onDelete -> {
+			final var grid = new Grid<>( Employee.class, false );
+			grid.setAllRowsVisible( true );
+			grid.addColumn( Employee :: getFirstName ).setHeader( "First Name" );
+			grid.addColumn( Employee :: getLastName ).setHeader( "Last Name" );
+			grid.addColumn( Employee :: getEmail ).setHeader( "Email" );
+			grid.addColumn( Employee :: getJobTitle ).setHeader( "Job Title" );
+			grid.addColumn(
+					new ComponentRenderer<>( Button :: new, ( btn, emp ) -> {
 
-						if ( emp == null ) {
-							return;
-						}
+						btn.setIcon( new Icon( VaadinIcon.TRASH ) );
+						btn.addThemeVariants( ButtonVariant.LUMO_ICON, ButtonVariant.LUMO_ERROR, ButtonVariant.LUMO_TERTIARY );
+						btn.addClickListener( onDelete -> {
 
-						employeeService.delete( emp.getId() );
-						existingEmployeeData.remove( emp );
+							if ( emp == null ) {
+								return;
+							}
 
-						if ( existingEmployeeData.size() > 0 ) {
-							employeesGrid.setVisible( true );
-							employeesGrid.getDataProvider().refreshAll();
-						} else {
-							employeesGrid.setVisible( false );
-						}
+							teamService.delete( emp.getId() );
+							employees.remove( emp );
 
-						employeesGrid.setItems( existingEmployeeData );
-						notifyEmployeeDeleted( emp );
+							if ( employees.size() > 0 ) {
+								grid.setVisible( true );
+								grid.getDataProvider().refreshAll();
+							} else {
+								grid.setVisible( false );
+							}
 
-					} );
+							grid.setItems( employees );
+							notifyEmployeeDeleted( emp );
+
+						} );
 
 
-				} ) ).setHeader( "Manage" );
+					} ) ).setHeader( "Manage" );
 
-		employeesGrid.setItems( existingEmployeeData );
+			grid.setItems( employees );
 
-		add( employeesGrid );
+			add( grid );
+		}
+
 
 	}
 

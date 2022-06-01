@@ -16,6 +16,7 @@ import com.vaadin.flow.spring.annotation.SpringComponent;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 
+import java.time.Instant;
 import java.util.ArrayList;
 
 @SpringComponent
@@ -25,42 +26,45 @@ public class SubscribersUpdateLayout extends VerticalLayout implements LocaleCha
 	@Autowired
 	public SubscribersUpdateLayout( final AuthenticatedUser authenticatedUser, final SubscriberService subscriberService ) {
 
-		setId( "subscribers-update-layout" );
+		setId( "subscribers-update-layout".concat( String.valueOf( Instant.now().getNano() ) ) );
 
-		final var subscribersDataList = subscriberService.list( PageRequest.of( 1, 25 ) ).toList();
-		final var subscribersLayoutList = new ArrayList< Component >();
+		if ( subscriberService.count() > 0 ) {
+			final var subscribersDataList = subscriberService.list( PageRequest.of( 1, 25 ) ).toList();
+			final var subscribersLayoutList = new ArrayList< Component >();
 
-		for ( final Subscriber subscriber : subscribersDataList ) {
+			for ( final Subscriber subscriber : subscribersDataList ) {
 
-			final var usernameField = new TextField( "Email" );
-			usernameField.setValue( subscriber.getEmail() );
-			final var firstNameField = new TextField( "First name" );
-			final var lastNameField = new TextField( "Last name" );
+				final var usernameField = new TextField( "Email" );
+				usernameField.setValue( subscriber.getEmail() );
+				final var firstNameField = new TextField( "First name" );
+				final var lastNameField = new TextField( "Last name" );
 
-			final var updateUserLayout = new FormLayout();
-			updateUserLayout.add( usernameField, firstNameField, lastNameField );
-			updateUserLayout.setResponsiveSteps(
-					// Use one column by default
-					new FormLayout.ResponsiveStep( "0", 1 ),
-					// Use two columns, if layout's width exceeds 500px
-					new FormLayout.ResponsiveStep( "500px", 2 ) );
-			// Stretch the username field over 2 columns
-			updateUserLayout.setColspan( usernameField, 2 );
+				final var updateUserLayout = new FormLayout();
+				updateUserLayout.add( usernameField, firstNameField, lastNameField );
+				updateUserLayout.setResponsiveSteps(
+						// Use one column by default
+						new FormLayout.ResponsiveStep( "0", 1 ),
+						// Use two columns, if layout's width exceeds 500px
+						new FormLayout.ResponsiveStep( "500px", 2 ) );
+				// Stretch the username field over 2 columns
+				updateUserLayout.setColspan( usernameField, 2 );
 
-			final var updateUserButton = new Button( "Submit", onClick -> {
-				final var savedSubscriber = subscriberService.update( subscriber );
-				new Notification( savedSubscriber.toString(), 3000 ).open();
-			} );
+				final var updateUserButton = new Button( "Submit", onClick -> {
+					final var savedSubscriber = subscriberService.update( subscriber );
+					new Notification( savedSubscriber.toString(), 3000 ).open();
+				} );
 
-			updateUserLayout.add( updateUserButton );
+				updateUserLayout.add( updateUserButton );
 
-			subscribersLayoutList.add( updateUserLayout );
+				subscribersLayoutList.add( updateUserLayout );
 
+			}
+
+			for ( final Component component : subscribersLayoutList ) {
+				add( component );
+			}
 		}
 
-		for ( final Component component : subscribersLayoutList ) {
-			add( component );
-		}
 
 	}
 

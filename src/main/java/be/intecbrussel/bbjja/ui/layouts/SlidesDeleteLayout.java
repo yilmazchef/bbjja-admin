@@ -4,6 +4,7 @@ package be.intecbrussel.bbjja.ui.layouts;
 import be.intecbrussel.bbjja.data.entity.Slide;
 import be.intecbrussel.bbjja.data.service.SlideService;
 import be.intecbrussel.bbjja.security.AuthenticatedUser;
+import com.vaadin.flow.component.Tag;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.button.ButtonVariant;
 import com.vaadin.flow.component.grid.Grid;
@@ -18,7 +19,10 @@ import com.vaadin.flow.spring.annotation.SpringComponent;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 
+import java.time.Instant;
+
 @SpringComponent
+@Tag ( "slides-delete-layout" )
 public class SlidesDeleteLayout extends VerticalLayout implements LocaleChangeObserver {
 
 
@@ -26,47 +30,50 @@ public class SlidesDeleteLayout extends VerticalLayout implements LocaleChangeOb
 	public SlidesDeleteLayout( final AuthenticatedUser authenticatedUser, final SlideService slideService ) {
 
 
-		setId( "slides-delete-layout" );
-		final var slidesData = slideService.list( PageRequest.of( 0, 25 ) ).toList();
+		setId( "slides-delete-layout".concat( String.valueOf( Instant.now().getNano() ) ) );
 
-		final var slidesGrid = new Grid<>( Slide.class, false );
-		slidesGrid.setAllRowsVisible( true );
-		slidesGrid.setWidthFull();
-		slidesGrid.addColumn( Slide :: getTitle ).setHeader( "Title" );
-		slidesGrid.addColumn( Slide :: getImageUrl ).setHeader( "Image URL" );
-		slidesGrid.addColumn( Slide :: getPage ).setHeader( "Page" );
+		if ( slideService.count() > 0 ) {
+			final var slidesData = slideService.list( PageRequest.of( 0, 25 ) ).toList();
 
-		slidesGrid.addColumn( new ComponentRenderer<>( Button :: new, ( deleteButton, slide ) -> {
+			final var slidesGrid = new Grid<>( Slide.class, false );
+			slidesGrid.setAllRowsVisible( true );
+			slidesGrid.setWidthFull();
+			slidesGrid.addColumn( Slide :: getTitle ).setHeader( "Title" );
+			slidesGrid.addColumn( Slide :: getImageUrl ).setHeader( "Image URL" );
+			slidesGrid.addColumn( Slide :: getPage ).setHeader( "Page" );
 
-			deleteButton.setIcon( new Icon( VaadinIcon.TRASH ) );
-			deleteButton.addThemeVariants( ButtonVariant.LUMO_ICON, ButtonVariant.LUMO_ERROR, ButtonVariant.LUMO_TERTIARY );
-			deleteButton.addClickListener( onDelete -> {
+			slidesGrid.addColumn( new ComponentRenderer<>( Button :: new, ( deleteButton, slide ) -> {
 
-				if ( slide == null ) {
-					return;
-				}
+				deleteButton.setIcon( new Icon( VaadinIcon.TRASH ) );
+				deleteButton.addThemeVariants( ButtonVariant.LUMO_ICON, ButtonVariant.LUMO_ERROR, ButtonVariant.LUMO_TERTIARY );
+				deleteButton.addClickListener( onDelete -> {
 
-				slideService.delete( slide.getId() );
-				slidesData.remove( slide );
+					if ( slide == null ) {
+						return;
+					}
 
-				if ( slidesData.size() > 0 ) {
-					slidesGrid.setVisible( true );
-					slidesGrid.getDataProvider().refreshAll();
-				} else {
-					slidesGrid.setVisible( false );
-				}
+					slideService.delete( slide.getId() );
+					slidesData.remove( slide );
 
-				slidesGrid.setItems( slidesData );
-				notifySlideDeleted( slide );
+					if ( slidesData.size() > 0 ) {
+						slidesGrid.setVisible( true );
+						slidesGrid.getDataProvider().refreshAll();
+					} else {
+						slidesGrid.setVisible( false );
+					}
 
-			} );
+					slidesGrid.setItems( slidesData );
+					notifySlideDeleted( slide );
+
+				} );
 
 
-		} ) ).setHeader( "Manage" );
+			} ) ).setHeader( "Manage" );
 
-		slidesGrid.setItems( slidesData );
+			slidesGrid.setItems( slidesData );
 
-		add( slidesGrid );
+			add( slidesGrid );
+		}
 
 	}
 

@@ -27,35 +27,38 @@ public class SlidesViewLayout extends VerticalLayout implements LocaleChangeObse
 
 		setId( "slides-view-layout" );
 
-		final var existingSlidesData = slideService.list( Sort.by( "dateModified" ) );
-		final var existingSlidesLayoutList = new ArrayList< Component >();
+		if ( slideService.count() > 0 ) {
+			final var existingSlidesData = slideService.list( Sort.by( "dateModified" ) );
+			final var existingSlidesLayoutList = new ArrayList< Component >();
 
-		for ( final var existingSlideItem : existingSlidesData ) {
+			for ( final var existingSlideItem : existingSlidesData ) {
 
-			final var existingSlideItemLayout = new VerticalLayout();
-			final var existingSlideItemImage = new Image( existingSlideItem.getImageUrl(), "BBJA Slide Image" );
-			out.println( existingSlideItem.getImageUrl() );
-			existingSlideItemImage.setWidthFull();
+				final var existingSlideItemLayout = new VerticalLayout();
+				final var existingSlideItemImage = new Image( existingSlideItem.getImageUrl(), "BBJA Slide Image" );
+				out.println( existingSlideItem.getImageUrl() );
+				existingSlideItemImage.setWidthFull();
 
-			final var existingSlideItemTitleField = new TextField( "Title" );
-			existingSlideItemTitleField.setValue( existingSlideItem.getTitle() );
-			existingSlideItemTitleField.setRequiredIndicatorVisible( true );
-			existingSlideItemTitleField.setRequired( true );
-			existingSlideItemTitleField.setWidthFull();
+				final var existingSlideItemTitleField = new TextField( "Title" );
+				existingSlideItemTitleField.setValue( existingSlideItem.getTitle() );
+				existingSlideItemTitleField.setRequiredIndicatorVisible( true );
+				existingSlideItemTitleField.setRequired( true );
+				existingSlideItemTitleField.setWidthFull();
 
-			final var existingDescriptionField = new TextField( "Page slug" );
-			existingDescriptionField.setValue( existingSlideItem.getPage().getSlug() );
-			existingDescriptionField.setWidthFull();
+				final var existingDescriptionField = new TextField( "Page slug" );
+				existingDescriptionField.setValue( existingSlideItem.getPage().getSlug() );
+				existingDescriptionField.setWidthFull();
 
-			existingSlideItemLayout.add( existingSlideItemImage, existingSlideItemTitleField, existingDescriptionField );
+				existingSlideItemLayout.add( existingSlideItemImage, existingSlideItemTitleField, existingDescriptionField );
 
-			existingSlidesLayoutList.add( existingSlideItemLayout );
+				existingSlidesLayoutList.add( existingSlideItemLayout );
 
+			}
+
+			for ( final Component component : existingSlidesLayoutList ) {
+				add( component );
+			}
 		}
 
-		for ( final Component component : existingSlidesLayoutList ) {
-			add( component );
-		}
 
 	}
 

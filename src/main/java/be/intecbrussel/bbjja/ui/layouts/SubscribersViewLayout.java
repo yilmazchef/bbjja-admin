@@ -21,15 +21,19 @@ public class SubscribersViewLayout extends VerticalLayout implements LocaleChang
 
 		setId( "subscribers-view-layout" );
 
-		final var subscribersData = subscriberService.list( PageRequest.of( 1, 25 ) ).toList();
+		if ( subscriberService.count() > 0 ) {
+			final var subscribersData = subscriberService.list( PageRequest.of( 1, 25 ) ).toList();
 
-		final var subscribersGrid = new Grid<>( Subscriber.class, false );
-		subscribersGrid.setAllRowsVisible( true );
-		subscribersGrid.addColumn( Subscriber :: getFirstName ).setHeader( "First Name" );
-		subscribersGrid.addColumn( Subscriber :: getLastName ).setHeader( "Last Name" );
-		subscribersGrid.addColumn( Subscriber :: getEmail ).setHeader( "Email" );
+			final var subscribersGrid = new Grid<>( Subscriber.class, false );
+			subscribersGrid.setAllRowsVisible( true );
+			subscribersGrid.addColumn( Subscriber :: getFirstName ).setHeader( "First Name" );
+			subscribersGrid.addColumn( Subscriber :: getLastName ).setHeader( "Last Name" );
+			subscribersGrid.addColumn( Subscriber :: getEmail ).setHeader( "Email" );
 
-		subscribersGrid.setItems( subscribersData );
+			subscribersGrid.setItems( subscribersData );
+		}
+
+
 	}
 
 

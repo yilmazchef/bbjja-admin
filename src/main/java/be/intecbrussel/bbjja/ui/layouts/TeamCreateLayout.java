@@ -1,7 +1,7 @@
 package be.intecbrussel.bbjja.ui.layouts;
 
 
-import be.intecbrussel.bbjja.data.service.EmployeeService;
+import be.intecbrussel.bbjja.data.service.TeamService;
 import be.intecbrussel.bbjja.security.AuthenticatedUser;
 import com.vaadin.flow.component.Tag;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
@@ -18,7 +18,7 @@ public class TeamCreateLayout extends VerticalLayout implements LocaleChangeObse
 
 
 	@Autowired
-	public TeamCreateLayout( final AuthenticatedUser authenticatedUser, final EmployeeService employeeService ) {
+	public TeamCreateLayout( final AuthenticatedUser authenticatedUser, final TeamService teamService ) {
 
 
 		setId( "team-create-layout".concat( String.valueOf( Instant.now().getNano() ) ) );
