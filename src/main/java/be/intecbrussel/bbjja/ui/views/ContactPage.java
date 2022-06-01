@@ -8,7 +8,6 @@ import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
 
 import javax.annotation.security.RolesAllowed;
-import java.time.Instant;
 
 
 @PageTitle ( "BBJJA | Contact" )
@@ -19,7 +18,7 @@ public class ContactPage extends VerticalLayout {
 
 	public ContactPage() {
 
-		setId( "contact-page".concat( String.valueOf( Instant.now().getNano() ) ) );
+
 	}
 
 }

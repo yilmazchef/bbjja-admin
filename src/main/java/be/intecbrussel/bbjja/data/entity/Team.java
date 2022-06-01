@@ -22,8 +22,8 @@ import javax.validation.constraints.NotEmpty;
 @Accessors ( chain = true )
 // JPA & HIBERNATE
 @Entity
-@Table ( name = "employees" )
-public class Employee extends AEntity {
+@Table ( name = "teams" )
+public class Team extends AEntity {
 
 
 	@EqualsAndHashCode.Include

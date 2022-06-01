@@ -1,7 +1,7 @@
 package be.intecbrussel.bbjja.api;
 
 
-import be.intecbrussel.bbjja.data.entity.Employee;
+import be.intecbrussel.bbjja.data.entity.Team;
 import be.intecbrussel.bbjja.data.entity.User;
 import be.intecbrussel.bbjja.data.service.TeamService;
 import be.intecbrussel.bbjja.security.AuthenticatedUser;
@@ -37,21 +37,21 @@ public class EmployeeApi {
 
 
 	@GetMapping ( EndPoints.EMPLOYEE_GET_BY_ID )
-	public Optional< Employee > get( @PathVariable @NotNull final UUID id ) {
+	public Optional< Team > get( @PathVariable @NotNull final UUID id ) {
 
 		return teamService.get( id );
 	}
 
 
 	@GetMapping ( EndPoints.EMPLOYEE_GET_BY_EMAIL )
-	public Optional< Employee > get( @PathVariable @Valid final String email ) {
+	public Optional< Team > get( @PathVariable @Valid final String email ) {
 
 		return teamService.get( email );
 	}
 
 
 	@PostMapping ( EndPoints.EMPLOYEE_CREATE )
-	public Employee create( @RequestBody @Valid final Employee entity ) {
+	public Team create( @RequestBody @Valid final Team entity ) {
 
 		final Optional< User > oUser = authenticatedUser.get();
 		oUser.ifPresent( u -> {
@@ -64,7 +64,7 @@ public class EmployeeApi {
 
 
 	@PutMapping ( EndPoints.EMPLOYEE_UPDATE_BY_EXAMPLE )
-	public Employee update( final Employee entity ) {
+	public Team update( final Team entity ) {
 
 		final Optional< User > oUser = authenticatedUser.get();
 		oUser.ifPresent( u -> {
@@ -84,21 +84,21 @@ public class EmployeeApi {
 
 
 	@GetMapping ( EndPoints.EMPLOYEE_LIST_IN_PAGES )
-	public Page< Employee > list( @PathVariable final Integer page ) {
+	public Page< Team > list( @PathVariable final Integer page ) {
 
 		return teamService.list( PageRequest.of( page, 25 ) );
 	}
 
 
 	@GetMapping ( EndPoints.EMPLOYEE_LIST_ALL )
-	public List< Employee > list() {
+	public List< Team > list() {
 
 		return teamService.list();
 	}
 
 
 	@GetMapping ( EndPoints.EMPLOYEE_LIST_SORTED )
-	public List< Employee > list( final Sort sort ) {
+	public List< Team > list( final Sort sort ) {
 
 		return teamService.list( sort );
 	}

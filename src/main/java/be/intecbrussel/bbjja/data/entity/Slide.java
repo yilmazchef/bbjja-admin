@@ -15,7 +15,7 @@ import javax.validation.constraints.NotEmpty;
 @ToString ( onlyExplicitlyIncluded = true )
 @EqualsAndHashCode ( onlyExplicitlyIncluded = true, callSuper = true )
 @NoArgsConstructor
-@Accessors (chain = true )
+@Accessors ( chain = true )
 // JPA & HIBERNATE
 @Entity
 @Table ( name = "slides" )
@@ -30,6 +30,11 @@ public class Slide extends AEntity {
 	@Type ( type = "org.hibernate.type.TextType" )
 	@URL
 	private String imageUrl;
+
+	@Lob
+	@Type ( type = "org.hibernate.type.TextType" )
+	@Column
+	private String description;
 
 	@ManyToOne
 	@JoinColumn ( name = "page_id" )

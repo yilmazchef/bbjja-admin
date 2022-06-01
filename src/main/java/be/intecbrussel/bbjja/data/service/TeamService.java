@@ -1,7 +1,7 @@
 package be.intecbrussel.bbjja.data.service;
 
 
-import be.intecbrussel.bbjja.data.entity.Employee;
+import be.intecbrussel.bbjja.data.entity.Team;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -25,24 +25,24 @@ public class TeamService {
 	}
 
 
-	public Optional< Employee > get( UUID id ) {
+	public Optional< Team > get( UUID id ) {
 
 		return repository.findById( id );
 	}
 
 
-	public Optional< Employee > get( final String email ) {
+	public Optional< Team > get( final String email ) {
 
 		return repository.findByEmailIgnoreCase( email );
 	}
 
-	public Employee create( Employee entity ) {
+	public Team create( Team entity ) {
 
 		return repository.save( entity );
 	}
 
 
-	public Employee update( Employee entity ) {
+	public Team update( Team entity ) {
 
 		return repository.save( entity );
 	}
@@ -54,19 +54,19 @@ public class TeamService {
 	}
 
 
-	public Page< Employee > list( Pageable pageable ) {
+	public Page< Team > list( Pageable pageable ) {
 
 		return repository.findAll( pageable );
 	}
 
 
-	public List< Employee > list() {
+	public List< Team > list() {
 
 		return repository.findAll();
 	}
 
 
-	public List< Employee > list( final Sort sort ) {
+	public List< Team > list( final Sort sort ) {
 
 		return repository.findAll( sort );
 	}

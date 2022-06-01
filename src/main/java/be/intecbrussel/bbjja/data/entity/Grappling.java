@@ -18,7 +18,7 @@ import javax.validation.constraints.NotEmpty;
 @Accessors ( chain = true )
 // JPA & HIBERNATE
 @Entity
-@Table ( name = "grappling" )
+@Table ( name = "grapplings" )
 public class Grappling extends AEntity {
 
 	public enum GrapplingType {

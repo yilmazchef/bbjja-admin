@@ -189,7 +189,7 @@ public class MockDataGenerator {
 			final var savedAboutPage = pageRepository.save( aboutPage );
 
 			for ( int index = 0; index < 6; index++ ) {
-				final var employee = new Employee()
+				final var employee = new Team()
 						.setEmail( faker.internet().emailAddress() )
 						.setFirstName( faker.name().firstName() )
 						.setLastName( faker.name().lastName() )
