@@ -4,7 +4,7 @@ package be.intecbrussel.bbjja.ui.layouts;
 import be.intecbrussel.bbjja.data.entity.Subscriber;
 import be.intecbrussel.bbjja.data.service.SubscriberService;
 import be.intecbrussel.bbjja.security.AuthenticatedUser;
-import com.vaadin.flow.component.Component;
+import com.vaadin.flow.component.Tag;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.formlayout.FormLayout;
 import com.vaadin.flow.component.notification.Notification;
@@ -16,53 +16,57 @@ import com.vaadin.flow.spring.annotation.SpringComponent;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 
-import java.time.Instant;
 import java.util.ArrayList;
 
 @SpringComponent
+@Tag ( "subscribers-update-layout" )
 public class SubscribersUpdateLayout extends VerticalLayout implements LocaleChangeObserver {
 
 
 	@Autowired
 	public SubscribersUpdateLayout( final AuthenticatedUser authenticatedUser, final SubscriberService subscriberService ) {
 
-		setId( "subscribers-update-layout".concat( String.valueOf( Instant.now().getNano() ) ) );
-
 		if ( subscriberService.count() > 0 ) {
-			final var subscribersDataList = subscriberService.list( PageRequest.of( 1, 25 ) ).toList();
-			final var subscribersLayoutList = new ArrayList< Component >();
+			final var subscribers = subscriberService.list( PageRequest.of( 1, 25 ) ).toList();
+			final var layouts = new ArrayList< VerticalLayout >();
 
-			for ( final Subscriber subscriber : subscribersDataList ) {
+			for ( final Subscriber s : subscribers ) {
 
-				final var usernameField = new TextField( "Email" );
-				usernameField.setValue( subscriber.getEmail() );
-				final var firstNameField = new TextField( "First name" );
-				final var lastNameField = new TextField( "Last name" );
+				final var layout = new VerticalLayout();
 
-				final var updateUserLayout = new FormLayout();
-				updateUserLayout.add( usernameField, firstNameField, lastNameField );
-				updateUserLayout.setResponsiveSteps(
+				final var email = new TextField( "Email" );
+				email.setValue( s.getEmail() );
+				final var firstName = new TextField( "First name" );
+				final var lastName = new TextField( "Last name" );
+
+				final var form = new FormLayout();
+				form.add( email, firstName, lastName );
+				form.setResponsiveSteps(
 						// Use one column by default
 						new FormLayout.ResponsiveStep( "0", 1 ),
 						// Use two columns, if layout's width exceeds 500px
 						new FormLayout.ResponsiveStep( "500px", 2 ) );
 				// Stretch the username field over 2 columns
-				updateUserLayout.setColspan( usernameField, 2 );
+				form.setColspan( email, 2 );
 
-				final var updateUserButton = new Button( "Submit", onClick -> {
-					final var savedSubscriber = subscriberService.update( subscriber );
+				final var update = new Button( "Submit", onClick -> {
+					final var savedSubscriber = subscriberService.update( s );
 					new Notification( savedSubscriber.toString(), 3000 ).open();
 				} );
 
-				updateUserLayout.add( updateUserButton );
+				form.add( update );
 
-				subscribersLayoutList.add( updateUserLayout );
+				layout.add( form );
+
+				layouts.add( layout );
 
 			}
 
-			for ( final Component component : subscribersLayoutList ) {
-				add( component );
+			for ( final var l : layouts ) {
+				add( l );
 			}
+
+
 		}
 
 

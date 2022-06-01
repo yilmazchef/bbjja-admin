@@ -18,8 +18,6 @@ import com.vaadin.flow.i18n.LocaleChangeObserver;
 import com.vaadin.flow.spring.annotation.SpringComponent;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import java.time.Instant;
-
 @SpringComponent
 @Tag ( "offers-create-layout" )
 public class OffersCreateLayout extends VerticalLayout implements LocaleChangeObserver {
@@ -28,48 +26,45 @@ public class OffersCreateLayout extends VerticalLayout implements LocaleChangeOb
 	@Autowired
 	public OffersCreateLayout( final AuthenticatedUser authenticatedUser, final OfferService offerService, final PageService pageService ) {
 
-		setId( "offers-create-layout".concat( String.valueOf( Instant.now().getNano() ) ) );
+		final var layout = new VerticalLayout();
 
-		final var newOfferLayout = new VerticalLayout();
-
-		final var newOfferTitle = new TextField( "Offer Title" );
-		newOfferTitle.setWidthFull();
+		final var title = new TextField( "Title" );
+		title.setWidthFull();
 
 		int charLimit = 600;
-		final var newOfferDescription = new TextArea();
-		newOfferDescription.setWidthFull();
-		newOfferDescription.setLabel( "Offer Description" );
-		newOfferDescription.setMaxLength( charLimit );
-		newOfferDescription.setValueChangeMode( ValueChangeMode.EAGER );
-		newOfferDescription.addValueChangeListener( onValueChange -> {
+		final var description = new TextArea();
+		description.setWidthFull();
+		description.setLabel( "Description" );
+		description.setMaxLength( charLimit );
+		description.setValueChangeMode( ValueChangeMode.EAGER );
+		description.addValueChangeListener( onValueChange -> {
 			onValueChange.getSource().setHelperText( onValueChange.getValue().length() + "/" + charLimit );
 		} );
-		newOfferDescription.setValue( "Add description here.." );
+		description.setValue( "Description (Max. 600 characters)" );
 
-		final var newOfferRedirectURL = new TextField( "Offer Redirect URL" );
-		newOfferRedirectURL.setWidthFull();
+		final var redirectUrl = new TextField( "Redirect URL" );
+		redirectUrl.setWidthFull();
 
-		final var newOfferPageSelect = new Select< Page >();
-		newOfferPageSelect.setItems( pageService.list() );
-		newOfferPageSelect.setItemLabelGenerator( Page :: getSlug );
+		final var page = new Select< Page >();
+		page.setItems( pageService.list() );
+		page.setItemLabelGenerator( Page :: getSlug );
 
-		final var newOfferButton = new Button( "Add new offer", onClick -> {
-			if ( ! newOfferRedirectURL.getValue().isEmpty() ) {
-				final var newOfferRequest = new Offer();
-				newOfferRequest.setTitle( newOfferTitle.getValue() );
-				newOfferRequest.setDescription( newOfferDescription.getValue() );
-				newOfferRequest.setForwardUrl( newOfferRedirectURL.getValue() );
-				final Page selectedPage = newOfferPageSelect.getValue();
-				newOfferRequest.setPage( selectedPage );
-				offerService.create(
-						newOfferRequest
-				);
+		final var create = new Button( "Add new offer", onClick -> {
+			if ( ! redirectUrl.getValue().isEmpty() ) {
+				final var request = new Offer();
+				request.setTitle( title.getValue() );
+				request.setDescription( description.getValue() );
+				request.setForwardUrl( redirectUrl.getValue() );
+				final Page selectedPage = page.getValue();
+				request.setPage( selectedPage );
+
+				offerService.create( request );
 			}
 		} );
-		newOfferButton.setWidthFull();
-		newOfferLayout.addAndExpand( newOfferPageSelect, newOfferTitle, newOfferRedirectURL, newOfferDescription, newOfferButton );
+		create.setWidthFull();
+		layout.addAndExpand( page, title, redirectUrl, description, create );
 
-		add( newOfferLayout );
+		add( layout );
 	}
 
 

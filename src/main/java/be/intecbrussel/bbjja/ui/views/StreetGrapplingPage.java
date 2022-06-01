@@ -24,7 +24,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import javax.annotation.security.RolesAllowed;
 import java.time.Instant;
 
-@PageTitle ( "Grappling" )
+@PageTitle ( "BBJJA | Grappling" )
 @Route ( value = "grappling/street", layout = MainLayout.class )
 @RolesAllowed ( { "EDITOR", "ADMIN" } )
 @Tag ( "street-grappling-page" )

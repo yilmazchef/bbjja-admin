@@ -6,7 +6,6 @@ import be.intecbrussel.bbjja.data.entity.Page;
 import be.intecbrussel.bbjja.data.service.OfferService;
 import be.intecbrussel.bbjja.data.service.PageService;
 import be.intecbrussel.bbjja.security.AuthenticatedUser;
-import com.vaadin.flow.component.Component;
 import com.vaadin.flow.component.Tag;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
@@ -18,7 +17,6 @@ import com.vaadin.flow.i18n.LocaleChangeObserver;
 import com.vaadin.flow.spring.annotation.SpringComponent;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -31,46 +29,44 @@ public class OffersViewLayout extends VerticalLayout implements LocaleChangeObse
 	public OffersViewLayout( final AuthenticatedUser authenticatedUser, final OfferService offerService, final PageService pageService ) {
 
 
-		setId( "offers-view-layout".concat( String.valueOf( Instant.now().getNano() ) ) );
-
 		if ( offerService.count() > 0 ) {
-			final List< Offer > existingOffersData = offerService.list();
-			final var existingOfferItemLayoutList = new ArrayList< Component >();
+			final List< Offer > offers = offerService.list();
+			final var components = new ArrayList< VerticalLayout >();
 
-			for ( final var existingOfferItem : existingOffersData ) {
+			for ( final var o : offers ) {
 
-				final var existingOfferItemLayout = new VerticalLayout();
+				final var layout = new VerticalLayout();
 
-				final var existingTitleField = new TextField();
-				existingTitleField.setWidthFull();
-				existingTitleField.setValue( existingOfferItem.getTitle() );
-				final var existingDescriptionField = new TextArea();
-				existingDescriptionField.setValue( existingOfferItem.getDescription() );
-				existingDescriptionField.setWidthFull();
-				existingDescriptionField.setHeight( "200px" );
-				final var existingForwardUrlField = new TextField();
-				existingForwardUrlField.setWidthFull();
-				existingForwardUrlField.setValue( existingOfferItem.getForwardUrl() );
+				final var title = new TextField();
+				title.setWidthFull();
+				title.setValue( o.getTitle() );
+				final var description = new TextArea();
+				description.setValue( o.getDescription() );
+				description.setWidthFull();
+				description.setHeight( "200px" );
+				final var forwardUrl = new TextField();
+				forwardUrl.setWidthFull();
+				forwardUrl.setValue( o.getForwardUrl() );
 
-				final var existingOfferPageSelect = new Select< Page >();
-				existingOfferPageSelect.setItems( pageService.list() );
-				existingOfferPageSelect.setItemLabelGenerator( Page :: getSlug );
+				final var page = new Select< Page >();
+				page.setItems( pageService.list() );
+				page.setItemLabelGenerator( Page :: getSlug );
 
-				final var updateOfferButton = new Button( "Update offer", onSave -> {
-					existingOfferItem.setTitle( existingTitleField.getValue() );
-					existingOfferItem.setDescription( existingDescriptionField.getValue() );
-					existingOfferItem.setForwardUrl( existingForwardUrlField.getValue() );
-					existingOfferItem.setPage( existingOfferPageSelect.getValue() );
-					offerService.update( existingOfferItem );
+				final var update = new Button( "Update offer", onClick -> {
+					o.setTitle( title.getValue() );
+					o.setDescription( description.getValue() );
+					o.setForwardUrl( forwardUrl.getValue() );
+					o.setPage( page.getValue() );
+					offerService.update( o );
 				} );
-				updateOfferButton.setWidthFull();
+				update.setWidthFull();
 
-				existingOfferItemLayout.add( existingTitleField, existingDescriptionField, existingForwardUrlField, updateOfferButton );
+				layout.add( title, description, forwardUrl, update );
 
-				existingOfferItemLayoutList.add( existingOfferItemLayout );
+				components.add( layout );
 			}
 
-			for ( final Component component : existingOfferItemLayoutList ) {
+			for ( final var component : components ) {
 				add( component );
 			}
 		}

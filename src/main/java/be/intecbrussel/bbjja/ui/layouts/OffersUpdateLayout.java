@@ -18,7 +18,6 @@ import com.vaadin.flow.i18n.LocaleChangeObserver;
 import com.vaadin.flow.spring.annotation.SpringComponent;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -30,8 +29,6 @@ public class OffersUpdateLayout extends VerticalLayout implements LocaleChangeOb
 	@Autowired
 	public OffersUpdateLayout( final AuthenticatedUser authenticatedUser, final OfferService offerService, final PageService pageService ) {
 
-
-		setId( "offers-update-layout".concat( String.valueOf( Instant.now().getNano() ) ) );
 
 		final List< Offer > existingOffersData = offerService.list();
 		final var existingOfferItemLayoutList = new ArrayList< Component >();

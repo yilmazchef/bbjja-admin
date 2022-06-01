@@ -17,26 +17,26 @@ import java.time.Instant;
 public class NinjaSchoolPage extends VerticalLayout {
 
 	@Autowired
-	public NinjaSchoolPage( final OffersCreateLayout offersCreateLayout, final OffersViewLayout offersViewLayout,
-	                        final OffersUpdateLayout offersUpdateLayout, final OffersDeleteLayout offersDeleteLayout,
-	                        final OffersDetailedViewLayout offersDetailedViewLayout ) {
+	public NinjaSchoolPage( final OffersCreateLayout createLayout, final OffersViewLayout viewLayout,
+	                        final OffersUpdateLayout updateLayout, final OffersDeleteLayout deleteLayout,
+	                        final OffersDetailedViewLayout viewDetailedLayout ) {
 
 		setId( "ninja_school".concat( String.valueOf( Instant.now().getNano() ) ) );
 
-		final var offersLayout = new VerticalLayout(
-				offersCreateLayout,
-				offersViewLayout,
-				offersUpdateLayout,
-				offersDeleteLayout
+		final var offers = new VerticalLayout(
+				createLayout,
+				viewLayout,
+				updateLayout,
+				deleteLayout
 		);
 
-		final var offersDetailedLayout = new VerticalLayout(
-				offersDetailedViewLayout
+		final var details = new VerticalLayout(
+				viewDetailedLayout
 		);
 
 		add(
-				offersLayout,
-				offersDetailedLayout
+				offers,
+				details
 		);
 	}
 

@@ -18,7 +18,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import javax.annotation.security.PermitAll;
 import java.time.Instant;
 
-@PageTitle ( "Profile" )
+@PageTitle ( "BBJJA | Profile" )
 @Route ( value = "profile", layout = MainLayout.class )
 @Tag ( "profile-page" )
 @PermitAll

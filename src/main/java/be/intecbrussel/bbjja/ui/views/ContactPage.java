@@ -19,7 +19,7 @@ public class ContactPage extends VerticalLayout {
 
 	public ContactPage() {
 
-		setId( "contact".concat( String.valueOf( Instant.now().getNano() ) ) );
+		setId( "contact-page".concat( String.valueOf( Instant.now().getNano() ) ) );
 	}
 
 }

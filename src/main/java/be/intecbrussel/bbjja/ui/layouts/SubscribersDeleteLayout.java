@@ -4,6 +4,7 @@ package be.intecbrussel.bbjja.ui.layouts;
 import be.intecbrussel.bbjja.data.entity.Subscriber;
 import be.intecbrussel.bbjja.data.service.SubscriberService;
 import be.intecbrussel.bbjja.security.AuthenticatedUser;
+import com.vaadin.flow.component.Tag;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.button.ButtonVariant;
 import com.vaadin.flow.component.grid.Grid;
@@ -19,44 +20,44 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 
 @SpringComponent
+@Tag( "subscribers-delete-layout" )
 public class SubscribersDeleteLayout extends VerticalLayout implements LocaleChangeObserver {
 
 
 	@Autowired
 	public SubscribersDeleteLayout( final AuthenticatedUser authenticatedUser, final SubscriberService subscriberService ) {
 
-		setId( "subscribers-delete-layout" );
-
 		if ( subscriberService.count() > 0 ) {
-			final var subscribersData = subscriberService.list( PageRequest.of( 1, 25 ) ).toList();
 
-			final var subscribersGrid = new Grid<>( Subscriber.class, false );
-			subscribersGrid.setAllRowsVisible( true );
-			subscribersGrid.addColumn( Subscriber :: getFirstName ).setHeader( "First Name" );
-			subscribersGrid.addColumn( Subscriber :: getLastName ).setHeader( "Last Name" );
-			subscribersGrid.addColumn( Subscriber :: getEmail ).setHeader( "Email" );
+			final var subscribers = subscriberService.list( PageRequest.of( 1, 25 ) ).toList();
 
-			subscribersGrid.addColumn( new ComponentRenderer<>( Button :: new, ( deleteButton, subscriber ) -> {
+			final var grid = new Grid<>( Subscriber.class, false );
+			grid.setAllRowsVisible( true );
+			grid.addColumn( Subscriber :: getFirstName ).setHeader( "First Name" );
+			grid.addColumn( Subscriber :: getLastName ).setHeader( "Last Name" );
+			grid.addColumn( Subscriber :: getEmail ).setHeader( "Email" );
 
-				deleteButton.setIcon( new Icon( VaadinIcon.TRASH ) );
-				deleteButton.addThemeVariants( ButtonVariant.LUMO_ICON, ButtonVariant.LUMO_ERROR, ButtonVariant.LUMO_TERTIARY );
-				deleteButton.addClickListener( onDelete -> {
+			grid.addColumn( new ComponentRenderer<>( Button :: new, ( delete, subscriber ) -> {
+
+				delete.setIcon( new Icon( VaadinIcon.TRASH ) );
+				delete.addThemeVariants( ButtonVariant.LUMO_ICON, ButtonVariant.LUMO_ERROR, ButtonVariant.LUMO_TERTIARY );
+				delete.addClickListener( onDelete -> {
 
 					if ( subscriber == null ) {
 						return;
 					}
 
 					subscriberService.delete( subscriber.getId() );
-					subscribersData.remove( subscriber );
+					subscribers.remove( subscriber );
 
-					if ( subscribersData.size() > 0 ) {
-						subscribersGrid.setVisible( true );
-						subscribersGrid.getDataProvider().refreshAll();
+					if ( subscribers.size() > 0 ) {
+						grid.setVisible( true );
+						grid.getDataProvider().refreshAll();
 					} else {
-						subscribersGrid.setVisible( false );
+						grid.setVisible( false );
 					}
 
-					subscribersGrid.setItems( subscribersData );
+					grid.setItems( subscribers );
 					notifySubscriberDeleted( subscriber );
 
 				} );
@@ -64,7 +65,9 @@ public class SubscribersDeleteLayout extends VerticalLayout implements LocaleCha
 
 			} ) ).setHeader( "Manage" );
 
-			subscribersGrid.setItems( subscribersData );
+			grid.setItems( subscribers );
+
+			add( grid );
 		}
 
 

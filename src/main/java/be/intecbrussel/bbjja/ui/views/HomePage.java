@@ -2,8 +2,7 @@ package be.intecbrussel.bbjja.ui.views;
 
 
 import be.intecbrussel.bbjja.ui.layouts.*;
-import com.vaadin.flow.component.accordion.Accordion;
-import com.vaadin.flow.component.accordion.AccordionPanel;
+import com.vaadin.flow.component.Tag;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
@@ -15,6 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 @Route ( value = "home", layout = MainLayout.class )
 @RouteAlias ( value = "", layout = MainLayout.class )
 @AnonymousAllowed
+@Tag ( "home-page" )
 public class HomePage extends VerticalLayout {
 
 	@Autowired
@@ -23,29 +23,25 @@ public class HomePage extends VerticalLayout {
 	                 final SubscribersUpdateLayout subscribersCreateLayout, final SubscribersViewLayout subscribersViewLayout,
 	                 final SubscribersUpdateLayout subscribersUpdateLayout, final SubscribersDeleteLayout subscribersDeleteLayout ) {
 
-		setId( "home" );
-
-		final var slidesLayout = new VerticalLayout(
+		final var slides = new VerticalLayout(
 				slidesCreateLayout,
 				slidesViewLayout,
 				slidesDeleteLayout,
 				slidesUpdateLayout
 		);
 
-		final var subscribersLayout = new VerticalLayout(
+		final var subscribers = new VerticalLayout(
 				subscribersCreateLayout,
 				subscribersViewLayout,
 				subscribersDeleteLayout,
 				subscribersUpdateLayout
 		);
 
-		final var slides = new AccordionPanel( "Slides", slidesLayout );
-		final var subscribers = new AccordionPanel( "Subscribers", subscribersLayout );
-		final var accordion = new Accordion();
-		accordion.add( slides );
-		accordion.add( subscribers );
+		add(
+				slides,
+				subscribers
+		);
 
-		add( accordion );
 	}
 
 }

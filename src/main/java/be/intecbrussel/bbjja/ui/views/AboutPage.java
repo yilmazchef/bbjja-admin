@@ -19,17 +19,19 @@ import java.time.Instant;
 public class AboutPage extends VerticalLayout {
 
 	@Autowired
-	public AboutPage( final TeamCreateLayout teamCreateLayout, final TeamViewLayout teamViewLayout,
-	                  final TeamUpdateLayout teamUpdateLayout, final TeamDeleteLayout teamDeleteLayout ) {
+	public AboutPage( final TeamCreateLayout createLayout, final TeamViewLayout viewLayout,
+	                  final TeamUpdateLayout updateLayout, final TeamDeleteLayout deleteLayout ) {
 
 		setId( "about".concat( String.valueOf( Instant.now().getNano() ) ) );
 
-		final var teamLayout = new VerticalLayout(
-				teamCreateLayout,
-				teamViewLayout,
-				teamUpdateLayout,
-				teamDeleteLayout
+		final var teams = new VerticalLayout(
+				createLayout,
+				viewLayout,
+				updateLayout,
+				deleteLayout
 		);
+
+		add( teams );
 	}
 
 }
