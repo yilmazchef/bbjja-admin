@@ -34,19 +34,19 @@ public class UsersViewLayout extends VerticalLayout implements LocaleChangeObser
 
 		if ( userService.count() > 0 ) {
 
-			final var existingUserData = userService.list();
+			final var users = userService.list();
 
-			final var usersGrid = new Grid<>( User.class, false );
-			usersGrid.setAllRowsVisible( true );
+			final var grid = new Grid<>( User.class, false );
+			grid.setAllRowsVisible( true );
 
-			usersGrid.addColumn( User :: getFirstName ).setSortable( true ).setHeader( "First Name" ).setEditorComponent( user -> {
-				final var userFirstNameEditorField = new TextField( "set new first name here" );
-				userFirstNameEditorField.setWidthFull();
-				return userFirstNameEditorField;
+			grid.addColumn( User :: getFirstName ).setSortable( true ).setHeader( "First Name" ).setEditorComponent( user -> {
+				final var firstName = new TextField( "set new first name here" );
+				firstName.setWidthFull();
+				return firstName;
 			} );
-			usersGrid.addColumn( User :: getLastName ).setHeader( "Last Name" );
-			usersGrid.addColumn( User :: getEmail ).setHeader( "Email" );
-			usersGrid.addColumn(
+			grid.addColumn( User :: getLastName ).setHeader( "Last Name" );
+			grid.addColumn( User :: getEmail ).setHeader( "Email" );
+			grid.addColumn(
 					new ComponentRenderer<>( Button :: new, ( b, u ) -> {
 
 						b.setIcon( new Icon( VaadinIcon.TRASH ) );
@@ -58,16 +58,16 @@ public class UsersViewLayout extends VerticalLayout implements LocaleChangeObser
 							}
 
 							userService.delete( u.getId() );
-							existingUserData.remove( u );
+							users.remove( u );
 
-							if ( existingUserData.size() > 0 ) {
-								usersGrid.setVisible( true );
-								usersGrid.getDataProvider().refreshAll();
+							if ( users.size() > 0 ) {
+								grid.setVisible( true );
+								grid.getDataProvider().refreshAll();
 							} else {
-								usersGrid.setVisible( false );
+								grid.setVisible( false );
 							}
 
-							usersGrid.setItems( existingUserData );
+							grid.setItems( users );
 							notifyUserDeleted( u );
 
 						} );
@@ -75,7 +75,9 @@ public class UsersViewLayout extends VerticalLayout implements LocaleChangeObser
 
 					} ) ).setHeader( "Manage" );
 
-			usersGrid.setItems( existingUserData );
+			grid.setItems( users );
+
+			add( grid );
 		}
 
 

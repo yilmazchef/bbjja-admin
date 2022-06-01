@@ -5,6 +5,7 @@ import be.intecbrussel.bbjja.data.entity.Slide;
 import be.intecbrussel.bbjja.data.service.SlideService;
 import be.intecbrussel.bbjja.security.AuthenticatedUser;
 import com.vaadin.flow.component.Component;
+import com.vaadin.flow.component.Tag;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.html.Image;
 import com.vaadin.flow.component.notification.Notification;
@@ -21,14 +22,13 @@ import java.util.ArrayList;
 import static java.lang.System.out;
 
 @SpringComponent
+@Tag ( "slides-update-layout" )
 public class SlidesUpdateLayout extends VerticalLayout implements LocaleChangeObserver {
 
 
 	@Autowired
 	public SlidesUpdateLayout( final AuthenticatedUser authenticatedUser, final SlideService slideService ) {
 
-
-		setId( "slides-update-layout" );
 
 		if ( slideService.count() > 0 ) {
 			final var existingSlidesData = slideService.list( Sort.by( "dateModified" ) );

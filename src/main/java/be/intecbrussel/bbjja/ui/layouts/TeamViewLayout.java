@@ -12,8 +12,6 @@ import com.vaadin.flow.i18n.LocaleChangeObserver;
 import com.vaadin.flow.spring.annotation.SpringComponent;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import java.time.Instant;
-
 @SpringComponent
 @Tag ( "team-view-layout" )
 public class TeamViewLayout extends VerticalLayout implements LocaleChangeObserver {
@@ -23,18 +21,18 @@ public class TeamViewLayout extends VerticalLayout implements LocaleChangeObserv
 	public TeamViewLayout( final AuthenticatedUser authenticatedUser, final TeamService teamService ) {
 
 
-		setId( "team-view-layout".concat( String.valueOf( Instant.now().getNano() ) ) );
+		final var employees = teamService.list();
 
-		final var existingEmployeeData = teamService.list();
+		final var grid = new Grid<>( Employee.class, false );
+		grid.setAllRowsVisible( true );
+		grid.addColumn( Employee :: getFirstName ).setHeader( "First Name" );
+		grid.addColumn( Employee :: getLastName ).setHeader( "Last Name" );
+		grid.addColumn( Employee :: getEmail ).setHeader( "Email" );
+		grid.addColumn( Employee :: getJobTitle ).setHeader( "Job Title" );
 
-		final var employeesGrid = new Grid<>( Employee.class, false );
-		employeesGrid.setAllRowsVisible( true );
-		employeesGrid.addColumn( Employee :: getFirstName ).setHeader( "First Name" );
-		employeesGrid.addColumn( Employee :: getLastName ).setHeader( "Last Name" );
-		employeesGrid.addColumn( Employee :: getEmail ).setHeader( "Email" );
-		employeesGrid.addColumn( Employee :: getJobTitle ).setHeader( "Job Title" );
+		grid.setItems( employees );
 
-		add( employeesGrid );
+		add( grid );
 
 	}
 

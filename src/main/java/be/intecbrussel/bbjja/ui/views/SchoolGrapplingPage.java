@@ -39,8 +39,6 @@ public class SchoolGrapplingPage extends VerticalLayout {
 		accordion.setSizeFull();
 
 		final var newGrapplingLayout = new VerticalLayout();
-		newGrapplingLayout.setSpacing( false );
-		newGrapplingLayout.setPadding( false );
 
 		final var newGrapplingTitleField = new TextField( "Title" );
 		newGrapplingTitleField.setWidthFull();

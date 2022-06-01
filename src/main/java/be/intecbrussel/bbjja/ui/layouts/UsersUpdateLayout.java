@@ -4,7 +4,6 @@ package be.intecbrussel.bbjja.ui.layouts;
 import be.intecbrussel.bbjja.data.entity.User;
 import be.intecbrussel.bbjja.data.service.UserService;
 import be.intecbrussel.bbjja.security.AuthenticatedUser;
-import com.vaadin.flow.component.Component;
 import com.vaadin.flow.component.Tag;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.formlayout.FormLayout;
@@ -32,33 +31,35 @@ public class UsersUpdateLayout extends VerticalLayout implements LocaleChangeObs
 
 
 		final var users = userService.list();
-		final var components = new ArrayList< Component >();
+		final var layouts = new ArrayList< VerticalLayout >();
 
 		for ( final User u : users ) {
 
-			final var usernameField = new TextField( "Username" );
-			usernameField.setValue( u.getUsername() );
-			final var newPasswordField = new PasswordField( "New Password" );
-			final var confirmPasswordField = new PasswordField( "Confirm password" );
+			final var username = new TextField( "Username" );
+			username.setValue( u.getUsername() );
+			final var newPwd = new PasswordField( "New Password" );
+			final var conPwd = new PasswordField( "Confirm password" );
 
-			final var updateUserLayout = new FormLayout();
-			updateUserLayout.add( usernameField, newPasswordField, confirmPasswordField );
-			updateUserLayout.setResponsiveSteps(
+			final var form = new FormLayout();
+			form.add( username, newPwd, conPwd );
+			form.setResponsiveSteps(
 					// Use one column by default
 					new FormLayout.ResponsiveStep( "0", 1 ),
 					// Use two columns, if layout's width exceeds 500px
 					new FormLayout.ResponsiveStep( "500px", 2 ) );
 			// Stretch the username field over 2 columns
-			updateUserLayout.setColspan( usernameField, 2 );
+			form.setColspan( username, 2 );
 
-			final var updateUserButton = new Button( "Submit", onClick -> {
-				final var savedUser = userService.changePassword( usernameField.getValue(), confirmPasswordField.getValue() );
+			final var update = new Button( "Submit", onClick -> {
+				final var savedUser = userService.changePassword( username.getValue(), conPwd.getValue() );
 				new Notification( savedUser.toString(), 3000 ).open();
 			} );
 
-			updateUserLayout.add( updateUserButton );
+			form.add( update );
 
-			components.add( updateUserLayout );
+			final var layout = new VerticalLayout( form );
+
+			layouts.add( layout );
 
 		}
 	}

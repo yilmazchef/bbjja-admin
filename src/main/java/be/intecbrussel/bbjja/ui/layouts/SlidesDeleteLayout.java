@@ -19,8 +19,6 @@ import com.vaadin.flow.spring.annotation.SpringComponent;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 
-import java.time.Instant;
-
 @SpringComponent
 @Tag ( "slides-delete-layout" )
 public class SlidesDeleteLayout extends VerticalLayout implements LocaleChangeObserver {
@@ -29,8 +27,6 @@ public class SlidesDeleteLayout extends VerticalLayout implements LocaleChangeOb
 	@Autowired
 	public SlidesDeleteLayout( final AuthenticatedUser authenticatedUser, final SlideService slideService ) {
 
-
-		setId( "slides-delete-layout".concat( String.valueOf( Instant.now().getNano() ) ) );
 
 		if ( slideService.count() > 0 ) {
 			final var slidesData = slideService.list( PageRequest.of( 0, 25 ) ).toList();

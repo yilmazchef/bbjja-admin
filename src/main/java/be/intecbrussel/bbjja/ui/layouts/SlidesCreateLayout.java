@@ -14,8 +14,6 @@ import com.vaadin.flow.i18n.LocaleChangeObserver;
 import com.vaadin.flow.spring.annotation.SpringComponent;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import java.time.Instant;
-
 @SpringComponent
 @Tag ( "slides-create-layout" )
 public class SlidesCreateLayout extends VerticalLayout implements LocaleChangeObserver {
@@ -24,8 +22,6 @@ public class SlidesCreateLayout extends VerticalLayout implements LocaleChangeOb
 	@Autowired
 	public SlidesCreateLayout( final AuthenticatedUser authenticatedUser, final SlideService slideService ) {
 
-
-		setId( "slides-create-layout".concat( String.valueOf( Instant.now().getNano() ) ) );
 
 		final var newSlideLayout = new VerticalLayout();
 

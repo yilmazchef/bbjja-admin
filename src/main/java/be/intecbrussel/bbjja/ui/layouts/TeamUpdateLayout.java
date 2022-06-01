@@ -17,7 +17,6 @@ import com.vaadin.flow.i18n.LocaleChangeObserver;
 import com.vaadin.flow.spring.annotation.SpringComponent;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import java.time.Instant;
 import java.util.ArrayList;
 
 @SpringComponent
@@ -27,8 +26,6 @@ public class TeamUpdateLayout extends VerticalLayout implements LocaleChangeObse
 
 	@Autowired
 	public TeamUpdateLayout( final AuthenticatedUser authenticatedUser, final TeamService teamService ) {
-
-		setId( "team-update-layout".concat( String.valueOf( Instant.now().getNano() ) ) );
 
 		if ( teamService.count() > 0 ) {
 

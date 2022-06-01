@@ -18,8 +18,6 @@ import com.vaadin.flow.i18n.LocaleChangeObserver;
 import com.vaadin.flow.spring.annotation.SpringComponent;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import java.time.Instant;
-
 @SpringComponent
 @Tag ( "team-delete-layout" )
 public class TeamDeleteLayout extends VerticalLayout implements LocaleChangeObserver {
@@ -28,8 +26,6 @@ public class TeamDeleteLayout extends VerticalLayout implements LocaleChangeObse
 	@Autowired
 	public TeamDeleteLayout( final AuthenticatedUser authenticatedUser, final TeamService teamService ) {
 
-
-		setId( "team-delete-layout".concat( String.valueOf( Instant.now().getNano() ) ) );
 
 		if ( teamService.count() > 0 ) {
 

@@ -10,8 +10,6 @@ import com.vaadin.flow.i18n.LocaleChangeObserver;
 import com.vaadin.flow.spring.annotation.SpringComponent;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import java.time.Instant;
-
 @SpringComponent
 @Tag ( "team-create-layout" )
 public class TeamCreateLayout extends VerticalLayout implements LocaleChangeObserver {
@@ -21,7 +19,6 @@ public class TeamCreateLayout extends VerticalLayout implements LocaleChangeObse
 	public TeamCreateLayout( final AuthenticatedUser authenticatedUser, final TeamService teamService ) {
 
 
-		setId( "team-create-layout".concat( String.valueOf( Instant.now().getNano() ) ) );
 
 
 	}

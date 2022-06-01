@@ -22,7 +22,6 @@ import com.vaadin.flow.router.Route;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import javax.annotation.security.RolesAllowed;
-import java.time.Instant;
 
 @PageTitle ( "BBJJA | Grappling" )
 @Route ( value = "grappling/street", layout = MainLayout.class )
@@ -33,14 +32,10 @@ public class StreetGrapplingPage extends VerticalLayout {
 	@Autowired
 	public StreetGrapplingPage( final AuthenticatedUser authenticatedUser, final GrapplingService grapplingService ) {
 
-		setId( "street-grappling-page".concat( String.valueOf( Instant.now().getNano() ) ) );
-
 		final var accordion = new Accordion();
 		accordion.setSizeFull();
 
 		final var newGrapplingLayout = new VerticalLayout();
-		newGrapplingLayout.setSpacing( false );
-		newGrapplingLayout.setPadding( false );
 
 		final var newGrapplingTitleField = new TextField( "Title" );
 		newGrapplingTitleField.setWidthFull();

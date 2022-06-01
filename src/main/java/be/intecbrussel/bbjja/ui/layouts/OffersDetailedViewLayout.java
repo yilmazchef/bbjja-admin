@@ -18,7 +18,6 @@ import com.vaadin.flow.data.value.ValueChangeMode;
 import com.vaadin.flow.spring.annotation.SpringComponent;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import java.time.Instant;
 import java.util.List;
 
 @SpringComponent
@@ -28,8 +27,6 @@ public class OffersDetailedViewLayout extends VerticalLayout {
 	@Autowired
 	public OffersDetailedViewLayout( final AuthenticatedUser user,
 	                                 final SchoolService schoolService, final OfferService offerService ) {
-
-		setId( "offers-detailed-view-layout".concat( String.valueOf( Instant.now().getNano() ) ) );
 
 		final var schoolsAccordion = new Accordion();
 		schoolsAccordion.setWidthFull();
