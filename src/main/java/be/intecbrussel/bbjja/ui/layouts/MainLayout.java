@@ -3,29 +3,41 @@ package be.intecbrussel.bbjja.ui.layouts;
 
 import be.intecbrussel.bbjja.ui.views.*;
 import com.vaadin.flow.component.Component;
+import com.vaadin.flow.component.Tag;
 import com.vaadin.flow.component.applayout.AppLayout;
 import com.vaadin.flow.component.applayout.DrawerToggle;
 import com.vaadin.flow.component.html.H1;
 import com.vaadin.flow.component.html.H2;
-import com.vaadin.flow.component.icon.Icon;
 import com.vaadin.flow.component.icon.VaadinIcon;
 import com.vaadin.flow.component.orderedlayout.FlexComponent;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.component.tabs.Tab;
 import com.vaadin.flow.component.tabs.Tabs;
-import com.vaadin.flow.router.Route;
 import com.vaadin.flow.router.RouterLink;
+import com.vaadin.flow.spring.annotation.SpringComponent;
+import lombok.Getter;
 
-@Route ( "app-layout-secondary-navigation" )
+import java.time.Instant;
+
+
+@SpringComponent
+@Tag ( "main-layout" )
 // tag::snippet[]
 public class MainLayout extends AppLayout {
 
+	@Getter
+	private final Tabs subMenuTabs = new Tabs();
+
+	@Getter
+	private final H2 subMenuHeader = new H2( "BBJJA Submenu" );
+
+
 	public MainLayout() {
 
-		setId( "main-layout" );
+		setId( "main-layout".concat( String.valueOf( Instant.now().getNano() ) ) );
 
-		final var appTitle = new H1( "MyApp" );
+		final var appTitle = new H1( "BBJJA Admin" );
 		appTitle.getStyle()
 				.set( "font-size", "var(--lumo-font-size-l)" )
 				.set( "line-height", "var(--lumo-size-l)" )
@@ -35,24 +47,15 @@ public class MainLayout extends AppLayout {
 
 		final var toggle = new DrawerToggle();
 
-		final var viewTitle = new H2( "Orders" );
-		viewTitle.getStyle()
+		subMenuHeader.getStyle()
 				.set( "font-size", "var(--lumo-font-size-l)" )
 				.set( "margin", "0" );
 
-		Tabs subViews = new Tabs();
-		subViews.add(
-				new Tab( "All" ),
-				new Tab( "Open" ),
-				new Tab( "Completed" ),
-				new Tab( "Cancelled" )
-		);
-
-		HorizontalLayout wrapper = new HorizontalLayout( toggle, viewTitle );
+		final var wrapper = new HorizontalLayout( toggle, subMenuHeader );
 		wrapper.setAlignItems( FlexComponent.Alignment.CENTER );
 		wrapper.setSpacing( false );
 
-		VerticalLayout viewHeader = new VerticalLayout( wrapper, subViews );
+		final var viewHeader = new VerticalLayout( wrapper, subMenuTabs );
 		viewHeader.setPadding( false );
 		viewHeader.setSpacing( false );
 
@@ -84,13 +87,13 @@ public class MainLayout extends AppLayout {
 
 	private Tab createTab( VaadinIcon viewIcon, String viewName, Class< ? extends Component > route ) {
 
-		Icon icon = viewIcon.create();
+		final var icon = viewIcon.create();
 		icon.getStyle()
 				.set( "box-sizing", "border-box" )
 				.set( "margin-inline-end", "var(--lumo-space-m)" )
 				.set( "padding", "var(--lumo-space-xs)" );
 
-		RouterLink link = new RouterLink();
+		final var link = new RouterLink();
 		link.setText( viewName );
 		link.setRoute( route );
 		link.setTabIndex( - 1 );
