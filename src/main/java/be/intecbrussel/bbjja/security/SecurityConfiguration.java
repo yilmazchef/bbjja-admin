@@ -1,7 +1,7 @@
 package be.intecbrussel.bbjja.security;
 
 
-import be.intecbrussel.bbjja.ui.views.LoginView;
+import be.intecbrussel.bbjja.ui.views.LoginPage;
 import com.vaadin.flow.spring.security.VaadinWebSecurityConfigurerAdapter;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -29,7 +29,7 @@ public class SecurityConfiguration extends VaadinWebSecurityConfigurerAdapter {
 	protected void configure( HttpSecurity http ) throws Exception {
 
 		super.configure( http );
-		setLoginView( http, LoginView.class, LOGOUT_URL );
+		setLoginView( http, LoginPage.class, LOGOUT_URL );
 	}
 
 
