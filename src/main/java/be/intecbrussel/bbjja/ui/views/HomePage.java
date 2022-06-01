@@ -4,6 +4,7 @@ package be.intecbrussel.bbjja.ui.views;
 import be.intecbrussel.bbjja.ui.layouts.*;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.component.tabs.Tab;
+import com.vaadin.flow.component.tabs.Tabs;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
 import com.vaadin.flow.router.RouteAlias;
@@ -17,8 +18,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 public class HomePage extends VerticalLayout {
 
 	@Autowired
-	public HomePage( final MainLayout mainLayout,
-	                 final SlidesCreateLayout slidesCreateLayout, final SlidesViewLayout slidesViewLayout,
+	public HomePage( final SlidesCreateLayout slidesCreateLayout, final SlidesViewLayout slidesViewLayout,
 	                 final SlidesUpdateLayout slidesUpdateLayout, final SlidesDeleteLayout slidesDeleteLayout,
 	                 final SubscribersUpdateLayout subscribersCreateLayout, final SubscribersViewLayout subscribersViewLayout,
 	                 final SubscribersUpdateLayout subscribersUpdateLayout, final SubscribersDeleteLayout subscribersDeleteLayout ) {
@@ -39,15 +39,16 @@ public class HomePage extends VerticalLayout {
 				subscribersUpdateLayout
 		);
 
-		mainLayout.getSubMenuHeader().setText( "View/Edit Home Page" );
 		final var tabSlides = new Tab( slidesLayout );
 		tabSlides.setLabel( "Slides" );
 		final var tabSubscribers = new Tab( subscribersLayout );
 		tabSubscribers.setLabel( "Subscribers" );
-		mainLayout.getSubMenuTabs().add(
+		final var tabs = new Tabs(
 				tabSlides,
 				tabSubscribers
 		);
+
+		add( tabs );
 	}
 
 }

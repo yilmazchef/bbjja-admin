@@ -3,7 +3,6 @@ package be.intecbrussel.bbjja.ui.layouts;
 
 import be.intecbrussel.bbjja.ui.views.*;
 import com.vaadin.flow.component.Component;
-import com.vaadin.flow.component.Tag;
 import com.vaadin.flow.component.applayout.AppLayout;
 import com.vaadin.flow.component.applayout.DrawerToggle;
 import com.vaadin.flow.component.html.H1;
@@ -15,14 +14,9 @@ import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.component.tabs.Tab;
 import com.vaadin.flow.component.tabs.Tabs;
 import com.vaadin.flow.router.RouterLink;
-import com.vaadin.flow.spring.annotation.SpringComponent;
 import lombok.Getter;
 
-import java.time.Instant;
 
-
-@SpringComponent
-@Tag ( "main-layout" )
 // tag::snippet[]
 public class MainLayout extends AppLayout {
 
@@ -34,8 +28,6 @@ public class MainLayout extends AppLayout {
 
 
 	public MainLayout() {
-
-		setId( "main-layout".concat( String.valueOf( Instant.now().getNano() ) ) );
 
 		final var appTitle = new H1( "BBJJA Admin" );
 		appTitle.getStyle()
