@@ -22,14 +22,14 @@ import java.util.UUID;
 @RestController
 @RequestMapping ( value = EndPoints.EMPLOYEE_CLASS_LEVEL )
 @PermitAll
-public class EmployeeApi {
+public class TeamApi {
 
 	private final TeamService teamService;
 	private final AuthenticatedUser authenticatedUser;
 
 
 	@Autowired
-	public EmployeeApi( final TeamService teamService, final AuthenticatedUser authenticatedUser ) {
+	public TeamApi( final TeamService teamService, final AuthenticatedUser authenticatedUser ) {
 
 		this.teamService = teamService;
 		this.authenticatedUser = authenticatedUser;

@@ -30,28 +30,6 @@ public class MockDataGenerator {
 			final var faker = new Faker( Locale.getDefault() );
 
 			logger.info( "Generating mock data..." );
-//
-//			final var userRole = new Role()
-//					.setTitle( "USER" )
-//					.setDescription( "Has LIMITED access to all services including UI and API." )
-//					.setMaxAllowedUsers( 10 );
-//
-//			final Role savedUserRole = roleRepository.save( userRole );
-//
-//			final var editorRole = new Role()
-//					.setTitle( "EDITOR" )
-//					.setDescription( "Has full access to all services from UI." )
-//					.setMaxAllowedUsers( 10 );
-//
-//			final Role savedEditorRole = roleRepository.save( editorRole );
-//
-//			final var adminRole = new Role()
-//					.setTitle( "ADMIN" )
-//					.setDescription( "Has full access to all services including UI and API." )
-//					.setMaxAllowedUsers( 10 );
-//
-//			final Role savedAdminRole = roleRepository.save( adminRole );
-
 
 			final var emailUser = faker.internet().emailAddress();
 			final var usernameUser = "user";
@@ -117,7 +95,8 @@ public class MockDataGenerator {
 
 				final var newSlide = new Slide()
 						.setImageUrl( photos[ index ].getUrl() )
-						.setTitle( faker.ancient().hero() );
+						.setTitle( faker.ancient().hero() )
+						.setDescription( faker.lorem().paragraph(20) );
 
 				newSlide.setPage( savedHomePage );
 
