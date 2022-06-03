@@ -136,7 +136,7 @@ public class MockDataGenerator {
 				offer.setTitle( String.format( "Ninja school offer title %d", index ) );
 				offer.setDescription( String.format( "Ninja school offer description: %d", index ) );
 				offer.setForwardUrl( String.format( "https://www.bbjja.be/offers/%d", index ) );
-				offer.setPage( ninjaSchoolPage );
+				offer.setPage( savedNinjaSchoolPage );
 
 				final var savedOffer = offerRepository.save( offer );
 

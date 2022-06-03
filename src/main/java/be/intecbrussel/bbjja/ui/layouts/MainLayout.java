@@ -16,7 +16,6 @@ import com.vaadin.flow.component.tabs.Tabs;
 import com.vaadin.flow.router.RouterLink;
 
 
-// tag::snippet[]
 public class MainLayout extends AppLayout {
 
 
@@ -50,7 +49,6 @@ public class MainLayout extends AppLayout {
 
 		setPrimarySection( Section.DRAWER );
 	}
-	// end::snippet[]
 
 
 	private Tabs getPrimaryNavigation() {
@@ -88,6 +86,4 @@ public class MainLayout extends AppLayout {
 	}
 
 
-	// tag::snippet[]
 }
-// end::snippet[]
