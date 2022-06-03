@@ -1,24 +1,23 @@
 version: "3.9"
 services:
-  app:
-    container_name: bbjja_admin_app
+
+  bbjja_dev_appserver:
     build: .
     ports:
-      - "8080:8080"
+      - "80:8080"
     depends_on:
-      - db
+      - bbjja_dev_database_server
     environment:
-      - SPRING_DATASOURCE_URL=jdbc:postgresql://db:5432/bbjjadb
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://bbjja_dev_database_server:5432/bbjjadb
       - SPRING_DATASOURCE_USERNAME=postgres
       - SPRING_DATASOURCE_PASSWORD=postgres
       - SPRING_JPA_HIBERNATE_DDL_AUTO=update
     networks:
-      - dev-net
+      - bbjja_development_network
     volumes:
-      - dev-vol:/home/app/web_server/
+      - bbjja_application_volume:/var/lib/bbjja
 
-  db:
-    container_name: bbjja_admin_db
+  bbjja_dev_database_server:
     image: postgres:latest
     ports:
       - "5432:5432"
@@ -32,25 +31,23 @@ services:
       timeout: 5s
       retries: 5
     networks:
-      - dev-net
+      - bbjja_development_network
     volumes:
-      - dev-vol:/home/app/web_server/
+      - bbjja_database_volume:/var/lib/mysql
 
-  db-admin:
-    container_name: bbjja_admin_db_panel
-    image: adminer
+  bbjja_dev_database_admin:
+    image: adminer:latest
     restart: always
     ports:
       - "9090:8080"
     networks:
-      - dev-net
-    volumes:
-      - dev-vol:/home/app/web_server/
+      - bbjja_development_network
 
 networks:
-  prod-net:
-  dev-net:
+  bbjja_production_network:
+  bbjja_development_network:
+
 
 volumes:
-  prod-vol:
-  dev-vol:
+  bbjja_database_volume: {}
+  bbjja_application_volume: {}

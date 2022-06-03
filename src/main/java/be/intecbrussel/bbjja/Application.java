@@ -29,8 +29,7 @@ import org.springframework.context.annotation.Bean;
 		name = "BBJJA Admin",
 		shortName = "BBJJA",
 		offlinePath = "offline.html",
-		offlineResources = { "./images/offline.png" },
-		iconPath = "./icons/logo.png"
+		offlineResources = { "./images/offline.png" }
 )
 @NpmPackage ( value = "line-awesome", version = "1.3.0" )
 @Viewport ( "width=device-width, minimum-scale=1.0, initial-scale=1.0, user-scalable=yes" )

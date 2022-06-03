@@ -1,10 +1,10 @@
 package be.intecbrussel.bbjja.ui.views;
 
 
-import be.intecbrussel.bbjja.api.SlideCard;
 import be.intecbrussel.bbjja.data.service.SlideService;
 import be.intecbrussel.bbjja.data.service.SubscriberService;
 import be.intecbrussel.bbjja.ui.layouts.MainLayout;
+import be.intecbrussel.bbjja.ui.layouts.SlideCard;
 import com.vaadin.flow.component.Tag;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.router.PageTitle;
@@ -27,8 +27,8 @@ public class HomePage extends VerticalLayout {
 		slideService
 				.list()
 				.stream()
-				.map( slide -> new SlideCard( slide, SlideCard.OpenMode.READ ) )
-				.forEach( slideCard -> add( slideCard ) );
+				.map( slide -> new SlideCard( slide ) )
+				.forEach( card -> add( card ) );
 
 	}
 
